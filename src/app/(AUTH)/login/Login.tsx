@@ -11,7 +11,7 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye } from "lucide-react";
+import { Eye, Loader2 } from "lucide-react";
 import { EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
@@ -19,7 +19,7 @@ import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type SignInForm, signInForm } from "@/validations/auth";
-import { Spinner } from "@/components/mycomps/Loadings";
+import { Spinner } from "@/components/extras/Loadings";
 import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
@@ -54,6 +54,7 @@ const Login = () => {
         });
       }
 
+      router.refresh();
       reset();
     } catch (err) {
       console.error(err);
@@ -62,9 +63,11 @@ const Login = () => {
 
   return (
     <div className="m-auto flex items-center justify-center md:min-h-screen">
-      <Card className="m-auto h-screen w-screen space-y-4 md:h-full md:w-[450px]">
+      <Card className="m-auto h-screen w-screen space-y-4 rounded-none md:h-full md:w-[450px] md:rounded-xl">
         <CardHeader className="space-y-1">
-          <CardTitle className="text-xl md:text-2xl">Login to Brand</CardTitle>
+          <CardTitle className="text-xl md:text-2xl">
+            Login to Melodify
+          </CardTitle>
           <CardDescription>SignIn to continue</CardDescription>
         </CardHeader>
         <CardContent className="w-full py-0">
@@ -143,12 +146,13 @@ const Login = () => {
           </CardContent>
           <CardFooter className="flex flex-col items-center gap-y-4">
             <Button
-              className="inline-flex w-full items-center gap-x-3 py-5 text-base md:py-4 md:text-sm"
+              disabled={isSubmitting}
+              className="inline-flex w-full items-center gap-x-1.5 py-5 text-base md:py-4 md:text-sm"
               type="submit"
             >
               Login
-              {isSubmitting && <Spinner />}
-            </Button>{" "}
+              {isSubmitting && <Loader2 size={19} className="animate-spin" />}
+            </Button>
             <span className="text-sm">
               Don&apos;t have an account?{" "}
               <Link className="underline" href="/signup">

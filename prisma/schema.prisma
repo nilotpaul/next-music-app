@@ -48,6 +48,8 @@ model User {
   password      String?
   emailVerified DateTime?
   image         String?
+  isArtist      Boolean   @default(false)
+  artistName    String?
   createdAt     DateTime  @default(now())
   updatedAt     DateTime  @updatedAt
   accounts      Account[]

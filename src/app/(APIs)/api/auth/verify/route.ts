@@ -1,13 +1,23 @@
 import { prisma } from "@/utils/PrismaClient";
 import { userSession } from "@/utils/userSession";
 import { redirect } from "next/navigation";
-import { NextResponse } from "next/server";
+import { NextResponse, NextRequest } from "next/server";
 
-export async function GET(req: Request) {
+export async function GET(req: NextRequest) {
   const session = await userSession();
   if (session) redirect("/");
 
+  const domain = process.env.NEXTAUTH_URL;
+
   try {
+    const cookie = req.cookies.get("auto-login-data");
+
+    if (!cookie) {
+      throw new Error(
+        "no cookie found. Try again from the device you registered.",
+      );
+    }
+
     const { searchParams } = new URL(req.url);
 
     const token = searchParams.get("token");
@@ -48,17 +58,12 @@ export async function GET(req: Request) {
           email: userToken.identifier,
         },
         data: {
-          emailVerified: new Date(
-            Math.floor(new Date().getTime() + 24 * 60 * 60 * 1000),
-          ).toISOString(),
+          emailVerified: new Date().toISOString(),
         },
       });
     }
 
-    return NextResponse.json(
-      { message: "your email has been verified!" },
-      { status: 201 },
-    );
+    return NextResponse.redirect(domain! + "/auth/auto-sign-in");
   } catch (err) {
     console.error(err);
     if (err instanceof Error) redirect(`/auth/error?error=${err.message}`);

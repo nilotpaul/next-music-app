@@ -1,13 +1,17 @@
-import { ThemeProvider } from "@/components/theme-provider";
-import "./globals.css";
+import ReduxProvider from "@/utils/ReduxProvider";
+import ReactQueryProvider from "@/utils/ReactQueryProvider";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "remixicon/fonts/remixicon.css";
+import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import { prisma } from "@/utils/PrismaClient";
-import { cookies } from "next/headers";
+import { Poppins } from "next/font/google";
 
-const inter = Inter({ subsets: ["latin"] });
+import "./globals.css";
+import "remixicon/fonts/remixicon.css";
+
+const montserrat = Poppins({
+  subsets: ["latin"],
+  weight: ["300", "400", "500", "600", "700"],
+});
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -21,11 +25,15 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <main>{children}</main>
-          <Toaster />
-        </ThemeProvider>
+      <body className={montserrat.className}>
+        <ReduxProvider>
+          <ReactQueryProvider>
+            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+              <main>{children}</main>
+              <Toaster />
+            </ThemeProvider>
+          </ReactQueryProvider>
+        </ReduxProvider>
       </body>
     </html>
   );

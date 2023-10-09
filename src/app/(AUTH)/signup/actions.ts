@@ -57,6 +57,9 @@ export async function signUpAction(formData: SignUpForm) {
       where: {
         identifier: formData.email,
       },
+      orderBy: {
+        createdAt: "desc",
+      },
     });
 
     const email = await fetch("https://api.brevo.com/v3/smtp/email", {

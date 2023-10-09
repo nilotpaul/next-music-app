@@ -1,5 +1,15 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
+import axios, { AxiosError } from "axios";
+import { useMutation } from "@tanstack/react-query";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useRouter } from "next/navigation";
+import { signIn } from "next-auth/react";
+
+import { cn } from "@/utils/utils";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -11,88 +21,61 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Eye } from "lucide-react";
+import { Eye, Loader2 } from "lucide-react";
 import { EyeOff } from "lucide-react";
-import { signIn } from "next-auth/react";
-import Link from "next/link";
-import { useState } from "react";
-import { signUpAction } from "./actions";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { type SignUpForm, signUpForm } from "@/validations/auth";
 import { useToast } from "@/components/ui/use-toast";
-import { cn } from "@/utils/utils";
-import { Spinner } from "@/components/mycomps/Loadings";
 
 const SignUp = () => {
   const [passVisible, setPassVisible] = useState(false);
   const { toast } = useToast();
+  const router = useRouter();
 
   const {
     handleSubmit,
     register,
     reset,
-    formState: { errors, isSubmitting },
+    formState: { errors },
   } = useForm<SignUpForm>({
     resolver: zodResolver(signUpForm),
   });
 
-  const onSubmit = async (formData: SignUpForm) => {
-    try {
-      const res = await signUpAction(formData);
+  const { mutate: signUpMutation, isLoading } = useMutation(["signUp"], {
+    mutationFn: async (payload: SignUpForm) => {
+      await axios.post("/api/auth/signup", payload);
+    },
 
-      if (res?.status === 201) {
+    onSuccess: () => {
+      toast({
+        title: "Email sent",
+        className: "text-primary",
+      });
+
+      router.refresh();
+      reset();
+    },
+
+    onError: (err) => {
+      console.error(err);
+      if (err instanceof AxiosError) {
         toast({
-          className: "text-primary",
-          title: res.status.toString(),
-          description: res.message,
-        });
-      } else if (res?.status === 400) {
-        toast({
+          title: err.response?.status.toString(),
+          description: err.response?.data,
           variant: "destructive",
-          title: res.status.toString(),
-          description: res.message,
-        });
-      } else if (res?.status === 409) {
-        toast({
-          title: res.status.toString(),
-          description: res.message,
         });
       } else {
         toast({
+          title: "Something went wrong.",
           variant: "destructive",
-          title: "OOPS!",
-          description: "something went wrong",
         });
       }
-
-      const payload = {
-        email: formData.email,
-        password: formData.password,
-      };
-
-      await signIn("credentials", {
-        ...payload,
-        callbackUrl: "/",
-      });
-
       reset();
-    } catch (err) {
-      console.error(err);
-
-      if (err) {
-        toast({
-          variant: "destructive",
-          title: "OOPS!",
-          description: "something went wrong",
-        });
-      }
-    }
-  };
+    },
+  });
 
   return (
     <div className="m-auto flex max-w-full items-center justify-center md:min-h-screen">
-      <Card className="m-auto h-screen w-screen space-y-4 md:h-full md:w-[450px]">
+      <Card className="m-auto h-screen w-screen space-y-4 rounded-none md:h-full md:w-[450px] md:rounded-xl">
         <CardHeader className="space-y-1">
           <CardTitle className="text-xl md:text-2xl">
             Create an account
@@ -109,7 +92,7 @@ const SignUp = () => {
             Google
           </Button>
         </CardContent>
-        <form onSubmit={handleSubmit(onSubmit)}>
+        <form onSubmit={handleSubmit((formData) => signUpMutation(formData))}>
           <CardContent className="grid gap-4">
             <section className="relative">
               <div className="absolute inset-0 flex items-center">
@@ -193,11 +176,12 @@ const SignUp = () => {
           </CardContent>
           <CardFooter className="flex flex-col items-center gap-y-4">
             <Button
-              className="inline-flex w-full items-center gap-x-3 py-5 text-base md:py-4 md:text-sm"
+              disabled={isLoading}
+              className="inline-flex w-full items-center gap-x-1.5 py-5 text-base md:py-4 md:text-sm"
               type="submit"
             >
               Create account
-              {isSubmitting && <Spinner />}
+              {isLoading && <Loader2 size={19} className="animate-spin" />}
             </Button>
             <span className="text-sm">
               Already have an account?{" "}
