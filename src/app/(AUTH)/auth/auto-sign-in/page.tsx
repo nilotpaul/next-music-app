@@ -1,7 +1,7 @@
 import { cookies } from "next/headers";
 import AutoSignIn from "./AutoSignIn";
 import { redirect } from "next/navigation";
-import { userSession } from "@/utils/userSession";
+import { userSession } from "@/lib/userSession";
 
 const AutoSignInPage = async () => {
   const user = await userSession();

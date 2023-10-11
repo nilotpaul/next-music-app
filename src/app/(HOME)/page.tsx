@@ -1,6 +1,6 @@
+import { userSession } from "@/lib/userSession";
+
 import Main from "@/components/main/Main";
-import { supabase, supabaseClient } from "@/utils/SupabaseClient";
-import { userSession } from "@/utils/userSession";
 
 export default async function Home() {
   const session = await userSession();

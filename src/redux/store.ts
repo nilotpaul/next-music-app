@@ -1,10 +1,10 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
-import artistModalSlice from "./slices/artistModalSlice";
+import songsSlice from "@/redux/slices/songsSlice";
 
 export const store = configureStore({
   reducer: {
-    artistModalSlice,
+    songsSlice,
   },
 });
 

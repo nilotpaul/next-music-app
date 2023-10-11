@@ -1,9 +1,9 @@
 import * as z from "zod";
 
 const providerSchema = z.object({
-  GOOGLE_ID: z.string().nonempty(),
-  GOOGLE_SECRET: z.string().nonempty(),
-  NEXTAUTH_SECRET: z.string().nonempty(),
+  GOOGLE_ID: z.string().min(1),
+  GOOGLE_SECRET: z.string().min(1),
+  NEXTAUTH_SECRET: z.string().min(1),
 });
 
 export const providerEnv = providerSchema.parse(process.env);

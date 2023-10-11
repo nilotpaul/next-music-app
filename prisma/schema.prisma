@@ -7,11 +7,31 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+enum Provider {
+  google
+  credentials
+}
+
+// songs
+model Songs {
+  id         String   @id @unique @default(cuid()) @map("id")
+  artistName String
+  title      String
+  image      String
+  file       String
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@map("songs")
+}
+
 // nextAuth
 model Account {
-  id                 String  @id @default(cuid()) @map("id")
+  id                 String   @id @default(cuid()) @map("id")
   type               String
-  provider           String
+  provider           Provider
   providerAccountId  String
   refresh_token      String?
   access_token       String?
@@ -23,7 +43,7 @@ model Account {
   oauth_token_secret String?
   oauth_token        String?
   userId             String
-  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
   @@map("accounts")
@@ -54,6 +74,7 @@ model User {
   updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
+  Song          Songs[]
 
   @@map("users")
 }

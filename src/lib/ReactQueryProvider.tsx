@@ -14,3 +14,4 @@ export default function ReactQueryProvider({
     <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
   );
 }
+export const context = new QueryClient();

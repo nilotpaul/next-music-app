@@ -1,5 +1,5 @@
-import ReduxProvider from "@/utils/ReduxProvider";
-import ReactQueryProvider from "@/utils/ReactQueryProvider";
+import ReduxProvider from "@/lib/ReduxProvider";
+import ReactQueryProvider from "@/lib/ReactQueryProvider";
 import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
@@ -26,14 +26,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={montserrat.className}>
-        <ReduxProvider>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <ReactQueryProvider>
-            <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
+            <ReduxProvider>
               <main>{children}</main>
-              <Toaster />
-            </ThemeProvider>
+            </ReduxProvider>
           </ReactQueryProvider>
-        </ReduxProvider>
+        </ThemeProvider>
+        <Toaster />
       </body>
     </html>
   );

@@ -1,4 +1,4 @@
-import { prisma } from "@/utils/PrismaClient";
+import { prisma } from "@/lib/PrismaClient";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import GoogleProvider from "next-auth/providers/google";
 import CredentialsProvider from "next-auth/providers/credentials";
@@ -78,14 +78,25 @@ export const authOptions: AuthOptions = {
     },
 
     session: async ({ session }) => {
-      const userDb = await prisma.user.findUnique({
-        where: {
-          email: session.user.email!,
-        },
-      });
+      if (session && session.user.email) {
+        const userDb = await prisma.user.findUnique({
+          where: {
+            email: session.user.email,
+          },
+          include: {
+            accounts: {
+              where: { user: { email: session.user.email } },
+            },
+          },
+        });
 
-      if (userDb) {
-        session.user.id = userDb.id;
+        if (userDb) {
+          session.user.id = userDb.id;
+          session.user.isArtist = userDb.isArtist;
+          session.user.artistName = userDb.artistName;
+          session.user.createdAt = userDb.createdAt;
+          session.provider = userDb.accounts[0].provider;
+        }
       }
 
       return session;

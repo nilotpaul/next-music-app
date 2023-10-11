@@ -11,6 +11,7 @@ import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
 import ToolTip from "../extras/ToolTip";
 import ArtistDialog from "./ArtistDialog";
+import SongUploadDialog from "./SongUploadDialog";
 
 type TopHeaderProps = {
   session: Session | null;
@@ -93,11 +94,31 @@ const TopHeader = ({ session }: TopHeaderProps) => {
               <Button className="w-full justify-start" variant="ghost" asChild>
                 <Link href="/subscription">Subscription</Link>
               </Button>
-              <ArtistDialog>
-                <Button className="w-full justify-start" variant="ghost">
+              {session.provider === "credentials" ? (
+                <>
+                  {!session.user.isArtist ? (
+                    <ArtistDialog>
+                      <Button className="w-full justify-start" variant="ghost">
+                        Join as Creator
+                      </Button>
+                    </ArtistDialog>
+                  ) : (
+                    <SongUploadDialog name={session.user.artistName!}>
+                      <Button className="w-full justify-start" variant="ghost">
+                        Upload Song
+                      </Button>
+                    </SongUploadDialog>
+                  )}
+                </>
+              ) : (
+                <Button
+                  disabled={session.provider === "google"}
+                  className="w-full justify-start line-through"
+                  variant="ghost"
+                >
                   Join as Creator
                 </Button>
-              </ArtistDialog>
+              )}
 
               <Separator className="w-full" />
               <Button

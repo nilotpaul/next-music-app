@@ -1,4 +1,4 @@
-import { userSession } from "@/utils/userSession";
+import { userSession } from "@/lib/userSession";
 import Login from "./Login";
 import { redirect } from "next/navigation";
 

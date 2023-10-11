@@ -1,5 +1,5 @@
-import { prisma } from "@/utils/PrismaClient";
-import { userSession } from "@/utils/userSession";
+import { prisma } from "@/lib/PrismaClient";
+import { userSession } from "@/lib/userSession";
 import { redirect } from "next/navigation";
 import { NextResponse, NextRequest } from "next/server";
 

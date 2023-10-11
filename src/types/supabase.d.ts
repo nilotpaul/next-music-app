@@ -9,39 +9,6 @@ export type Json =
 export interface Database {
   public: {
     Tables: {
-      _prisma_migrations: {
-        Row: {
-          applied_steps_count: number
-          checksum: string
-          finished_at: string | null
-          id: string
-          logs: string | null
-          migration_name: string
-          rolled_back_at: string | null
-          started_at: string
-        }
-        Insert: {
-          applied_steps_count?: number
-          checksum: string
-          finished_at?: string | null
-          id: string
-          logs?: string | null
-          migration_name: string
-          rolled_back_at?: string | null
-          started_at?: string
-        }
-        Update: {
-          applied_steps_count?: number
-          checksum?: string
-          finished_at?: string | null
-          id?: string
-          logs?: string | null
-          migration_name?: string
-          rolled_back_at?: string | null
-          started_at?: string
-        }
-        Relationships: []
-      }
       accounts: {
         Row: {
           access_token: string | null
@@ -50,7 +17,7 @@ export interface Database {
           id_token: string | null
           oauth_token: string | null
           oauth_token_secret: string | null
-          provider: string
+          provider: Database["public"]["Enums"]["Provider"]
           providerAccountId: string
           refresh_token: string | null
           scope: string | null
@@ -66,7 +33,7 @@ export interface Database {
           id_token?: string | null
           oauth_token?: string | null
           oauth_token_secret?: string | null
-          provider: string
+          provider: Database["public"]["Enums"]["Provider"]
           providerAccountId: string
           refresh_token?: string | null
           scope?: string | null
@@ -82,7 +49,7 @@ export interface Database {
           id_token?: string | null
           oauth_token?: string | null
           oauth_token_secret?: string | null
-          provider?: string
+          provider?: Database["public"]["Enums"]["Provider"]
           providerAccountId?: string
           refresh_token?: string | null
           scope?: string | null
@@ -99,27 +66,6 @@ export interface Database {
             referencedColumns: ["id"]
           }
         ]
-      }
-      public: {
-        Row: {
-          artist: string | null
-          created_at: string
-          id: number
-          song: string | null
-        }
-        Insert: {
-          artist?: string | null
-          created_at?: string
-          id?: number
-          song?: string | null
-        }
-        Update: {
-          artist?: string | null
-          created_at?: string
-          id?: number
-          song?: string | null
-        }
-        Relationships: []
       }
       sessions: {
         Row: {
@@ -155,48 +101,39 @@ export interface Database {
           }
         ]
       }
-      test: {
-        Row: {
-          id: string
-          name: string | null
-        }
-        Insert: {
-          id?: string
-          name?: string | null
-        }
-        Update: {
-          id?: string
-          name?: string | null
-        }
-        Relationships: []
-      }
       users: {
         Row: {
+          artistName: string | null
           createdAt: string
           email: string | null
           emailVerified: string | null
           id: string
           image: string | null
+          isArtist: boolean
           name: string | null
           password: string | null
           updatedAt: string
         }
         Insert: {
+          artistName?: string | null
           createdAt?: string
           email?: string | null
           emailVerified?: string | null
           id: string
           image?: string | null
+          isArtist?: boolean
           name?: string | null
           password?: string | null
           updatedAt: string
         }
         Update: {
+          artistName?: string | null
           createdAt?: string
           email?: string | null
           emailVerified?: string | null
           id?: string
           image?: string | null
+          isArtist?: boolean
           name?: string | null
           password?: string | null
           updatedAt?: string
@@ -238,7 +175,7 @@ export interface Database {
       [_ in never]: never
     }
     Enums: {
-      [_ in never]: never
+      Provider: "google" | "credentials"
     }
     CompositeTypes: {
       [_ in never]: never

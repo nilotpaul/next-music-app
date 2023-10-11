@@ -1,4 +1,4 @@
-import { prisma } from "@/utils/PrismaClient";
+import { prisma } from "@/lib/PrismaClient";
 import { signUpForm } from "@/validations/auth";
 import { NextRequest, NextResponse } from "next/server";
 import * as bcrypt from "bcrypt";
@@ -9,12 +9,6 @@ import { cookies } from "next/headers";
 
 export async function POST(req: NextRequest) {
   try {
-    if (req.method !== "POST") {
-      return new NextResponse("Only post requests are allowed", {
-        status: 405,
-      });
-    }
-
     const body = await req.json();
 
     const { email, password, username } = signUpForm.parse(body);

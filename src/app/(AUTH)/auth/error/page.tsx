@@ -1,4 +1,4 @@
-import { userSession } from "@/utils/userSession";
+import { userSession } from "@/lib/userSession";
 import AuthError from "./AuthError";
 import { redirect } from "next/navigation";
 

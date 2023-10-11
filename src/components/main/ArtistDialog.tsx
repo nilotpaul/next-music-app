@@ -12,6 +12,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -21,6 +22,7 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
+import { cn } from "@/utils/utils";
 
 type ArtistModalProps = {
   children: React.ReactNode;
@@ -45,7 +47,7 @@ const ArtistDialog = ({ children }: ArtistModalProps) => {
     ["creator-join"],
     {
       mutationFn: async (payload: CreatorJoin) => {
-        await axios.post("/api/creator-join", payload);
+        await axios.patch("/api/creator-join", payload);
       },
 
       onSuccess: () => {
@@ -87,65 +89,92 @@ const ArtistDialog = ({ children }: ArtistModalProps) => {
       </DialogTrigger>
       <DialogContent className="flex h-full max-w-full flex-col items-start gap-y-6 md:grid md:h-max md:max-w-[450px]">
         <DialogHeader className="w-full text-start">
-          <DialogTitle>Join Melodify Creator Program</DialogTitle>
+          <DialogTitle className="text-xl md:text-2xl">
+            Join Melodify Creator Program
+          </DialogTitle>
           <DialogDescription className="pt-1.5">
             By joining you will be able to upload songs as a creator
           </DialogDescription>
         </DialogHeader>
-        <div
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              handleSubmit((formData) => creatorJoinMutation(formData));
-            }
-          }}
-          className="w-full space-y-4"
+        <form
+          onSubmit={handleSubmit((formData) => creatorJoinMutation(formData))}
+          className="w-full space-y-6"
         >
-          <div className="space-y-1.5">
-            <Label>Artist Name</Label>
-            <Input placeholder="Artist Name" {...register("artistName")} />
-          </div>
-          <div className="space-y-1.5">
-            <Label>Password</Label>
-            <Input
-              type="password"
-              placeholder="Password"
-              {...register("password")}
-            />
-            <span className="text-xs text-destructive">
-              Note: This password should match your register password
+          <div className="w-full space-y-4">
+            <div className="flex flex-col space-y-1.5">
+              <Label>Artist Name</Label>
+              <Input
+                placeholder="Artist Name"
+                className="h-11 md:h-9"
+                {...register("artistName")}
+              />
+              <span
+                className={cn("ml-2 text-xs text-destructive", {
+                  hidden: !errors.artistName?.message,
+                })}
+              >
+                {errors.artistName?.message}
+              </span>
+            </div>
+            <div className="flex flex-col items-start space-y-1.5">
+              <Label>Password</Label>
+              <Input
+                type="password"
+                placeholder="Password"
+                className="h-11 md:h-9"
+                {...register("password")}
+              />
+              <span
+                className={cn("ml-2 text-xs text-destructive", {
+                  hidden: !errors.password?.message,
+                })}
+              >
+                {errors.password?.message}
+              </span>
+              <span className="text-xs text-destructive">
+                Note: This password should match your register password
+              </span>
+            </div>
+            <div className="flex flex-col items-start space-y-1.5">
+              <Label>Why Us?</Label>
+              <Textarea className="h-24" placeholder="Details" />
+            </div>
+            <div className="flex items-center gap-x-2">
+              <Controller
+                control={control}
+                name="terms"
+                render={({ field: { onChange, value } }) => (
+                  <Checkbox
+                    id="terms"
+                    className="rounded-full"
+                    onCheckedChange={onChange}
+                    defaultChecked={value}
+                  />
+                )}
+              />
+              <Label htmlFor="terms" className="text-sm font-[400]">
+                You are giving Melodify rights to monitize your work
+              </Label>
+            </div>
+            <span
+              className={cn("ml-2 text-xs text-destructive", {
+                hidden: !errors.terms?.message,
+              })}
+            >
+              You must agree before submitting.
             </span>
           </div>
-          <div className="space-y-1.5">
-            <Label>Why Us?</Label>
-            <Textarea placeholder="Details" />
-          </div>
-          <div className="flex items-center gap-x-2">
-            <Controller
-              control={control}
-              name="terms"
-              render={({ field: { onChange, value } }) => (
-                <Checkbox
-                  id="terms"
-                  className="rounded-full"
-                  onCheckedChange={onChange}
-                  defaultChecked={value}
-                />
-              )}
-            />
-            <Label htmlFor="terms" className="text-sm font-[400]">
-              You are giving Melodify rights to monitize your work
-            </Label>
-          </div>
-        </div>
-        <Button
-          disabled={isLoading}
-          type="submit"
-          onClick={handleSubmit((formData) => creatorJoinMutation(formData))}
-          className="w-full gap-x-1.5"
-        >
-          Join as a Creator
-          {isLoading && <Loader2 size={19} className="animate-spin" />}
-        </Button>
+          <DialogFooter>
+            <Button
+              disabled={isLoading}
+              type="submit"
+              className="w-full gap-x-1.5 py-5 text-base md:py-4 md:text-sm"
+            >
+              Join as a Creator
+              {isLoading && <Loader2 size={19} className="animate-spin" />}
+            </Button>
+          </DialogFooter>
+        </form>
       </DialogContent>
     </Dialog>
   );

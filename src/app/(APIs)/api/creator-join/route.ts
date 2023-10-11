@@ -1,11 +1,11 @@
-import { prisma } from "@/utils/PrismaClient";
-import { userSession } from "@/utils/userSession";
+import { prisma } from "@/lib/PrismaClient";
+import { userSession } from "@/lib/userSession";
 import { creatorJoin } from "@/validations/creator";
 import { NextRequest, NextResponse } from "next/server";
 import * as bcrypt from "bcrypt";
 import * as z from "zod";
 
-export async function POST(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   const session = await userSession();
 
   try {

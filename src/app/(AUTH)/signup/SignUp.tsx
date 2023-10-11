@@ -113,11 +113,9 @@ const SignUp = () => {
                 {...register("username")}
               />
               <span
-                className={
-                  errors.username?.message
-                    ? cn("ml-2 text-xs text-destructive")
-                    : cn("hidden")
-                }
+                className={cn("ml-2 text-xs text-destructive", {
+                  hidden: !errors.username?.message,
+                })}
               >
                 {errors.username?.message}
               </span>
@@ -131,11 +129,9 @@ const SignUp = () => {
                 {...register("email")}
               />
               <span
-                className={
-                  errors.email?.message
-                    ? cn("ml-2 text-xs text-destructive")
-                    : cn("hidden")
-                }
+                className={cn("ml-2 text-xs text-destructive", {
+                  hidden: !errors.email?.message,
+                })}
               >
                 {errors.email?.message}
               </span>
@@ -164,11 +160,9 @@ const SignUp = () => {
                 )}
               </span>
               <span
-                className={
-                  errors.password?.message
-                    ? cn("ml-2 text-xs text-destructive")
-                    : cn("hidden")
-                }
+                className={cn("ml-2 text-xs text-destructive", {
+                  hidden: !errors.password?.message,
+                })}
               >
                 {errors.password?.message}
               </span>

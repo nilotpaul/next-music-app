@@ -19,7 +19,6 @@ import { signIn } from "next-auth/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { type SignInForm, signInForm } from "@/validations/auth";
-import { Spinner } from "@/components/extras/Loadings";
 import { cn } from "@/utils/utils";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
@@ -101,11 +100,9 @@ const Login = () => {
                 {...register("email")}
               />
               <span
-                className={
-                  errors.email?.message
-                    ? cn("ml-2 text-xs text-destructive")
-                    : cn("hidden")
-                }
+                className={cn("ml-2 text-xs text-destructive", {
+                  hidden: !errors.email?.message,
+                })}
               >
                 {errors.email?.message}
               </span>
@@ -134,11 +131,9 @@ const Login = () => {
                 )}
               </span>
               <span
-                className={
-                  errors.password?.message
-                    ? cn("ml-2 text-xs text-destructive")
-                    : cn("hidden")
-                }
+                className={cn("ml-2 text-xs text-destructive", {
+                  hidden: !errors.password?.message,
+                })}
               >
                 {errors.password?.message}
               </span>
