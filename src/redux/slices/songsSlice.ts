@@ -1,9 +1,11 @@
 import { Song } from "@/types/songs";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
+export type SongWithoutDate = Omit<Song, "userId" | "createdAt" | "updatedAt">;
+
 export type SongsSliceInitialState = {
   queue: "home" | "search" | "favorites" | "";
-  homeQueue: Song[];
+  homeQueue: SongWithoutDate[];
   // searchQueue:
   // favoritesQueue:,
   currentIndex: number;
@@ -23,17 +25,22 @@ export const songsSlice = createSlice({
   name: "songsSlice",
   initialState,
   reducers: {
-    setHomeQueue: (state, action: PayloadAction<Song[]>) => {
-      state.queue = "home";
-      state.homeQueue.push(...action.payload);
+    setHomeQueue: (state, action: PayloadAction<SongWithoutDate[]>) => {
+      if (state.homeQueue.length === 0) {
+        state.queue = "home";
+        state.homeQueue.push(...action.payload);
+        state.isPlaying = true;
+      }
     },
 
     playPause: (
       state,
-      action: PayloadAction<{ currentIndex: number; isPlaying: boolean }>,
+      action: PayloadAction<{ currentIndex: number; isPlaying?: boolean }>,
     ) => {
+      if (state.currentIndex === action.payload.currentIndex) {
+        state.isPlaying = !state.isPlaying;
+      }
       state.currentIndex = action.payload.currentIndex;
-      state.isPlaying = action.payload.isPlaying;
     },
   },
 });

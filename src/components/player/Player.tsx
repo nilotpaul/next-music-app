@@ -5,19 +5,25 @@ import { useEffect, useRef } from "react";
 
 const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
-  const { isPlaying, homeQueue, currentIndex } = useAppSelector(
+  const { isPlaying, homeQueue, currentIndex, queue } = useAppSelector(
     (state) => state.songsSlice,
   );
 
   useEffect(() => {
-    if (isPlaying) {
+    if (!isPlaying) {
       audioRef.current?.play();
     } else {
       audioRef.current?.pause();
     }
-  }, [audioRef, isPlaying]);
+  }, [audioRef, isPlaying, queue]);
 
-  const songUrl = homeQueue[currentIndex]?.file ?? "";
+  useEffect(() => {
+    if (currentIndex) {
+      audioRef.current?.play();
+    }
+  }, [currentIndex]);
+
+  const songUrl = homeQueue[currentIndex]?.file;
 
   return (
     <div>

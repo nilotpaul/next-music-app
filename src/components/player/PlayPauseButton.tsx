@@ -25,11 +25,12 @@ const PlayPauseButton = ({
   );
 
   const handleClick = () => {
-    if (homeQueue.length === 0) {
-      dispatch(setHomeQueue(songs));
-    } else {
-      dispatch(playPause({ currentIndex, isPlaying: true }));
-    }
+    const payload = songs.map((item) => {
+      const { id, file, image, title, artistName } = item;
+      return { id, file, image, title, artistName };
+    });
+    dispatch(setHomeQueue(payload));
+    dispatch(playPause({ currentIndex }));
   };
 
   return (
