@@ -38,7 +38,7 @@ const Filters = ({}: FiltersProps) => {
 
   return (
     <div className="space-y-3">
-      <div className="flex items-center gap-x-2.5 ">
+      <div className="flex items-center gap-x-2.5">
         <Button size="sm" className="rounded-2xl" variant="secondary">
           Artists
         </Button>

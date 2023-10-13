@@ -10,6 +10,7 @@ export type SongsSliceInitialState = {
   // favoritesQueue:,
   currentIndex: number;
   isPlaying: boolean;
+  loop: boolean;
 };
 
 const initialState: SongsSliceInitialState = {
@@ -19,6 +20,7 @@ const initialState: SongsSliceInitialState = {
   //   favoritesQueue: [],
   currentIndex: 0,
   isPlaying: false,
+  loop: false,
 };
 
 export const songsSlice = createSlice({
@@ -29,22 +31,48 @@ export const songsSlice = createSlice({
       if (state.homeQueue.length === 0) {
         state.queue = "home";
         state.homeQueue.push(...action.payload);
-        state.isPlaying = true;
       }
     },
 
     playPause: (
       state,
-      action: PayloadAction<{ currentIndex: number; isPlaying?: boolean }>,
+      action: PayloadAction<{ currentIndex: number; isPlaying: boolean }>,
     ) => {
-      if (state.currentIndex === action.payload.currentIndex) {
-        state.isPlaying = !state.isPlaying;
-      }
+      state.isPlaying = action.payload.isPlaying;
       state.currentIndex = action.payload.currentIndex;
+    },
+
+    playForward: (state) => {
+      if (
+        state.currentIndex >= 0 &&
+        state.currentIndex < state.homeQueue.length - 1
+      ) {
+        state.currentIndex = state.currentIndex + 1;
+      } else {
+        state.currentIndex = 0;
+      }
+    },
+
+    playBackward: (state) => {
+      if (state.currentIndex > 0) {
+        state.currentIndex = state.currentIndex - 1;
+      } else {
+        state.currentIndex = state.currentIndex + (state.homeQueue.length - 1);
+      }
+    },
+
+    setLoopState: (state, action: PayloadAction<boolean>) => {
+      state.loop = action.payload;
     },
   },
 });
 
-export const { setHomeQueue, playPause } = songsSlice.actions;
+export const {
+  setHomeQueue,
+  playPause,
+  playForward,
+  playBackward,
+  setLoopState,
+} = songsSlice.actions;
 
 export default songsSlice.reducer;

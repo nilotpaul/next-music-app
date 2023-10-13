@@ -2,7 +2,6 @@ import Image from "next/image";
 import { Song } from "@/types/songs";
 
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
-import Link from "next/link";
 import PlayPauseButton from "@/components/player/PlayPauseButton";
 
 type NewestSongsProps = {
@@ -34,7 +33,7 @@ const NewestSongs = ({ songs }: NewestSongsProps) => {
             <span className="truncate text-sm text-neutral-400/80">
               {song.artistName}
             </span>
-            <PlayPauseButton currentIndex={id} song={song} songs={songs} />
+            <PlayPauseButton currentIndex={id} songs={songs} />
           </CardFooter>
         </Card>
       ))}

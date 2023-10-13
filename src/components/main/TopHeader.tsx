@@ -70,7 +70,7 @@ const TopHeader = ({ session }: TopHeaderProps) => {
                     }
                     referrerPolicy="no-referrer"
                   />
-                  <AvatarFallback>
+                  <AvatarFallback className="text-base">
                     {session?.user.name?.split(" ")[0].slice(0, 1) +
                       session?.user.name?.split(" ")[1].slice(0, 1)! || (
                       <User2
