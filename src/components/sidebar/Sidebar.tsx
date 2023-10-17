@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import useSearchParams from "@/hooks/useSearchParams";
+import { Playlist as PlaylistType } from "@/types/playlist";
 import { cn } from "@/utils/utils";
 
 import { Card, CardContent, CardHeader } from "../ui/card";
@@ -9,7 +10,11 @@ import SidebarTop from "./SidebarTop";
 import Playlist from "./library/Playlist";
 import LibraryHeader from "./library/LibraryHeader";
 
-const Sidebar = () => {
+type PlaylistsProps = {
+  playlists: PlaylistType;
+};
+
+const Sidebar = ({ playlists }: PlaylistsProps) => {
   const { getQueryParams } = useSearchParams();
   const sidebarState = JSON.parse(getQueryParams("s") ?? "true");
   const [isSidebarOpen, setIsSidebarOpen] = useState(sidebarState);
@@ -28,7 +33,7 @@ const Sidebar = () => {
             setIsSidebarOpen={setIsSidebarOpen}
           />
           <CardContent className="px-0 py-2 pb-0 pt-2">
-            <Playlist isSidebarOpen={isSidebarOpen} />
+            <Playlist isSidebarOpen={isSidebarOpen} playlists={playlists} />
           </CardContent>
         </CardHeader>
       </Card>

@@ -1,20 +1,21 @@
-import { cn } from "@/utils/utils";
 import Link from "next/link";
+import { Playlist } from "@/types/playlist";
+import { cn } from "@/utils/utils";
 
 import { Heart, Pin } from "lucide-react";
 import { Button } from "../../ui/button";
 import Filters from "./Filters";
+import PlayListItems from "./PlayListItems";
 
 type PlaylistProps = {
   isSidebarOpen: boolean;
+  playlists: Playlist;
 };
 
-const Playlist = ({ isSidebarOpen }: PlaylistProps) => {
-  const playListLength = "s";
-
+const Playlist = ({ isSidebarOpen, playlists }: PlaylistProps) => {
   return (
     <>
-      {playListLength.length !== 0 ||
+      {playlists.length !== 0 ||
         (isSidebarOpen && (
           <section className="flex w-full flex-col gap-y-2 rounded-lg bg-muted/100 p-3 py-3">
             <p>Wow so empty!</p>
@@ -24,7 +25,7 @@ const Playlist = ({ isSidebarOpen }: PlaylistProps) => {
             </Button>
           </section>
         ))}
-      {playListLength.length === 0 ||
+      {playlists.length === 0 ||
         (isSidebarOpen && (
           <section className="w-full py-3">
             <Filters />
@@ -34,7 +35,7 @@ const Playlist = ({ isSidebarOpen }: PlaylistProps) => {
         <Link
           href="/likes"
           className={cn(
-            "flex cursor-pointer items-center gap-x-4 rounded-lg bg-muted p-3 py-2",
+            "flex cursor-pointer items-center gap-x-4 rounded-lg p-3 py-2 transition-colors hover:bg-muted",
             {
               "justify-center p-0": !isSidebarOpen,
             },
@@ -59,6 +60,10 @@ const Playlist = ({ isSidebarOpen }: PlaylistProps) => {
             </div>
           )}
         </Link>
+      </section>
+
+      <section>
+        <PlayListItems playlists={playlists} />
       </section>
     </>
   );

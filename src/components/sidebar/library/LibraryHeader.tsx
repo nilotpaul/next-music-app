@@ -5,6 +5,7 @@ import { cn } from "@/utils/utils";
 import { BadgePlus, Library } from "lucide-react";
 import { CardTitle } from "../../ui/card";
 import ToolTip from "../../extras/ToolTip";
+import PlaylistDialog from "./PlaylistDialog";
 
 type LibraryHeaderProps = {
   isSidebarOpen: boolean;
@@ -42,7 +43,13 @@ const LibraryHeader = ({
       >
         {isSidebarOpen ? <p>Collapse library</p> : <p>Expand Library</p>}
       </ToolTip>
-      <ToolTip trigger={<BadgePlus className="cursor-pointer" />}>
+      <ToolTip
+        trigger={
+          <PlaylistDialog>
+            <BadgePlus className="cursor-pointer" />
+          </PlaylistDialog>
+        }
+      >
         <p>Create playlist</p>
       </ToolTip>
     </CardTitle>

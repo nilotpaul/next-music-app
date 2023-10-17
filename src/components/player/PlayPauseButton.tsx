@@ -19,6 +19,7 @@ type PlayPauseButtonProps = {
   className?: string;
   size?: "default" | "sm" | "lg" | "xl" | "icon" | null | undefined;
   iconSize?: number;
+  color?: "white" | "normal";
 };
 
 const PlayPauseButton = ({
@@ -27,6 +28,7 @@ const PlayPauseButton = ({
   className,
   size,
   iconSize,
+  color,
 }: PlayPauseButtonProps) => {
   const dispatch = useDispatch();
   const {
@@ -63,19 +65,19 @@ const PlayPauseButton = ({
       )}
     >
       {!(
-        songs?.[currentIndex].id === homeQueue?.[stateIndex]?.id && isPlaying
+        songs?.[currentIndex]?.id === homeQueue?.[stateIndex]?.id && isPlaying
       ) ? (
         <Play
           size={iconSize || 20}
           className="relative left-1/2 top-1/2 max-w-min -translate-x-1/2 -translate-y-1/2 rounded-full"
-          fill="#000"
-          color="#000"
+          fill={color ? "#d4d4d4" : "#000"}
+          color={color ? "#d4d4d4" : "#000"}
         />
       ) : (
         <Pause
           size={iconSize || 20}
           className="relative left-1/2 top-1/2 max-w-min -translate-x-1/2 -translate-y-1/2 scale-110 rounded-full"
-          fill="#000"
+          fill={color ? "#d4d4d4" : "#000"}
           color="transparent"
         />
       )}

@@ -11,6 +11,7 @@ export type SongsSliceInitialState = {
   currentIndex: number;
   isPlaying: boolean;
   loop: boolean;
+  muted: boolean;
 };
 
 const initialState: SongsSliceInitialState = {
@@ -21,6 +22,7 @@ const initialState: SongsSliceInitialState = {
   currentIndex: 0,
   isPlaying: false,
   loop: false,
+  muted: false,
 };
 
 export const songsSlice = createSlice({
@@ -40,6 +42,17 @@ export const songsSlice = createSlice({
     ) => {
       state.isPlaying = action.payload.isPlaying;
       state.currentIndex = action.payload.currentIndex;
+    },
+
+    playPauseById: (
+      state,
+      action: PayloadAction<{ id: string; isPlaying: boolean }>,
+    ) => {
+      state.isPlaying = action.payload.isPlaying;
+      const songById = state.homeQueue.findIndex(
+        (song) => song.id === action.payload.id,
+      );
+      state.currentIndex = songById;
     },
 
     playForward: (state) => {
@@ -64,6 +77,10 @@ export const songsSlice = createSlice({
     setLoopState: (state, action: PayloadAction<boolean>) => {
       state.loop = action.payload;
     },
+
+    setVolMuted: (state) => {
+      state.muted = !state.muted;
+    },
   },
 });
 
@@ -73,6 +90,8 @@ export const {
   playForward,
   playBackward,
   setLoopState,
+  setVolMuted,
+  playPauseById,
 } = songsSlice.actions;
 
 export default songsSlice.reducer;

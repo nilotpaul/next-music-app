@@ -12,6 +12,16 @@ enum Provider {
   credentials
 }
 
+model Playlist {
+  id        String   @id @unique @default(cuid()) @map("id")
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  name      String
+  songs     String[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
 // songs
 model Songs {
   id         String   @id @unique @default(cuid()) @map("id")
@@ -62,19 +72,21 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid()) @map("id")
+  id            String     @id @default(cuid()) @map("id")
   name          String?
-  email         String?   @unique
+  email         String?    @unique
   password      String?
   emailVerified DateTime?
   image         String?
-  isArtist      Boolean   @default(false)
+  isArtist      Boolean    @default(false)
   artistName    String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
   accounts      Account[]
   sessions      Session[]
   Song          Songs[]
+  likedSongs    String[]
+  Playlist      Playlist[]
 
   @@map("users")
 }
