@@ -9,6 +9,7 @@ import {
   playForward,
   setLoopState,
 } from "@/redux/slices/songsSlice";
+import { Playlist } from "@/types/playlist";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 import { Repeat, Repeat1, SkipBack, SkipForward } from "lucide-react";
@@ -20,9 +21,10 @@ import SongTitleMenu from "../context/SongTitleMenu";
 
 type PlayerProps = {
   likedSongs: string[];
+  playlists: Playlist;
 };
 
-const Player = ({ likedSongs }: PlayerProps) => {
+const Player = ({ likedSongs, playlists }: PlayerProps) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   const { setItem, getItem } = useLocalStorage("volume");
@@ -85,7 +87,7 @@ const Player = ({ likedSongs }: PlayerProps) => {
                 />
               </div>
               <div className="flex w-max flex-col md:truncate">
-                <SongTitleMenu>
+                <SongTitleMenu playlists={playlists}>
                   <span className="cursor-pointer text-sm md:truncate md:text-base">
                     {song.title}
                   </span>

@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
-import { addSongToPlaylist } from "@/validations/PlaylistMutations";
+import { removeSongFromPlaylist } from "@/validations/PlaylistMutations";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 
-export async function PUT(req: NextRequest) {
+export async function UPDATE(req: NextRequest) {
   const session = await userSession();
 
   try {
@@ -14,10 +14,10 @@ export async function PUT(req: NextRequest) {
 
     const body = await req.json();
 
-    const { songId, playlistId } = addSongToPlaylist.parse(body);
+    const { playlistId, songId } = removeSongFromPlaylist.parse(body);
 
-    if (!songId || !playlistId) {
-      return new NextResponse("No song id / playlist id is there.", {
+    if (!playlistId || !songId) {
+      return new NextResponse("playlist Id / song id is missing.", {
         status: 400,
       });
     }
@@ -30,35 +30,37 @@ export async function PUT(req: NextRequest) {
     });
 
     if (!findPlaylist) {
-      return new NextResponse("Couldn't find the playlist.", { status: 500 });
-    }
-
-    if (findPlaylist.songs.includes(songId)) {
-      console.log("no");
-      return new NextResponse("Song is already present in the playlist.", {
-        status: 409,
+      return new NextResponse("There is no playlist associated with this id.", {
+        status: 400,
       });
     }
 
-    const addedSong = await prisma.playlist.update({
+    const songInPlaylist = findPlaylist.songs.includes(songId);
+
+    if (!songInPlaylist) {
+      return new NextResponse("The song is not present in the playlist.", {
+        status: 400,
+      });
+    }
+
+    const removedSongArr = findPlaylist.songs.filter((song) => song !== songId);
+
+    const removedSong = await prisma.playlist.update({
       where: {
         id: findPlaylist.id,
-        userId: session.user.id,
       },
       data: {
         songs: {
-          push: songId,
+          set: removedSongArr,
         },
       },
     });
 
-    if (!addedSong) {
-      return new NextResponse("Something went wrong. Please try again later.", {
+    if (!removedSong) {
+      return new NextResponse("Couldn't remove the song.", {
         status: 500,
       });
     }
-
-    return new NextResponse("ok", { status: 200 });
   } catch (err) {
     console.error(err);
 

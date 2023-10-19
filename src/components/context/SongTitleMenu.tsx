@@ -1,36 +1,109 @@
+import { Playlist } from "@/types/playlist";
+import { useAppSelector } from "@/redux/store";
+import { useMutation } from "@tanstack/react-query";
+import { AddSongToPlaylist } from "@/validations/PlaylistMutations";
+import axios, { AxiosError } from "axios";
+import { useRouter } from "next/navigation";
+
 import {
   ContextMenu,
   ContextMenuContent,
   ContextMenuItem,
-  ContextMenuSeparator,
-  ContextMenuShortcut,
   ContextMenuSub,
   ContextMenuSubContent,
   ContextMenuSubTrigger,
   ContextMenuTrigger,
 } from "../ui/context-menu";
+import { useToast } from "../ui/use-toast";
 
 type SongTitleMenuProps = {
   children: React.ReactNode;
+  playlists: Playlist;
 };
 
-const SongTitleMenu = ({ children }: SongTitleMenuProps) => {
+const SongTitleMenu = ({ children, playlists }: SongTitleMenuProps) => {
+  const { toast } = useToast();
+  const router = useRouter();
+  const { homeQueue, currentIndex } = useAppSelector(
+    (state) => state.songsSlice,
+  );
+
+  const playingSong = homeQueue?.[currentIndex]?.id ?? "";
+
+  const filteredList = playlists.filter((playlist) => {
+    const songIds = playlist.songs;
+
+    return !songIds.includes(playingSong);
+  });
+
+  const { mutate: addSongToPlaylistMutation } = useMutation(
+    ["add-song-to-playlist"],
+    {
+      mutationFn: async ({ songId, playlistId }: AddSongToPlaylist) => {
+        const payload: AddSongToPlaylist = {
+          playlistId,
+          songId,
+        };
+
+        await axios.put("/api/add-to-playlist", payload);
+      },
+
+      onError: (err) => {
+        console.error(err);
+
+        if (err instanceof AxiosError) {
+          toast({
+            title: err.response?.status.toString(),
+            description: err.response?.data,
+            variant: "destructive",
+          });
+        } else {
+          toast({
+            title: "OPPS",
+            description: "Something went wrong. Please try again later.",
+            variant: "destructive",
+          });
+        }
+      },
+
+      onSuccess: () => {
+        router.refresh();
+      },
+    },
+  );
+
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-      <ContextMenuContent className="absolute -top-20 w-48 rounded-lg">
-        <ContextMenuItem className="rounded-md py-2">
-          Add to playlist
-        </ContextMenuItem>
-
+      <ContextMenuContent className="absolute -top-16 w-48 rounded-lg">
         <ContextMenuSub>
           <ContextMenuSubTrigger className="rounded-md py-2">
-            More Tools
+            Add to playlist
           </ContextMenuSubTrigger>
-          <ContextMenuSubContent className="w-48 -translate-y-3/4 rounded-lg">
-            <ContextMenuItem className="rounded-md py-2">
-              select
-            </ContextMenuItem>
+          <ContextMenuSubContent className="max-h-40 w-48 -translate-y-3/4 overflow-y-auto rounded-lg">
+            {filteredList.length !== 0 ? (
+              filteredList.map((item) => (
+                <ContextMenuItem
+                  onClick={() =>
+                    addSongToPlaylistMutation({
+                      playlistId: item.id,
+                      songId: playingSong,
+                    })
+                  }
+                  key={item.id}
+                  className="flex items-center gap-x-2 rounded-md py-2"
+                >
+                  {item.name}
+                </ContextMenuItem>
+              ))
+            ) : (
+              <ContextMenuItem
+                className="flex items-center gap-x-2 rounded-md py-2"
+                disabled
+              >
+                No Playlists.
+              </ContextMenuItem>
+            )}
           </ContextMenuSubContent>
         </ContextMenuSub>
       </ContextMenuContent>

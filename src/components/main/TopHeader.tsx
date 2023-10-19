@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 import { ChevronLeft, ChevronRight, Clock3, User2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -18,6 +19,8 @@ type TopHeaderProps = {
 };
 
 const TopHeader = ({ session }: TopHeaderProps) => {
+  const router = useRouter();
+
   return (
     <div className="mt-2 flex w-full items-center justify-between md:mt-0">
       <h3 className="font-semibold md:hidden">Melodify</h3>
@@ -26,6 +29,7 @@ const TopHeader = ({ session }: TopHeaderProps) => {
         <ToolTip
           trigger={
             <ChevronLeft
+              onClick={() => router.back()}
               size={32}
               className="cursor-pointer rounded-full bg-black p-1.5"
             />
@@ -37,6 +41,7 @@ const TopHeader = ({ session }: TopHeaderProps) => {
         <ToolTip
           trigger={
             <ChevronRight
+              onClick={() => router.forward()}
               size={32}
               className="cursor-pointer rounded-full bg-black p-1.5"
             />

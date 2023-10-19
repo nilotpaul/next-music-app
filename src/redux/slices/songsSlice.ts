@@ -6,8 +6,6 @@ export type SongWithoutDate = Omit<Song, "userId" | "createdAt" | "updatedAt">;
 export type SongsSliceInitialState = {
   queue: "home" | "search" | "favorites" | "";
   homeQueue: SongWithoutDate[];
-  // searchQueue:
-  // favoritesQueue:,
   currentIndex: number;
   isPlaying: boolean;
   loop: boolean;
@@ -17,8 +15,6 @@ export type SongsSliceInitialState = {
 const initialState: SongsSliceInitialState = {
   queue: "",
   homeQueue: [],
-  //   searchQueue: [],
-  //   favoritesQueue: [],
   currentIndex: 0,
   isPlaying: false,
   loop: false,

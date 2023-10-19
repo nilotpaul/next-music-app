@@ -1,10 +1,8 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
 import { getImageUrl } from "./getAllSongs";
-import { supabaseServer } from "@/lib/SupabaseClient";
 
 export async function getPlaylists() {
-  const supabase = supabaseServer();
   const session = await userSession();
 
   const userPlaylists = await prisma.playlist.findMany({
@@ -39,6 +37,7 @@ export async function getPlaylists() {
 
     return {
       songImages: imagesResolved,
+      songs,
       ...rest,
     };
   });
