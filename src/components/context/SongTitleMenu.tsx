@@ -1,7 +1,7 @@
 import { Playlist } from "@/types/playlist";
 import { useAppSelector } from "@/redux/store";
 import { useMutation } from "@tanstack/react-query";
-import { AddSongToPlaylist } from "@/validations/PlaylistMutations";
+import { AddSongToPlaylist } from "@/validations/playlistMutations";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 

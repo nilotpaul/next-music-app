@@ -1,10 +1,10 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
-import { removeSongFromPlaylist } from "@/validations/PlaylistMutations";
+import { removeSongFromPlaylist } from "@/validations/playlistMutations";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 
-export async function UPDATE(req: NextRequest) {
+export async function PATCH(req: NextRequest) {
   const session = await userSession();
 
   try {
@@ -61,6 +61,8 @@ export async function UPDATE(req: NextRequest) {
         status: 500,
       });
     }
+
+    return new NextResponse("ok", { status: 200 });
   } catch (err) {
     console.error(err);
 

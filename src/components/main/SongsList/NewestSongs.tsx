@@ -33,7 +33,7 @@ const NewestSongs = ({ songs }: NewestSongsProps) => {
             <span className="truncate text-sm text-neutral-400/80">
               {song.artistName}
             </span>
-            <PlayPauseButton currentIndex={id} songs={songs} />
+            <PlayPauseButton queueName="home" currentIndex={id} songs={songs} />
           </CardFooter>
         </Card>
       ))}

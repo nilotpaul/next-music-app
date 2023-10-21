@@ -20,6 +20,7 @@ type PlayPauseButtonProps = {
   size?: "default" | "sm" | "lg" | "xl" | "icon" | null | undefined;
   iconSize?: number;
   color?: "white" | "normal";
+  queueName: "" | "home" | "search" | "playlist" | "likes";
 };
 
 const PlayPauseButton = ({
@@ -29,12 +30,14 @@ const PlayPauseButton = ({
   size,
   iconSize,
   color,
+  queueName,
 }: PlayPauseButtonProps) => {
   const dispatch = useDispatch();
   const {
     isPlaying,
     homeQueue,
     currentIndex: stateIndex,
+    queue,
   } = useAppSelector((state) => state.songsSlice);
 
   const handleClick = () => {
@@ -43,15 +46,17 @@ const PlayPauseButton = ({
       return { id, file, image, title, artistName };
     });
 
-    if (homeQueue.length === 0) {
-      dispatch(setHomeQueue(payload!));
-      dispatch(playPause({ currentIndex, isPlaying: true }));
+    if (
+      queueName !== "" &&
+      (homeQueue.length === 0 || !queue || queue !== queueName)
+    ) {
+      dispatch(setHomeQueue({ queue: queueName, songs: payload! }));
+    }
+
+    if (currentIndex === stateIndex) {
+      dispatch(playPause({ currentIndex, isPlaying: !isPlaying }));
     } else {
-      if (currentIndex === stateIndex) {
-        dispatch(playPause({ currentIndex, isPlaying: !isPlaying }));
-      } else {
-        dispatch(playPause({ currentIndex, isPlaying: true }));
-      }
+      dispatch(playPause({ currentIndex, isPlaying: true }));
     }
   };
 

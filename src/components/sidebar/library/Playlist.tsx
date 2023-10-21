@@ -6,13 +6,15 @@ import { Heart, Pin } from "lucide-react";
 import { Button } from "../../ui/button";
 import Filters from "./Filters";
 import PlayListItems from "./PlayListItems";
+import PlaylistDialog from "./PlaylistDialog";
 
 type PlaylistProps = {
   isSidebarOpen: boolean;
   playlists: Playlist;
+  likedSongs: string[];
 };
 
-const Playlist = ({ isSidebarOpen, playlists }: PlaylistProps) => {
+const Playlist = ({ isSidebarOpen, playlists, likedSongs }: PlaylistProps) => {
   return (
     <>
       {playlists.length !== 0 ||
@@ -20,9 +22,11 @@ const Playlist = ({ isSidebarOpen, playlists }: PlaylistProps) => {
           <section className="flex w-full flex-col gap-y-2 rounded-lg bg-muted/100 p-3 py-3">
             <p>Wow so empty!</p>
             <p className="text-sm text-zinc-400">Create your first playlist</p>
-            <Button className="mt-2 h-8 w-fit rounded-3xl px-3.5">
-              Create Playlist
-            </Button>
+            <PlaylistDialog>
+              <Button className="mt-2 h-8 w-fit rounded-3xl px-3.5">
+                Create Playlist
+              </Button>
+            </PlaylistDialog>
           </section>
         ))}
       {playlists.length === 0 ||
@@ -54,7 +58,7 @@ const Playlist = ({ isSidebarOpen, playlists }: PlaylistProps) => {
                   className="rotate-45 text-green-500"
                 />
                 <span className="text-sm font-normal text-zinc-400">
-                  50 songs
+                  {likedSongs.length} {likedSongs.length > 1 ? "Songs" : "Song"}
                 </span>
               </span>
             </div>
@@ -62,7 +66,7 @@ const Playlist = ({ isSidebarOpen, playlists }: PlaylistProps) => {
         </Link>
       </section>
 
-      <section>
+      <section className="max-h-[27rem] w-full overflow-hidden overflow-y-auto">
         <PlayListItems playlists={playlists} />
       </section>
     </>

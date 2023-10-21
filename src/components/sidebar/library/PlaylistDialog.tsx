@@ -56,7 +56,12 @@ const PlaylistDialog = ({ children }: PlaylistDialogProps) => {
           songs,
         };
 
-        await axios.post("/api/create-playlist", payload);
+        const { data } = await axios.post<string>(
+          "/api/create-playlist",
+          payload,
+        );
+
+        return data;
       },
 
       onError: (err) => {
@@ -78,7 +83,7 @@ const PlaylistDialog = ({ children }: PlaylistDialogProps) => {
         reset();
       },
 
-      onSuccess: (_, payload) => {
+      onSuccess: (playlistId, payload) => {
         toast({
           title: "Yay",
           description: `${payload.name} created`,
@@ -87,6 +92,7 @@ const PlaylistDialog = ({ children }: PlaylistDialogProps) => {
 
         reset();
         setIsOpen(false);
+        router.push(`/playlist/${playlistId}`);
         router.refresh();
       },
     },

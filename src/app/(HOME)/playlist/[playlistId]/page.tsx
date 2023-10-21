@@ -20,6 +20,8 @@ const getPlaylistById = async (playlistId: string, userId: string) => {
     },
   });
 
+  if (!playlist) return null;
+
   const songsData = playlist?.songs.map(async (songId) => {
     const details = await prisma.songs.findUnique({
       where: {
@@ -42,7 +44,7 @@ const getPlaylistById = async (playlistId: string, userId: string) => {
     more: (await Promise.all(songsData!)) || null,
   };
 
-  return items;
+  return items ? items : null;
 };
 
 const PlaylistPage = async ({ params }: PlaylistPageProps) => {
@@ -52,13 +54,13 @@ const PlaylistPage = async ({ params }: PlaylistPageProps) => {
   const { playlistId } = params;
 
   if (!playlistId) {
-    return notFound();
+    notFound();
   }
 
   const playlist = await getPlaylistById(playlistId, session.user.id);
 
-  if (!playlist.playlist || !playlist.more) {
-    return notFound();
+  if (!playlist) {
+    notFound();
   }
 
   return (

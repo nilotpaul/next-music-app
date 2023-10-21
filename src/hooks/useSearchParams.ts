@@ -16,7 +16,7 @@ const useSearchParams = () => {
 
   const getQueryParams = useCallback(
     (name: string) => {
-      const params = searchParams.get(name);
+      const params = searchParams?.get(name);
 
       return params?.toString();
     },

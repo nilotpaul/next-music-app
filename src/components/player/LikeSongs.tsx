@@ -3,6 +3,7 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { cn } from "@/utils/utils";
+import { useRouter } from "next/navigation";
 
 import { Heart } from "lucide-react";
 import { useToast } from "../ui/use-toast";
@@ -18,8 +19,9 @@ const LikeSongs = ({
 }: LikeSongsProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
+  const router = useRouter();
 
-  const { data: likedSongs } = useQuery({
+  const { data: likedSongs, refetch } = useQuery({
     queryKey: ["likes"],
     initialData: initialLikedSongsData,
     queryFn: async () => {
@@ -69,7 +71,7 @@ const LikeSongs = ({
     },
 
     onSettled: () => {
-      queryClient.invalidateQueries(["likes"]);
+      router.refresh();
     },
   });
 

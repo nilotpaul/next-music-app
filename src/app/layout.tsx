@@ -27,11 +27,11 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <ReactQueryProvider>
-            <ReduxProvider>
+          <ReduxProvider>
+            <ReactQueryProvider>
               <main>{children}</main>
-            </ReduxProvider>
-          </ReactQueryProvider>
+            </ReactQueryProvider>
+          </ReduxProvider>
         </ThemeProvider>
         <Toaster />
       </body>

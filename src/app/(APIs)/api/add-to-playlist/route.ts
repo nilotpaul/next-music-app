@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
-import { addSongToPlaylist } from "@/validations/PlaylistMutations";
+import { addSongToPlaylist } from "@/validations/playlistMutations";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 

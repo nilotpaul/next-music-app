@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
       });
     }
 
-    return new NextResponse("ok", { status: 201 });
+    return NextResponse.json(createdPlaylist.id, { status: 201 });
   } catch (err) {
     console.error(err);
 

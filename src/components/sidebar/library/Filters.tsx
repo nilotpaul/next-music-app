@@ -1,4 +1,7 @@
 import { useEffect, useRef, useState } from "react";
+import useSearchParams from "@/hooks/useSearchParams";
+import { usePathname, useRouter } from "next/navigation";
+import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/utils/utils";
 
 import { Button } from "@/components/ui/button";
@@ -12,12 +15,14 @@ import {
 import { Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
 
-type FiltersProps = {};
-
-const Filters = ({}: FiltersProps) => {
+const Filters = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const searchIcoRef = useRef<HTMLSpanElement | null>(null);
   const searchRef = useRef<HTMLInputElement | null>(null);
+
+  const { setQueryParams } = useSearchParams();
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const clickOutside = (e: MouseEvent) => {
@@ -40,9 +45,6 @@ const Filters = ({}: FiltersProps) => {
     <div className="space-y-3">
       <div className="flex items-center gap-x-2.5">
         <Button size="sm" className="rounded-2xl" variant="secondary">
-          Artists
-        </Button>
-        <Button size="sm" className="rounded-2xl" variant="secondary">
           Playlists
         </Button>
       </div>
@@ -62,7 +64,11 @@ const Filters = ({}: FiltersProps) => {
           </span>
           <Input
             ref={searchRef}
-            onChange={(e) => console.log(e.target.value)}
+            onChange={(e) => {
+              router.replace(
+                pathname + "?" + setQueryParams("pq", e.target.value),
+              );
+            }}
             placeholder="Search in your library"
             className={cn(
               "invisible absolute left-0 m-0 max-w-0 opacity-0 transition-all duration-500",
@@ -72,7 +78,11 @@ const Filters = ({}: FiltersProps) => {
             )}
           />
         </div>
-        <Select>
+        <Select
+          onValueChange={(value) => {
+            router.replace(pathname + "?" + setQueryParams("sort", value));
+          }}
+        >
           <SelectTrigger className="w-[115px]">
             <SelectValue placeholder="Sort by" />
           </SelectTrigger>

@@ -14,24 +14,32 @@ type PlayPauseButton2Props = {
   songs: SongWithoutDate[];
   index: number;
   songId: string;
+  queueName: "" | "home" | "search" | "playlist" | "likes";
 };
 
-const PlayPauseButton2 = ({ songs, index, songId }: PlayPauseButton2Props) => {
+const PlayPauseButton2 = ({
+  songs,
+  index,
+  songId,
+  queueName,
+}: PlayPauseButton2Props) => {
   const dispatch = useDispatch();
-  const { homeQueue, currentIndex, isPlaying } = useAppSelector(
+  const { homeQueue, currentIndex, isPlaying, queue } = useAppSelector(
     (state) => state.songsSlice,
   );
 
   const handleClick = () => {
-    if (homeQueue.length === 0) {
-      dispatch(setHomeQueue(songs));
-      dispatch(playPause({ currentIndex: index, isPlaying: true }));
+    if (
+      queueName !== "" &&
+      (homeQueue.length === 0 || !queue || queue !== queueName)
+    ) {
+      dispatch(setHomeQueue({ queue: queueName, songs }));
+    }
+
+    if (currentIndex === index) {
+      dispatch(playPause({ currentIndex: index, isPlaying: !isPlaying }));
     } else {
-      if (currentIndex === index) {
-        dispatch(playPause({ currentIndex: index, isPlaying: !isPlaying }));
-      } else {
-        dispatch(playPause({ currentIndex: index, isPlaying: true }));
-      }
+      dispatch(playPause({ currentIndex: index, isPlaying: true }));
     }
   };
 
@@ -41,13 +49,13 @@ const PlayPauseButton2 = ({ songs, index, songId }: PlayPauseButton2Props) => {
         <Pause
           onClick={handleClick}
           size={16}
-          className="absolute top-1/2 hidden -translate-y-1/2 fill-primary text-primary group-hover:block"
+          className="absolute top-1/2 hidden -translate-y-1/2 cursor-pointer fill-primary text-primary group-hover:block"
         />
       ) : (
         <Play
           onClick={handleClick}
           size={16}
-          className="absolute top-1/2 hidden -translate-y-1/2 fill-primary text-primary group-hover:block"
+          className="absolute top-1/2 hidden -translate-y-1/2 cursor-pointer fill-primary text-primary group-hover:block"
         />
       )}
     </>

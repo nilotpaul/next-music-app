@@ -120,6 +120,7 @@ const Player = ({ likedSongs, playlists }: PlayerProps) => {
                 onClick={() => dispatch(playBackward())}
               />
               <PlayPauseButton
+                queueName=""
                 size="default"
                 className="visible static translate-x-0 translate-y-0 p-2 opacity-100 hover:scale-100"
                 currentIndex={currentIndex}
@@ -146,6 +147,7 @@ const Player = ({ likedSongs, playlists }: PlayerProps) => {
           <div className="mr-1 flex items-center gap-x-4 md:hidden">
             <LikeSongs songId={song.id} likedSongs={likedSongs} />
             <PlayPauseButton
+              queueName=""
               size="sm"
               color="white"
               className="visible static translate-x-0 translate-y-0 items-start bg-transparent p-0 opacity-100 hover:scale-100 hover:bg-transparent"

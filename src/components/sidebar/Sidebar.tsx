@@ -12,9 +12,10 @@ import LibraryHeader from "./library/LibraryHeader";
 
 type PlaylistsProps = {
   playlists: PlaylistType;
+  likedSongs: string[];
 };
 
-const Sidebar = ({ playlists }: PlaylistsProps) => {
+const Sidebar = ({ playlists, likedSongs }: PlaylistsProps) => {
   const { getQueryParams } = useSearchParams();
   const sidebarState = JSON.parse(getQueryParams("s") ?? "true");
   const [isSidebarOpen, setIsSidebarOpen] = useState(sidebarState);
@@ -26,6 +27,7 @@ const Sidebar = ({ playlists }: PlaylistsProps) => {
       })}
     >
       <SidebarTop isSidebarOpen={isSidebarOpen} />
+
       <Card className="h-full rounded-lg font-medium lg:block">
         <CardHeader className="px-4 py-2">
           <LibraryHeader
@@ -33,7 +35,11 @@ const Sidebar = ({ playlists }: PlaylistsProps) => {
             setIsSidebarOpen={setIsSidebarOpen}
           />
           <CardContent className="px-0 py-2 pb-0 pt-2">
-            <Playlist isSidebarOpen={isSidebarOpen} playlists={playlists} />
+            <Playlist
+              isSidebarOpen={isSidebarOpen}
+              likedSongs={likedSongs}
+              playlists={playlists}
+            />
           </CardContent>
         </CardHeader>
       </Card>

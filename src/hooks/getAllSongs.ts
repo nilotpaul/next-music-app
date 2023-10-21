@@ -1,12 +1,17 @@
 import { prisma } from "@/lib/PrismaClient";
 import { supabaseServer } from "@/lib/SupabaseClient";
 
-export async function getAllSongs() {
+export async function getAllSongs(
+  order?: { title: "asc" | "desc" },
+  take?: number,
+) {
   const songs = await prisma.songs.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
-    take: 7,
+    orderBy: order
+      ? order
+      : {
+          createdAt: "desc",
+        },
+    take: take ? take : 10,
   });
 
   const songData = songs.map(async (song) => {
