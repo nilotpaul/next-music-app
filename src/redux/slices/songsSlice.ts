@@ -4,7 +4,7 @@ import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 export type SongWithoutDate = Omit<Song, "userId" | "createdAt" | "updatedAt">;
 
 export type SongsSliceInitialState = {
-  queue: "home" | "search" | "playlist" | "likes" | "";
+  queue: "home" | "search" | `playlist-${string}` | "likes" | "";
   homeQueue: SongWithoutDate[];
   currentIndex: number;
   isPlaying: boolean;
@@ -29,7 +29,7 @@ export const songsSlice = createSlice({
       state,
       action: PayloadAction<{
         songs: SongWithoutDate[];
-        queue: "home" | "search" | "playlist" | "likes" | "";
+        queue: "home" | "search" | `playlist-${string}` | "likes" | "";
       }>,
     ) => {
       state.queue = action.payload.queue;

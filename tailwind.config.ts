@@ -16,6 +16,20 @@ module.exports = {
       },
     },
     extend: {
+      screens: {
+        sm: "640px",
+        md: "768px",
+        lg: "1024px",
+        xl: "1280px",
+      },
+      gridTemplateColumns: {
+        "auto-fit-1": "repeat(auto-fill, minmax(100px, 1fr))",
+        "auto-fit-2": "repeat(auto-fill, minmax(130px, 1fr))",
+        "auto-fit-3": "repeat(auto-fill, minmax(170px, 1fr))",
+        "auto-fit-4": "repeat(auto-fill, minmax(170px, 1fr))",
+        "auto-fit-5": "repeat(auto-fill, minmax(170px, 1fr))",
+        "auto-fit-6": "repeat(auto-fill, minmax(170px, 1fr))",
+      },
       colors: {
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",

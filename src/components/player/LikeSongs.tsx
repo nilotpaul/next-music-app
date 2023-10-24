@@ -4,24 +4,29 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { cn } from "@/utils/utils";
 import { useRouter } from "next/navigation";
+import { Session } from "next-auth";
 
 import { Heart } from "lucide-react";
 import { useToast } from "../ui/use-toast";
 
 type LikeSongsProps = {
+  size?: number;
   likedSongs: string[];
   songId: string;
+  session: Session | null;
 };
 
 const LikeSongs = ({
   songId,
   likedSongs: initialLikedSongsData,
+  session,
+  size,
 }: LikeSongsProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
   const router = useRouter();
 
-  const { data: likedSongs, refetch } = useQuery({
+  const { data: likedSongs } = useQuery({
     queryKey: ["likes"],
     initialData: initialLikedSongsData,
     queryFn: async () => {
@@ -29,6 +34,8 @@ const LikeSongs = ({
 
       return data;
     },
+
+    enabled: session && session.user ? true : false,
   });
 
   const { mutate: songLikeMutation, isLoading } = useMutation({
@@ -71,6 +78,7 @@ const LikeSongs = ({
     },
 
     onSettled: () => {
+      queryClient.invalidateQueries(["likes"]);
       router.refresh();
     },
   });
@@ -80,7 +88,7 @@ const LikeSongs = ({
   return (
     <Heart
       onClick={() => songLikeMutation(songId)}
-      size={19}
+      size={size || 19}
       className={cn(
         "cursor-pointer fill-gray-300 text-gray-300 transition-transform duration-300 hover:fill-white hover:text-white",
         {

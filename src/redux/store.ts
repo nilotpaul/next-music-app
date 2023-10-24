@@ -1,10 +1,12 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { TypedUseSelectorHook, useDispatch, useSelector } from "react-redux";
 import songsSlice from "@/redux/slices/songsSlice";
+import playerDialogSlice from "@/redux/slices/PlayerDialogSlice";
 
 export const store = configureStore({
   reducer: {
     songsSlice,
+    playerDialogSlice,
   },
 });
 

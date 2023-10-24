@@ -7,6 +7,7 @@ import {
 } from "@/redux/slices/songsSlice";
 import { useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
+import { cn } from "@/utils/utils";
 
 import { Pause, Play } from "lucide-react";
 
@@ -14,7 +15,10 @@ type PlayPauseButton2Props = {
   songs: SongWithoutDate[];
   index: number;
   songId: string;
-  queueName: "" | "home" | "search" | "playlist" | "likes";
+  playlistId?: string;
+  queueName: "home" | "search" | `playlist-${string}` | "likes" | "";
+  size?: number;
+  className?: string;
 };
 
 const PlayPauseButton2 = ({
@@ -22,6 +26,9 @@ const PlayPauseButton2 = ({
   index,
   songId,
   queueName,
+  playlistId,
+  size,
+  className,
 }: PlayPauseButton2Props) => {
   const dispatch = useDispatch();
   const { homeQueue, currentIndex, isPlaying, queue } = useAppSelector(
@@ -36,10 +43,18 @@ const PlayPauseButton2 = ({
       dispatch(setHomeQueue({ queue: queueName, songs }));
     }
 
-    if (currentIndex === index) {
-      dispatch(playPause({ currentIndex: index, isPlaying: !isPlaying }));
+    if (playlistId) {
+      if (currentIndex === index && queue.includes(playlistId)) {
+        dispatch(playPause({ currentIndex: index, isPlaying: !isPlaying }));
+      } else {
+        dispatch(playPause({ currentIndex: index, isPlaying: true }));
+      }
     } else {
-      dispatch(playPause({ currentIndex: index, isPlaying: true }));
+      if (currentIndex === index) {
+        dispatch(playPause({ currentIndex: index, isPlaying: !isPlaying }));
+      } else {
+        dispatch(playPause({ currentIndex: index, isPlaying: true }));
+      }
     }
   };
 
@@ -48,14 +63,20 @@ const PlayPauseButton2 = ({
       {homeQueue?.[currentIndex]?.id === songId && isPlaying ? (
         <Pause
           onClick={handleClick}
-          size={16}
-          className="absolute top-1/2 hidden -translate-y-1/2 cursor-pointer fill-primary text-primary group-hover:block"
+          size={size || 16}
+          className={cn(
+            "absolute top-1/2 hidden -translate-y-1/2 cursor-pointer fill-primary text-primary group-hover:block",
+            className,
+          )}
         />
       ) : (
         <Play
           onClick={handleClick}
-          size={16}
-          className="absolute top-1/2 hidden -translate-y-1/2 cursor-pointer fill-primary text-primary group-hover:block"
+          size={size || 16}
+          className={cn(
+            "absolute top-1/2 hidden -translate-y-1/2 cursor-pointer fill-primary text-primary group-hover:block",
+            className,
+          )}
         />
       )}
     </>

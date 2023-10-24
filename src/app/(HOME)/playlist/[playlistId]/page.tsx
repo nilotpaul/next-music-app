@@ -49,7 +49,10 @@ const getPlaylistById = async (playlistId: string, userId: string) => {
 
 const PlaylistPage = async ({ params }: PlaylistPageProps) => {
   const session = await userSession();
-  if (!session || !session.user) redirect("/");
+
+  if (!session || !session.user) {
+    notFound();
+  }
 
   const { playlistId } = params;
 
@@ -59,7 +62,7 @@ const PlaylistPage = async ({ params }: PlaylistPageProps) => {
 
   const playlist = await getPlaylistById(playlistId, session.user.id);
 
-  if (!playlist) {
+  if (!playlist || !playlist.more || !playlist.playlist) {
     notFound();
   }
 
@@ -69,7 +72,7 @@ const PlaylistPage = async ({ params }: PlaylistPageProps) => {
         <div>
           <Header playlist={playlist} session={session} />
 
-          <SongTable playlist={playlist} />
+          <SongTable playlist={playlist} session={session} />
         </div>
       ) : (
         <span>No songs added yet.</span>

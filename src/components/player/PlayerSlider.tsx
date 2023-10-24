@@ -36,7 +36,7 @@ const PlayerSlider = ({ audioRef, isPlaying }: PlayerSliderProps) => {
   }, [isPlaying, audioRef]);
 
   return (
-    <div className="grid w-full grid-cols-[40px_1fr_40px] place-content-center place-items-center gap-x-1">
+    <div className="grid w-full grid-cols-[30px_1fr_30px] place-content-between place-items-center gap-x-1 md:grid-cols-[40px_1fr_40px] md:place-content-center">
       <span className="text-xs text-neutral-300">
         {`${Math.floor(sliderValue / 60)
           .toString()

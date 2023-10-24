@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { Playlist } from "@/types/playlist";
+import { Session } from "next-auth";
 import { cn } from "@/utils/utils";
 
 import { Heart, Pin } from "lucide-react";
@@ -12,9 +13,15 @@ type PlaylistProps = {
   isSidebarOpen: boolean;
   playlists: Playlist;
   likedSongs: string[];
+  session: Session | null;
 };
 
-const Playlist = ({ isSidebarOpen, playlists, likedSongs }: PlaylistProps) => {
+const Playlist = ({
+  isSidebarOpen,
+  playlists,
+  likedSongs,
+  session,
+}: PlaylistProps) => {
   return (
     <>
       {playlists.length !== 0 ||
@@ -22,7 +29,7 @@ const Playlist = ({ isSidebarOpen, playlists, likedSongs }: PlaylistProps) => {
           <section className="flex w-full flex-col gap-y-2 rounded-lg bg-muted/100 p-3 py-3">
             <p>Wow so empty!</p>
             <p className="text-sm text-zinc-400">Create your first playlist</p>
-            <PlaylistDialog>
+            <PlaylistDialog session={session}>
               <Button className="mt-2 h-8 w-fit rounded-3xl px-3.5">
                 Create Playlist
               </Button>
@@ -35,7 +42,7 @@ const Playlist = ({ isSidebarOpen, playlists, likedSongs }: PlaylistProps) => {
             <Filters />
           </section>
         ))}
-      <section className="mt-1">
+      <section className="mb-0.5">
         <Link
           href="/likes"
           className={cn(
@@ -46,7 +53,7 @@ const Playlist = ({ isSidebarOpen, playlists, likedSongs }: PlaylistProps) => {
           )}
         >
           <span className="rounded-lg bg-gradient-to-tl from-purple-500 to-pink-500 p-3.5">
-            <Heart size={18} fill="white" />
+            <Heart size={19.5} fill="white" />
           </span>
           {isSidebarOpen && (
             <div className="flex flex-col">
@@ -66,8 +73,12 @@ const Playlist = ({ isSidebarOpen, playlists, likedSongs }: PlaylistProps) => {
         </Link>
       </section>
 
-      <section className="max-h-[27rem] w-full overflow-hidden overflow-y-auto">
-        <PlayListItems playlists={playlists} />
+      <section className="max-h-[calc(100vh_-_22rem)] overflow-hidden overflow-y-auto">
+        <PlayListItems
+          playlists={playlists}
+          isSidebarOpen={isSidebarOpen}
+          session={session}
+        />
       </section>
     </>
   );

@@ -13,6 +13,7 @@ const SearchInput = () => {
   return (
     <Command className="rounded-lg border shadow-md">
       <CommandInput
+        autoFocus
         onValueChange={(search) =>
           router.replace(pathname + "?" + setQueryParams("q", search))
         }

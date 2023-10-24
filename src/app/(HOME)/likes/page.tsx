@@ -9,7 +9,9 @@ import LikesTable from "@/components/likes/LikesTable";
 const LikedPage = async () => {
   const session = await userSession();
 
-  if (!session || !session.user) redirect("/");
+  if (!session || !session.user) {
+    redirect("/login");
+  }
 
   const likes = await getLikedSongs();
   const songs = await getAllSongs();
@@ -28,7 +30,7 @@ const LikedPage = async () => {
 
       <div>
         {likedSongs.length !== 0 ? (
-          <LikesTable likedSongs={likedSongs} likes={likes} />
+          <LikesTable likedSongs={likedSongs} likes={likes} session={session} />
         ) : (
           <span>No liked songs.</span>
         )}

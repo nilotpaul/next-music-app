@@ -4,17 +4,21 @@ import { cn } from "@/utils/utils";
 
 import { BadgePlus, Library } from "lucide-react";
 import { CardTitle } from "../../ui/card";
+import { Session } from "next-auth";
+
 import ToolTip from "../../extras/ToolTip";
 import PlaylistDialog from "./PlaylistDialog";
 
 type LibraryHeaderProps = {
   isSidebarOpen: boolean;
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  session: Session | null;
 };
 
 const LibraryHeader = ({
   isSidebarOpen,
   setIsSidebarOpen,
+  session,
 }: LibraryHeaderProps) => {
   const { setQueryParams } = useSearchParams();
   const router = useRouter();
@@ -45,7 +49,7 @@ const LibraryHeader = ({
       </ToolTip>
       <ToolTip
         trigger={
-          <PlaylistDialog>
+          <PlaylistDialog session={session}>
             <BadgePlus className="cursor-pointer" />
           </PlaylistDialog>
         }

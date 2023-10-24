@@ -1,4 +1,9 @@
-import { useAppSelector } from "@/redux/store";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { playPause, playPauseById } from "@/redux/slices/songsSlice";
+import { useCallback, useEffect } from "react";
+import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { usePathname, useRouter } from "next/navigation";
+import closeOnBack from "@/utils/closeOnBack";
 
 import {
   Sheet,
@@ -11,12 +16,6 @@ import {
 } from "../ui/sheet";
 import Image from "next/image";
 import { Pause, Play } from "lucide-react";
-import { useDispatch } from "react-redux";
-import {
-  playPause,
-  playPauseById,
-  setHomeQueue,
-} from "@/redux/slices/songsSlice";
 
 type NewestSongQueueProps = {
   children: React.ReactNode;
@@ -24,24 +23,43 @@ type NewestSongQueueProps = {
 };
 
 const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+  const router = useRouter();
+
   const { homeQueue, currentIndex, isPlaying } = useAppSelector(
     (state) => state.songsSlice,
   );
-  const dispatch = useDispatch();
+  const { dialogs } = useAppSelector((state) => state.playerDialogSlice);
+
+  useEffect(() => {
+    const cleanup = closeOnBack("queue", dispatch, dialogs);
+
+    return cleanup;
+  }, [dispatch, dialogs, router, pathname]);
+
+  const onClickChange = useCallback(() => {
+    if (!dialogs.includes("queue")) {
+      dispatch(openDialog("queue"));
+      router.push(pathname + "#queue");
+    } else {
+      dispatch(closeDialog("queue"));
+    }
+  }, [dialogs, dispatch, pathname, router]);
 
   return (
-    <Sheet>
+    <Sheet open={dialogs.includes("queue")} onOpenChange={onClickChange}>
       <SheetTrigger className="flex items-center">
         <SheetClose asChild>{children}</SheetClose>
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="z-[999] w-full overflow-hidden overflow-y-auto md:w-fit">
         <SheetHeader>
           <SheetTitle className="font-bold">Queue</SheetTitle>
           <SheetDescription>{queueName}</SheetDescription>
         </SheetHeader>
 
-        <section className="mt-4 font-semibold">
-          <span>Now Playing</span>
+        <section className="mt-4 font-semibold md:font-normal">
+          <span className="text-lg md:text-base">Now Playing</span>
           <div
             onDoubleClick={() =>
               dispatch(playPause({ currentIndex, isPlaying: !isPlaying }))
@@ -73,19 +91,21 @@ const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
               width={45}
               className="ml-1"
             />
-            <div className="flex flex-col truncate font-normal">
+            <div className="flex flex-col truncate font-semibold md:font-normal">
               <span className="truncate">
                 {homeQueue?.[currentIndex]?.title}
               </span>
-              <span className="truncate text-sm font-light text-neutral-300">
+              <span className="truncate text-sm font-normal text-neutral-300 md:font-light">
                 {homeQueue?.[currentIndex]?.artistName}
               </span>
             </div>
           </div>
         </section>
 
-        <section className="mt-4 flex flex-col space-y-4 font-medium">
-          <span>Next In Queue</span>
+        <section className="mt-4 flex flex-col space-y-4 md:font-medium">
+          <span className="text-lg font-semibold md:text-base md:font-normal">
+            Next In Queue
+          </span>
           {homeQueue.length > 1 ? (
             <div className="mt-3">
               {homeQueue
@@ -116,9 +136,9 @@ const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
                       height={45}
                       width={45}
                     />
-                    <div className="flex flex-col truncate font-normal">
+                    <div className="flex flex-col truncate font-semibold md:font-normal">
                       <span className="truncate">{song.title}</span>
-                      <span className="truncate text-sm font-light text-neutral-300">
+                      <span className="truncate text-sm font-normal text-neutral-300 md:font-light">
                         {song.artistName}
                       </span>
                     </div>

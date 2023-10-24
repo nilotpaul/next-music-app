@@ -1,6 +1,6 @@
 import { Playlist } from "@/types/playlist";
 import { useAppSelector } from "@/redux/store";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { AddSongToPlaylist } from "@/validations/playlistMutations";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,8 @@ type SongTitleMenuProps = {
 };
 
 const SongTitleMenu = ({ children, playlists }: SongTitleMenuProps) => {
+  const queryClient = useQueryClient();
+
   const { toast } = useToast();
   const router = useRouter();
   const { homeQueue, currentIndex } = useAppSelector(
@@ -67,6 +69,7 @@ const SongTitleMenu = ({ children, playlists }: SongTitleMenuProps) => {
       },
 
       onSuccess: () => {
+        queryClient.invalidateQueries(["get-playlist"]);
         router.refresh();
       },
     },

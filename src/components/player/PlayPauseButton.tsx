@@ -20,7 +20,7 @@ type PlayPauseButtonProps = {
   size?: "default" | "sm" | "lg" | "xl" | "icon" | null | undefined;
   iconSize?: number;
   color?: "white" | "normal";
-  queueName: "" | "home" | "search" | "playlist" | "likes";
+  queueName: "home" | "search" | `playlist-${string}` | "likes" | "";
 };
 
 const PlayPauseButton = ({
@@ -65,7 +65,7 @@ const PlayPauseButton = ({
       onClick={handleClick}
       size={size || "lg"}
       className={cn(
-        "invisible absolute right-6 top-28 translate-y-2.5 rounded-full p-2.5 opacity-0 drop-shadow-2xl transition-all duration-300 hover:scale-105 hover:bg-primary hover:transition-all hover:duration-300 group-hover:visible group-hover:translate-y-0 group-hover:opacity-100 group-hover:transition-all group-hover:duration-300",
+        "absolute left-0 top-0 min-h-full w-full opacity-0 drop-shadow-2xl transition-all duration-300 hover:transition-all hover:duration-300 md:invisible md:left-auto md:right-6 md:top-28 md:min-h-fit md:max-w-fit md:translate-y-2.5 md:rounded-full md:p-2.5 md:hover:scale-105 md:hover:bg-primary md:group-hover:visible md:group-hover:translate-y-0 md:group-hover:opacity-100 md:group-hover:transition-all md:group-hover:duration-300",
         className,
       )}
     >

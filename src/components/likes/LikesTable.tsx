@@ -1,5 +1,6 @@
 import { Song } from "@/types/songs";
 import { format } from "date-fns";
+import { Session } from "next-auth";
 
 import {
   Table,
@@ -16,9 +17,10 @@ import LikeSongs from "../player/LikeSongs";
 type LikesTableProps = {
   likedSongs: (Song | undefined)[];
   likes: string[];
+  session: Session;
 };
 
-const LikesTable = ({ likedSongs, likes }: LikesTableProps) => {
+const LikesTable = ({ likedSongs, likes, session }: LikesTableProps) => {
   return (
     <Table className="mt-6">
       <TableHeader>
@@ -77,7 +79,11 @@ const LikesTable = ({ likedSongs, likes }: LikesTableProps) => {
                 {format(song?.createdAt!, "MMMM dd, yyyy")}
               </TableCell>
               <TableCell>
-                <LikeSongs likedSongs={likes} songId={song?.id!} />
+                <LikeSongs
+                  likedSongs={likes}
+                  songId={song?.id!}
+                  session={session}
+                />
               </TableCell>
             </TableRow>
           );

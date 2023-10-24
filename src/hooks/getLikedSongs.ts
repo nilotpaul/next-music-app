@@ -3,7 +3,9 @@ import { userSession } from "@/lib/userSession";
 
 export async function getLikedSongs() {
   const session = await userSession();
-  if (!session || !session.user.id) return [];
+  if (!session || !session.user) {
+    return [];
+  }
 
   const likedSongs = await prisma.user.findUnique({
     where: {
@@ -14,7 +16,9 @@ export async function getLikedSongs() {
     },
   });
 
-  if (!likedSongs?.likedSongs) return [];
+  if (!likedSongs?.likedSongs) {
+    return [];
+  }
 
   return likedSongs.likedSongs;
 }

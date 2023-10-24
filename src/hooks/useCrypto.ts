@@ -1,5 +1,7 @@
-export const useCrypto = () => {
-  const uuid = crypto.randomUUID().replace(/[$@#&()|*^%!. \-]/g, "");
+import { createId } from "@paralleldrive/cuid2";
 
-  return uuid;
+export const useCrypto = () => {
+  const uuid = createId();
+
+  return uuid.replace(/[$@#&()|*^%!. \-]/g, "");
 };

@@ -5,9 +5,13 @@ import { getImageUrl } from "./getAllSongs";
 export async function getPlaylists() {
   const session = await userSession();
 
+  if (!session || !session.user) {
+    return [];
+  }
+
   const userPlaylists = await prisma.playlist.findMany({
     where: {
-      userId: session?.user.id,
+      userId: session.user.id,
     },
     include: {
       user: { select: { name: true } },

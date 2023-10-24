@@ -1,10 +1,10 @@
 import { getLikedSongs } from "@/hooks/getLikedSongs";
 import { format } from "date-fns";
+import { Session } from "next-auth";
 
 import {
   Table,
   TableBody,
-  TableCaption,
   TableCell,
   TableHead,
   TableHeader,
@@ -14,12 +14,14 @@ import { PlaylistById } from "@/types/playlist";
 import LikeSongs from "../player/LikeSongs";
 import Image from "next/image";
 import PlayPauseButton2 from "./PlayPauseButton2";
+import PlaylistSongTitleMenu from "../context/PlaylistSongTitleMenu";
 
 type SongTableProps = {
   playlist: PlaylistById;
+  session: Session;
 };
 
-const SongTable = async ({ playlist }: SongTableProps) => {
+const SongTable = async ({ playlist, session }: SongTableProps) => {
   const likes = await getLikedSongs();
 
   return (
@@ -53,10 +55,11 @@ const SongTable = async ({ playlist }: SongTableProps) => {
               <TableCell className="relative">
                 <span className="group-hover:hidden">{index + 1}</span>
                 <PlayPauseButton2
-                  queueName="playlist"
+                  queueName={`playlist-${playlist.playlist?.id!}`}
                   songs={songs}
                   index={index}
                   songId={song.songDetails?.id!}
+                  playlistId={playlist.playlist?.id!}
                 />
               </TableCell>
               <TableCell className="flex gap-x-4">
@@ -67,9 +70,15 @@ const SongTable = async ({ playlist }: SongTableProps) => {
                   height={50}
                 />
                 <div className="flex flex-col justify-center truncate">
-                  <span className="truncate text-base">
-                    {song.songDetails?.title || "not available"}
-                  </span>
+                  <PlaylistSongTitleMenu
+                    playlistId={playlist.playlist?.id!}
+                    songId={song.songDetails?.id!}
+                  >
+                    <span className="truncate text-base">
+                      {song.songDetails?.title || "not available"}
+                    </span>
+                  </PlaylistSongTitleMenu>
+
                   <span className="truncate text-neutral-300">
                     {song.songDetails?.artistName || "not available"}
                   </span>
@@ -79,7 +88,11 @@ const SongTable = async ({ playlist }: SongTableProps) => {
                 {format(song.songDetails?.createdAt!, "MMMM dd, yyyy")}
               </TableCell>
               <TableCell>
-                <LikeSongs likedSongs={likes} songId={song.songDetails?.id!} />
+                <LikeSongs
+                  likedSongs={likes}
+                  songId={song.songDetails?.id!}
+                  session={session}
+                />
               </TableCell>
             </TableRow>
           );

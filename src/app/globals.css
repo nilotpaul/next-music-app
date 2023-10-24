@@ -70,3 +70,7 @@
 .truncate {
   @apply max-w-full overflow-hidden text-ellipsis whitespace-nowrap;
 }
+
+body {
+  @apply overflow-hidden;
+}

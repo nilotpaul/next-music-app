@@ -1,6 +1,6 @@
 "use client";
 
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import axios, { AxiosError } from "axios";
 
@@ -24,6 +24,8 @@ const PlaylistSongTitleMenu = ({
   playlistId,
   songId,
 }: PlaylistSongTitleMenuProps) => {
+  const queryClient = useQueryClient();
+
   const router = useRouter();
   const { toast } = useToast();
 
@@ -40,6 +42,7 @@ const PlaylistSongTitleMenu = ({
       },
 
       onSuccess: () => {
+        queryClient.invalidateQueries(["get-playlist"]);
         router.refresh();
       },
 

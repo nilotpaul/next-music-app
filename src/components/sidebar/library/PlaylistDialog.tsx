@@ -4,11 +4,14 @@ import {
   createPlaylist,
   type CreatePlaylist,
 } from "@/validations/createPlaylist";
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { cn } from "@/utils/utils";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { Playlist } from "@/types/playlist";
+import { useCrypto } from "@/hooks/useCrypto";
+import { Session } from "next-auth";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -27,10 +30,15 @@ import { Loader2 } from "lucide-react";
 
 type PlaylistDialogProps = {
   children: React.ReactNode;
+  session: Session | null;
 };
 
-const PlaylistDialog = ({ children }: PlaylistDialogProps) => {
+const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
+  const queryClient = useQueryClient();
+  const randomId = useCrypto();
+
   const [isOpen, setIsOpen] = useState(false);
+
   const router = useRouter();
   const { toast } = useToast();
 
@@ -64,8 +72,42 @@ const PlaylistDialog = ({ children }: PlaylistDialogProps) => {
         return data;
       },
 
-      onError: (err) => {
+      onMutate: async (vars) => {
+        await queryClient.cancelQueries(["get-playlist"]);
+
+        const prevData = queryClient.getQueryData<Playlist>(["get-playlist"]);
+
+        const newData: Playlist[0] = {
+          id: randomId,
+          name: vars.name,
+          songs: vars.songs,
+          songImages: [{ publicUrl: "" }],
+          createdAt: new Date(),
+          updatedAt: new Date(),
+          user: { name: session?.user.name || "" },
+          userId: session?.user.id || "",
+        };
+
+        queryClient.setQueryData(
+          ["get-playlist"],
+          [...(prevData || ""), newData],
+        );
+
+        reset();
+        setIsOpen(false);
+
+        toast({
+          title: "Yay",
+          description: `${vars.name} created`,
+          className: "text-primary",
+        });
+
+        return { prevData };
+      },
+
+      onError: (err, _, context) => {
         console.error(err);
+        queryClient.setQueryData(["get-playlist"], () => context?.prevData);
 
         if (err instanceof AxiosError) {
           toast({
@@ -83,16 +125,9 @@ const PlaylistDialog = ({ children }: PlaylistDialogProps) => {
         reset();
       },
 
-      onSuccess: (playlistId, payload) => {
-        toast({
-          title: "Yay",
-          description: `${payload.name} created`,
-          className: "text-primary",
-        });
-
-        reset();
-        setIsOpen(false);
+      onSuccess: (playlistId) => {
         router.push(`/playlist/${playlistId}`);
+        queryClient.invalidateQueries(["get-playlist"]);
         router.refresh();
       },
     },
@@ -138,7 +173,6 @@ const PlaylistDialog = ({ children }: PlaylistDialogProps) => {
 
           <DialogFooter>
             <Button
-              disabled={isLoading}
               type="submit"
               className="w-full gap-x-1.5 py-5 text-base md:py-4 md:text-sm"
             >
