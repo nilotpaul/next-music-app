@@ -1,8 +1,11 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
 import { getImageUrl } from "./getAllSongs";
+import { cache } from "react";
 
-export async function getPlaylists() {
+import "server-only";
+
+export const getPlaylists = cache(async () => {
   const session = await userSession();
 
   if (!session || !session.user) {
@@ -47,4 +50,4 @@ export async function getPlaylists() {
   });
 
   return Promise.all(playlistWithMetadata);
-}
+});

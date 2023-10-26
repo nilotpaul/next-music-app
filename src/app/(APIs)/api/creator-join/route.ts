@@ -72,7 +72,7 @@ export async function PATCH(req: NextRequest) {
 
     if (err instanceof z.ZodError) {
       return new NextResponse(err.message, { status: 422 });
-    } else if (err instanceof Error) {
+    } else {
       return new NextResponse("Something went wrong. Please try agian later", {
         status: 500,
       });

@@ -8,10 +8,12 @@ import {
   setHomeQueue,
 } from "@/redux/slices/songsSlice";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 import { cn } from "@/utils/utils";
 
 import { Button } from "../ui/button";
 import { Pause, Play } from "lucide-react";
+import { useToast } from "../ui/use-toast";
 
 type PlayPauseButtonProps = {
   songs?: Song[] | SongWithoutDate[];
@@ -33,6 +35,8 @@ const PlayPauseButton = ({
   queueName,
 }: PlayPauseButtonProps) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { toast } = useToast();
   const {
     isPlaying,
     homeQueue,
@@ -41,6 +45,16 @@ const PlayPauseButton = ({
   } = useAppSelector((state) => state.songsSlice);
 
   const handleClick = () => {
+    if (songs?.every((s) => !s.file)) {
+      toast({
+        title: "OPPS",
+        description: "You need to login to continue.",
+        variant: "destructive",
+      });
+      router.push("/login");
+      return;
+    }
+
     const payload = songs?.map((item) => {
       const { id, file, image, title, artistName } = item;
       return { id, file, image, title, artistName };

@@ -160,6 +160,7 @@ const Player = ({ likedSongs, playlists, session }: PlayerProps) => {
               likedSongs={likedSongs}
               session={session}
               audioRef={audioRef}
+              playlists={playlists}
             />
           </div>
         </div>

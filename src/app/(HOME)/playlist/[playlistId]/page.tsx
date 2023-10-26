@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
-import { notFound, redirect } from "next/navigation";
+import { notFound } from "next/navigation";
 import { getImageUrl, getSongUrl } from "@/hooks/getAllSongs";
 
 import Header from "@/components/playlist/PlaylistHeader";
@@ -69,7 +69,7 @@ const PlaylistPage = async ({ params }: PlaylistPageProps) => {
   return (
     <>
       {playlist.playlist && playlist.playlist.songs.length !== 0 ? (
-        <div>
+        <div className="space-y-6">
           <Header playlist={playlist} session={session} />
 
           <SongTable playlist={playlist} session={session} />

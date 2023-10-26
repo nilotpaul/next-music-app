@@ -11,6 +11,7 @@ import { useToast } from "../ui/use-toast";
 
 type LikeSongsProps = {
   size?: number;
+  className?: string;
   likedSongs: string[];
   songId: string;
   session: Session | null;
@@ -21,6 +22,7 @@ const LikeSongs = ({
   likedSongs: initialLikedSongsData,
   session,
   size,
+  className,
 }: LikeSongsProps) => {
   const { toast } = useToast();
   const queryClient = useQueryClient();
@@ -96,6 +98,7 @@ const LikeSongs = ({
             likeStatus === songId,
           "scale-125": isLoading,
         },
+        className,
       )}
     />
   );

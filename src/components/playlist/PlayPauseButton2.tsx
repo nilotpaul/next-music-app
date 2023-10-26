@@ -7,6 +7,8 @@ import {
 } from "@/redux/slices/songsSlice";
 import { useAppSelector } from "@/redux/store";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
+import { useToast } from "../ui/use-toast";
 import { cn } from "@/utils/utils";
 
 import { Pause, Play } from "lucide-react";
@@ -31,11 +33,23 @@ const PlayPauseButton2 = ({
   className,
 }: PlayPauseButton2Props) => {
   const dispatch = useDispatch();
+  const router = useRouter();
+  const { toast } = useToast();
   const { homeQueue, currentIndex, isPlaying, queue } = useAppSelector(
     (state) => state.songsSlice,
   );
 
   const handleClick = () => {
+    if (songs?.every((s) => !s.file)) {
+      toast({
+        title: "OPPS",
+        description: "You need to login to continue.",
+        variant: "destructive",
+      });
+      router.push("/login");
+      return;
+    }
+
     if (
       queueName !== "" &&
       (homeQueue.length === 0 || !queue || queue !== queueName)

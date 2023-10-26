@@ -11,13 +11,14 @@ const SearchInput = () => {
   const { setQueryParams } = useSearchParams();
 
   return (
-    <Command className="rounded-lg border shadow-md">
+    <Command className="rounded-lg border bg-neutral-300/20 text-white shadow-md md:bg-popover md:text-popover-foreground">
       <CommandInput
         autoFocus
         onValueChange={(search) =>
           router.replace(pathname + "?" + setQueryParams("q", search))
         }
         placeholder="What melody you wanna listen to?"
+        className="py-6 md:py-6"
       />
     </Command>
   );

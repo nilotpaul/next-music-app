@@ -6,8 +6,11 @@ import { brevoEnv } from "@/validations/env";
 import axios, { AxiosError } from "axios";
 import * as z from "zod";
 import { cookies } from "next/headers";
+import { useCrypto } from "@/hooks/useCrypto";
 
 export async function POST(req: NextRequest) {
+  const randomId = useCrypto();
+
   try {
     const body = await req.json();
 
@@ -52,7 +55,7 @@ export async function POST(req: NextRequest) {
       await ctx.verificationRequest.create({
         data: {
           identifier: email,
-          token: crypto.randomUUID().replace(/[$@#&()|*^%!. \-]/g, ""),
+          token: randomId,
           expires: new Date(
             Math.floor(new Date().getTime() + 24 * 60 * 60 * 1000),
           ).toISOString(),
@@ -107,9 +110,13 @@ export async function POST(req: NextRequest) {
       maxAge: 3600 * 24,
     });
 
-    if (sendingEmail.status === 201) {
-      return new NextResponse("Email sent", { status: 201 });
+    if (sendingEmail.status !== 201) {
+      return new NextResponse("Couldn't send the email right now.", {
+        status: 500,
+      });
     }
+
+    return new NextResponse("Email sent", { status: 201 });
   } catch (err) {
     console.error(err);
 
@@ -117,10 +124,10 @@ export async function POST(req: NextRequest) {
       return new NextResponse(err.message, { status: err.status });
     } else if (err instanceof z.ZodError) {
       return new NextResponse(err.message, { status: 422 });
-    } else if (err instanceof Error) {
-      return new NextResponse(err.message, { status: 500 });
     } else {
-      return new NextResponse("Something went wrong.", { status: 500 });
+      return new NextResponse("Something went wrong. Please try again later.", {
+        status: 500,
+      });
     }
   }
 }

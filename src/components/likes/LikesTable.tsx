@@ -78,12 +78,14 @@ const LikesTable = ({ likedSongs, likes, session }: LikesTableProps) => {
               <TableCell className="hidden lg:table-cell">
                 {format(song?.createdAt!, "MMMM dd, yyyy")}
               </TableCell>
-              <TableCell>
-                <LikeSongs
-                  likedSongs={likes}
-                  songId={song?.id!}
-                  session={session}
-                />
+              <TableCell className="relative">
+                <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:static">
+                  <LikeSongs
+                    likedSongs={likes}
+                    songId={song?.id!}
+                    session={session}
+                  />
+                </span>
               </TableCell>
             </TableRow>
           );

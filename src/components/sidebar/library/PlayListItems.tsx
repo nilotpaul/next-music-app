@@ -49,14 +49,23 @@ const PlayListItems = ({
         : a.name.toLowerCase().localeCompare(b.name);
     });
 
-  return [...(filteredList ?? null)].map((playlist) => (
+  return [...(filteredList ?? playlists)].map((playlist) => (
     <PlaylistTitleMenu key={playlist.id} playlistId={playlist.id}>
-      <Link href={`/playlist/${playlist.id}`}>
+      <Link
+        scroll={false}
+        href={
+          playlist.id.includes("optimistic") ? "#" : `/playlist/${playlist.id}`
+        }
+        className="truncate data-[aria-expanded=true]:pointer-events-none data-[data-state=open]:pointer-events-none"
+      >
         <div
           className={cn(
-            "cursor-pointer rounded-lg p-2.5 py-2 transition-colors hover:bg-muted",
+            "cursor-pointer rounded-lg py-2 transition-colors hover:bg-muted md:p-0",
             {
               "mt-3 p-0": !isSidebarOpen,
+            },
+            {
+              "md:py- md:p-2.5": isSidebarOpen,
             },
           )}
         >
@@ -95,9 +104,11 @@ const PlayListItems = ({
               </>
             )}
             {isSidebarOpen && (
-              <div className="flex h-full flex-col justify-between space-y-1.5 truncate">
-                <span className="truncate capitalize">{playlist.name}</span>
-                <span className="truncate text-sm text-neutral-400">
+              <div className="flex h-full flex-col justify-between gap-y-1 truncate capitalize md:gap-y-0">
+                <span className="truncate text-lg leading-none md:text-base md:leading-none lg:leading-6">
+                  {playlist.name}
+                </span>
+                <span className="w-fit truncate text-sm text-neutral-400">
                   {playlist.user.name}
                 </span>
               </div>

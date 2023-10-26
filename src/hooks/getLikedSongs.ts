@@ -1,7 +1,10 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
+import { cache } from "react";
 
-export async function getLikedSongs() {
+import "server-only";
+
+export const getLikedSongs = cache(async () => {
   const session = await userSession();
   if (!session || !session.user) {
     return [];
@@ -21,4 +24,4 @@ export async function getLikedSongs() {
   }
 
   return likedSongs.likedSongs;
-}
+});

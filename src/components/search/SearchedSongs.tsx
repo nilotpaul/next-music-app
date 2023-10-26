@@ -22,9 +22,6 @@ import {
 } from "../ui/table";
 import PlayPauseButton2 from "../playlist/PlayPauseButton2";
 import LikeSongs from "../player/LikeSongs";
-import SearchLoading from "./SearchLoading";
-import { Button } from "../ui/button";
-import { Loader2 } from "lucide-react";
 import { Skeleton } from "../ui/skeleton";
 
 type SearchedSongsProps = {
@@ -41,6 +38,8 @@ const SearchedSongs = ({
   session,
 }: SearchedSongsProps) => {
   const tableRef = useRef<HTMLTableElement | null>(null);
+  const notFoundRef = useRef<string>("");
+
   const { ref: mantineRef, entry } = useIntersection({
     root: tableRef.current,
     threshold: 1,
@@ -67,10 +66,21 @@ const SearchedSongs = ({
         const morePagesAvailable =
           data && data.length === MAX_SEARCH_RESULTS_QUANTITY;
 
-        return {
-          data,
-          morePagesAvailable,
-        };
+        if (data && data.length > 0) {
+          notFoundRef.current = "";
+
+          return {
+            data,
+            morePagesAvailable,
+          };
+        } else {
+          notFoundRef.current = "No Results Found.";
+
+          return {
+            data: initialData,
+            morePagesAvailable,
+          };
+        }
       }
 
       return {
@@ -96,14 +106,14 @@ const SearchedSongs = ({
 
   useEffect(() => {
     refetch();
-  }, [refetch, debouncedQ, hasNextPage]);
+  }, [refetch, debouncedQ]);
 
   useEffect(() => {
     if (!hasNextPage) return;
     if (entry && entry.boundingClientRect.bottom <= window.innerHeight) {
       fetchNextPage({ cancelRefetch: true });
     }
-  }, [hasNextPage, entry, fetchNextPage, songs, initialData]);
+  }, [hasNextPage, entry, fetchNextPage]);
 
   return (
     <Table ref={tableRef} className="mt-6">
@@ -165,15 +175,21 @@ const SearchedSongs = ({
                   <>{format(new Date(song.createdAt), "MMMM dd, yyyy")}</>
                 )}
               </TableCell>
-              <TableCell>
+              <TableCell className="relative">
                 <LikeSongs
                   likedSongs={likes}
                   songId={song?.id}
                   session={session}
+                  className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 md:static md:translate-x-0 md:translate-y-0"
                 />
               </TableCell>
             </TableRow>
           )),
+        )}
+        {notFoundRef.current !== "" && q?.length !== 0 && (
+          <span className="absolute left-1/2 -translate-x-1/2 translate-y-4 text-base text-destructive">
+            {notFoundRef.current}
+          </span>
         )}
       </TableBody>
     </Table>

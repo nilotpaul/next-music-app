@@ -15,7 +15,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const session = await userSession();
 
   return (
-    <div>
+    <div className="mt-6 md:mt-0">
       <SearchInput />
 
       <SearchedSongs

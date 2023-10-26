@@ -69,8 +69,8 @@ const SongTitleMenu = ({ children, playlists }: SongTitleMenuProps) => {
       },
 
       onSuccess: () => {
-        queryClient.invalidateQueries(["get-playlist"]);
         router.refresh();
+        queryClient.invalidateQueries(["get-playlist"]);
       },
     },
   );
@@ -78,7 +78,7 @@ const SongTitleMenu = ({ children, playlists }: SongTitleMenuProps) => {
   return (
     <ContextMenu>
       <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
-      <ContextMenuContent className="absolute -top-16 w-48 rounded-lg">
+      <ContextMenuContent className="absolute -top-16 z-[100] w-48 rounded-lg">
         <ContextMenuSub>
           <ContextMenuSubTrigger className="rounded-md py-2">
             Add to playlist

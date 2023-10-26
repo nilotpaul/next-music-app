@@ -26,6 +26,7 @@ import PlayerSlider from "./PlayerSlider";
 import {
   ChevronDown,
   ListMusic,
+  MoreVertical,
   Repeat,
   Repeat1,
   SkipBack,
@@ -33,12 +34,15 @@ import {
 } from "lucide-react";
 import PlayPauseButton from "./PlayPauseButton";
 import NewestSongQueue from "../queue/SongQueue";
+import SongTitleMenu from "../context/SongTitleMenu";
+import { Playlist } from "@/types/playlist";
 
 type MobilePlayerProps = {
   song: SongWithoutDate;
   likedSongs: string[];
   session: Session | null;
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
+  playlists: Playlist;
 };
 
 const MobilePlayer = ({
@@ -46,6 +50,7 @@ const MobilePlayer = ({
   likedSongs,
   session,
   audioRef,
+  playlists,
 }: MobilePlayerProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
@@ -66,7 +71,7 @@ const MobilePlayer = ({
     <>
       <Card
         className={cn(
-          "visible fixed left-0 top-0 z-[100] h-screen w-screen translate-y-0 rounded-none bg-black opacity-100 transition-all duration-300",
+          "visible fixed left-0 top-0 z-[100] h-screen w-screen translate-y-0 rounded-none bg-stone-800 opacity-100 transition-all duration-300",
           {
             "invisible translate-y-[100%] opacity-0":
               !dialogs.includes("player"),
@@ -75,7 +80,8 @@ const MobilePlayer = ({
       >
         <CardHeader className="grid w-full grid-cols-[10px_100%_0px] items-center justify-between pt-4 text-center">
           <ChevronDown
-            className="bg-red-500"
+            size={34}
+            className="z-[80] rounded-full bg-card p-1"
             onClick={() => dispatch(closeDialog("player"))}
           />
           <div>
@@ -88,8 +94,8 @@ const MobilePlayer = ({
           </div>
         </CardHeader>
         <CardContent className="flex h-[calc(100vh_-_9rem)] flex-col justify-between">
-          <div className="mx-auto h-[60%] w-full py-2 sm:h-[65%] sm:max-w-[70%] sm:p-4">
-            <div className="relative top-1/2 mx-auto h-full w-full -translate-y-1/2">
+          <div className="h-full w-full">
+            <div className="relative top-1/2 mx-auto aspect-square max-h-[430px] -translate-y-1/2">
               <Image
                 src={song.image}
                 alt={song.title}
@@ -99,16 +105,18 @@ const MobilePlayer = ({
             </div>
           </div>
 
-          <div className="mb-4 flex flex-col gap-y-6">
+          <div className="my-4 flex flex-col gap-y-6">
             <div className="flex justify-between">
-              <div className="flex flex-col truncate">
-                <span className="truncate text-xl font-semibold">
-                  {song.title}
-                </span>
-                <span className="truncate text-lg text-neutral-300">
-                  {song.artistName}
-                </span>
-              </div>
+              <SongTitleMenu playlists={playlists}>
+                <div className="flex flex-col truncate">
+                  <span className="truncate text-xl font-semibold">
+                    {song.title}
+                  </span>
+                  <span className="truncate text-lg text-neutral-300">
+                    {song.artistName}
+                  </span>
+                </div>
+              </SongTitleMenu>
               <LikeSongs
                 size={25}
                 likedSongs={likedSongs}
@@ -163,7 +171,15 @@ const MobilePlayer = ({
         </CardContent>
       </Card>
 
-      <MobilePlayerPreview />
+      <MobilePlayerPreview
+        song={song}
+        likedSongs={likedSongs}
+        session={session}
+        songs={homeQueue}
+        index={currentIndex}
+        audioRef={audioRef}
+        isPlaying={isPlaying}
+      />
     </>
   );
 };

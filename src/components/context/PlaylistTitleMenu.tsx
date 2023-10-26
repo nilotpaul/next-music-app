@@ -2,6 +2,7 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useToast } from "../ui/use-toast";
 import axios, { AxiosError } from "axios";
+import { Playlist } from "@/types/playlist";
 
 import {
   ContextMenu,
@@ -29,13 +30,30 @@ const PlaylistTitleMenu = ({
       await axios.delete(`/api/remove-playlist/${playlistId}`);
     },
 
-    onSuccess: () => {
-      queryClient.invalidateQueries(["get-playlist"]);
+    onMutate: async () => {
+      await queryClient.cancelQueries(["get-playlist"]);
+
+      const prevData = queryClient.getQueryData<Playlist>(["get-playlist"]);
+
+      queryClient.setQueryData(
+        ["get-playlist"],
+        () => prevData?.filter((playlist) => playlist.id !== playlistId),
+      );
+
       router.push("/");
-      router.refresh();
+
+      return { prevData };
     },
 
-    onError: (err) => {
+    onSuccess: () => {
+      router.refresh();
+      queryClient.invalidateQueries(["get-playlist"]);
+    },
+
+    onError: (err, _, context) => {
+      console.error(err);
+      queryClient.setQueryData(["get-playlist"], () => context?.prevData);
+
       if (err instanceof AxiosError) {
         toast({
           title: err.response?.status.toString(),
@@ -57,7 +75,11 @@ const PlaylistTitleMenu = ({
       <ContextMenuTrigger asChild>{children}</ContextMenuTrigger>
       <ContextMenuContent className="absolute -top-16 w-48 rounded-lg">
         <ContextMenuItem
-          onClick={() => removePlaylistMutation()}
+          onClick={(e) => {
+            e.stopPropagation();
+
+            removePlaylistMutation();
+          }}
           className="rounded-md py-2 font-semibold text-destructive"
         >
           Delete Playlist

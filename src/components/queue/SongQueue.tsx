@@ -41,7 +41,7 @@ const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
   const onClickChange = useCallback(() => {
     if (!dialogs.includes("queue")) {
       dispatch(openDialog("queue"));
-      router.push(pathname + "#queue");
+      router.push(pathname + "#queue", { scroll: false });
     } else {
       dispatch(closeDialog("queue"));
     }
@@ -52,7 +52,7 @@ const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
       <SheetTrigger className="flex items-center">
         <SheetClose asChild>{children}</SheetClose>
       </SheetTrigger>
-      <SheetContent className="z-[999] w-full overflow-hidden overflow-y-auto md:w-fit">
+      <SheetContent className="z-[999] w-full overflow-hidden overflow-y-auto bg-secondary md:w-fit">
         <SheetHeader>
           <SheetTitle className="font-bold">Queue</SheetTitle>
           <SheetDescription>{queueName}</SheetDescription>

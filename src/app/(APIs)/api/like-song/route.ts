@@ -62,8 +62,6 @@ export async function PUT(req: NextRequest) {
 
     if (err instanceof z.ZodError) {
       return new NextResponse(err.message, { status: 422 });
-    } else if (err instanceof Error) {
-      return new NextResponse("Something went wrong.", { status: 500 });
     } else {
       return new NextResponse("Something went wrong.", { status: 500 });
     }

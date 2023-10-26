@@ -29,7 +29,7 @@ export async function GET() {
   } catch (err) {
     console.error(err);
 
-    return new NextResponse("Something went worng. Please try again later", {
+    return new NextResponse("Something went wrong. Please try again later.", {
       status: 500,
     });
   }

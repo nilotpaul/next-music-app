@@ -23,7 +23,9 @@ const TopHeader = ({ session }: TopHeaderProps) => {
 
   return (
     <div className="flex w-full items-center justify-between">
-      <h3 className="text-xl md:hidden">Melodify</h3>
+      <Link href="/" className="text-xl md:hidden">
+        Melodify
+      </Link>
       <div className="hidden space-x-4 md:block">
         <ToolTip
           trigger={

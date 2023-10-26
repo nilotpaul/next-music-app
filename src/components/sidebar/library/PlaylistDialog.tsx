@@ -64,6 +64,8 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
           songs,
         };
 
+        if (!session?.user) return;
+
         const { data } = await axios.post<string>(
           "/api/create-playlist",
           payload,
@@ -78,7 +80,7 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
         const prevData = queryClient.getQueryData<Playlist>(["get-playlist"]);
 
         const newData: Playlist[0] = {
-          id: randomId,
+          id: `${randomId}-optimistic`,
           name: vars.name,
           songs: vars.songs,
           songImages: [{ publicUrl: "" }],
@@ -126,19 +128,31 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
       },
 
       onSuccess: (playlistId) => {
-        router.push(`/playlist/${playlistId}`);
-        queryClient.invalidateQueries(["get-playlist"]);
         router.refresh();
+        queryClient.invalidateQueries(["get-playlist"]);
+        router.push(`/playlist/${playlistId}`);
       },
     },
   );
 
+  const onOpenChange = () => {
+    if (!session?.user) {
+      toast({
+        title: "OPPS",
+        description: "You need to login to continue.",
+        variant: "destructive",
+      });
+      router.push("/login");
+      return;
+    }
+
+    setIsOpen(!isOpen);
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogTrigger className="w-full" asChild>
-        {children}
-      </DialogTrigger>
-      <DialogContent className="flex h-full max-w-full flex-col items-start gap-y-6 md:grid md:h-max md:max-w-[430px]">
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogTrigger asChild>{children}</DialogTrigger>
+      <DialogContent className="z-[999] flex h-full max-w-full flex-col items-start gap-y-6 md:grid md:h-max md:max-w-[430px]">
         <DialogHeader className="w-full text-start">
           <DialogTitle className="text-xl md:text-2xl">
             Create Playlist

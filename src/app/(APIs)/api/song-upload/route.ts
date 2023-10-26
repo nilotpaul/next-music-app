@@ -1,26 +1,18 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
-import { supabaseEnv } from "@/validations/env";
 import {
   songUpload,
   TypedFormDataBackend,
   type SongUploadBackend,
 } from "@/validations/songUpload";
-import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs";
 import { NextRequest, NextResponse } from "next/server";
-import { cookies } from "next/headers";
+import { supabaseRoute } from "@/lib/SupabaseClient";
 import * as z from "zod";
 
 export async function POST(req: NextRequest) {
   const session = await userSession();
 
-  const supabase = createRouteHandlerClient(
-    { cookies },
-    {
-      supabaseKey: supabaseEnv.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-      supabaseUrl: supabaseEnv.NEXT_PUBLIC_SUPABASE_URL,
-    },
-  );
+  const supabase = supabaseRoute();
 
   try {
     if (!session?.user || !session?.user.email) {
@@ -133,8 +125,6 @@ export async function POST(req: NextRequest) {
 
     if (err instanceof z.ZodError) {
       return new NextResponse(err.message, { status: 422 });
-    } else if (err instanceof Error) {
-      return new NextResponse("Failed to upload the song.", { status: 500 });
     } else {
       return new NextResponse("Failed to Upload.", { status: 500 });
     }

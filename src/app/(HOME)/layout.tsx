@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import TopHeader from "@/components/main/TopHeader";
 import GreenGradiant from "@/components/extras/GreenGradiant";
 import { Separator } from "@/components/ui/separator";
-import MobilePlayer from "@/components/player/MobilePlayer";
+import BottomMenu from "@/components/mobile/BottomMenu";
 
 export default async function HomeLayout({
   children,
@@ -37,13 +37,19 @@ export default async function HomeLayout({
             </CardTitle>
           </CardHeader>
           <Separator className="h-[1px] w-full bg-green-500/50 md:hidden" />
-          <CardContent className="bg p-4 pt-0 md:p-6 md:pt-0">
+          <CardContent className="bg p-4 md:p-6 md:pt-0">
             {children}
           </CardContent>
         </Card>
       </div>
 
       <Player likedSongs={likedSongs} playlists={playlists} session={session} />
+
+      <BottomMenu
+        session={session}
+        playlists={playlists}
+        likedSongs={likedSongs}
+      />
     </main>
   );
 }

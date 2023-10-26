@@ -5,7 +5,7 @@ import { NextResponse, NextRequest } from "next/server";
 
 export async function GET(req: NextRequest) {
   const session = await userSession();
-  if (session) redirect("/");
+  if (session && session.user) redirect("/");
 
   const domain = process.env.NEXTAUTH_URL;
 
@@ -66,6 +66,12 @@ export async function GET(req: NextRequest) {
     return NextResponse.redirect(domain! + "/auth/auto-sign-in");
   } catch (err) {
     console.error(err);
-    if (err instanceof Error) redirect(`/auth/error?error=${err.message}`);
+    if (err instanceof Error) {
+      redirect(`/auth/error?error=${err.message}`);
+    } else {
+      redirect(
+        `/auth/error?error=something+went+wrong.+Please+try+again+later.`,
+      );
+    }
   }
 }
