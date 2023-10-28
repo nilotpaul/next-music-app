@@ -79,6 +79,7 @@ const Filters = () => {
           />
         </div>
         <Select
+          defaultValue="recents"
           onValueChange={(value) => {
             router.replace(pathname + "?" + setQueryParams("sort", value));
           }}

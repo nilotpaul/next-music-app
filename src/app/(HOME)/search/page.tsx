@@ -10,12 +10,16 @@ type SearchPageProps = {
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const { q } = searchParams;
-  const songs = await getAllSongs({ title: "asc" }, 5);
-  const likes = await getLikedSongs();
-  const session = await userSession();
+  const [songs, likes, session] = await Promise.all([
+    getAllSongs({ title: "asc" }, 5),
+    getLikedSongs(),
+    userSession(),
+  ]);
 
   return (
-    <div className="mt-6 md:mt-0">
+    <div className="md:mt-0">
+      <h3 className="mb-3">Search</h3>
+
       <SearchInput />
 
       <SearchedSongs

@@ -2,7 +2,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { playPause, playPauseById } from "@/redux/slices/songsSlice";
 import { useCallback, useEffect } from "react";
 import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import closeOnBack from "@/utils/closeOnBack";
 
 import {
@@ -24,7 +24,6 @@ type NewestSongQueueProps = {
 
 const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
   const dispatch = useAppDispatch();
-  const pathname = usePathname();
   const router = useRouter();
 
   const { homeQueue, currentIndex, isPlaying } = useAppSelector(
@@ -36,23 +35,23 @@ const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
     const cleanup = closeOnBack("queue", dispatch, dialogs);
 
     return cleanup;
-  }, [dispatch, dialogs, router, pathname]);
+  }, [dispatch, dialogs, router]);
 
   const onClickChange = useCallback(() => {
     if (!dialogs.includes("queue")) {
       dispatch(openDialog("queue"));
-      router.push(pathname + "#queue", { scroll: false });
+      router.push("#queue", { scroll: false });
     } else {
       dispatch(closeDialog("queue"));
     }
-  }, [dialogs, dispatch, pathname, router]);
+  }, [dialogs, dispatch, router]);
 
   return (
     <Sheet open={dialogs.includes("queue")} onOpenChange={onClickChange}>
       <SheetTrigger className="flex items-center">
         <SheetClose asChild>{children}</SheetClose>
       </SheetTrigger>
-      <SheetContent className="z-[999] w-full overflow-hidden overflow-y-auto bg-secondary md:w-fit">
+      <SheetContent className="z-[999] w-full overflow-hidden overflow-y-auto bg-card md:w-fit md:bg-background">
         <SheetHeader>
           <SheetTitle className="font-bold">Queue</SheetTitle>
           <SheetDescription>{queueName}</SheetDescription>

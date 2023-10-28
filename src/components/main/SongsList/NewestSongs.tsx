@@ -10,11 +10,11 @@ type NewestSongsProps = {
 
 const NewestSongs = ({ songs }: NewestSongsProps) => {
   return (
-    <div className="flex gap-3 overflow-auto pt-2 md:pt-0">
+    <div className="flex gap-3 overflow-hidden overflow-x-auto pt-2 md:pt-0">
       {songs.map((song, id) => (
         <Card
           key={song.id}
-          className="group relative flex max-h-[15rem] min-h-[15rem] min-w-[9.375rem] max-w-[10rem] cursor-pointer flex-col rounded-[0.4rem] border-none bg-background/60 transition-colors duration-300 hover:bg-muted hover:transition-colors hover:duration-300 md:min-h-[16.25rem] md:min-w-[11.3rem]"
+          className="group relative flex max-h-[15rem] min-h-[15rem] min-w-[9.375rem] max-w-[10rem] cursor-pointer flex-col rounded-[0.4rem] border-none bg-muted transition-colors duration-300 hover:bg-muted hover:transition-colors hover:duration-300 md:min-h-[16.25rem] md:min-w-[11.3rem] md:bg-popover/70"
         >
           <CardHeader className="relative h-full w-full">
             <Image

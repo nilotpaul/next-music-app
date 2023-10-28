@@ -52,7 +52,7 @@ const Playlist = ({
             },
           )}
         >
-          <span className="rounded-lg bg-gradient-to-tl from-purple-500 to-pink-500 p-3.5">
+          <span className="rounded-lg bg-gradient-to-tl from-purple-500 to-pink-500 p-4">
             <Heart size={19.5} fill="white" />
           </span>
           {isSidebarOpen && (

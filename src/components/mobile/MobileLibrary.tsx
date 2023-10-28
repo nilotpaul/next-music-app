@@ -5,6 +5,7 @@ import { Session } from "next-auth";
 import { Playlist } from "@/types/playlist";
 import Link from "next/link";
 import { closeDialog } from "@/redux/slices/PlayerDialogSlice";
+import { useRouter } from "next/navigation";
 import { cn } from "@/utils/utils";
 
 import { BadgePlus, Heart, Library, Pin } from "lucide-react";
@@ -36,7 +37,7 @@ const MobileLibrary = ({
   return (
     <Card
       className={cn(
-        "visible fixed left-0 top-0 z-50 h-full w-full translate-y-0 rounded-none bg-background opacity-100 transition-all duration-300 md:hidden",
+        "visible fixed left-0 top-0 z-50 h-full w-full translate-y-0 rounded-none bg-card opacity-100 transition-all duration-300 md:hidden",
         {
           "invisible translate-y-[100%] opacity-0":
             !dialogs.includes("library"),

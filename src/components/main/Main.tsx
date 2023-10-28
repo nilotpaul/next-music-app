@@ -2,6 +2,9 @@ import { getAllSongs } from "@/hooks/getAllSongs";
 
 import NewestSongs from "./SongsList/NewestSongs";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 const Main = async () => {
   const songs = await getAllSongs();
 

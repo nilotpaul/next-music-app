@@ -43,10 +43,10 @@ const Header = ({ playlist, session }: HeaderProps) => {
             />
           </Avatar>
           <span className="font-semibold text-neutral-300">
-            <span>{session.user.name}</span> &middot;{" "}
+            <span className="capitalize">{session.user.name}</span> &middot;{" "}
             <span>{playlist.playlist?.songs.length}</span>{" "}
             <span>
-              {playlist.playlist?.songs.length! > 0 ? "Songs" : "Song"}
+              {playlist.playlist?.songs.length! > 1 ? "Songs" : "Song"}
             </span>
           </span>
         </div>

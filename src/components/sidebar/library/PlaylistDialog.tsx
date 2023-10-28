@@ -7,10 +7,13 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { cn } from "@/utils/utils";
-import { useState } from "react";
+import { useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Playlist } from "@/types/playlist";
 import { useCrypto } from "@/hooks/useCrypto";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import closeOnBack from "@/utils/closeOnBack";
 import { Session } from "next-auth";
 
 import { Button } from "@/components/ui/button";
@@ -35,9 +38,15 @@ type PlaylistDialogProps = {
 
 const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
   const queryClient = useQueryClient();
+  const dispatch = useAppDispatch();
   const randomId = useCrypto();
+  const { dialogs } = useAppSelector((state) => state.playerDialogSlice);
 
-  const [isOpen, setIsOpen] = useState(false);
+  useEffect(() => {
+    const cleanup = closeOnBack("playlist-create", dispatch, dialogs);
+
+    return cleanup;
+  }, [dialogs, dispatch]);
 
   const router = useRouter();
   const { toast } = useToast();
@@ -96,7 +105,7 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
         );
 
         reset();
-        setIsOpen(false);
+        dispatch(closeDialog("playlist-create"));
 
         toast({
           title: "Yay",
@@ -131,6 +140,7 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
         router.refresh();
         queryClient.invalidateQueries(["get-playlist"]);
         router.push(`/playlist/${playlistId}`);
+        dispatch(closeDialog("library"));
       },
     },
   );
@@ -146,13 +156,22 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
       return;
     }
 
-    setIsOpen(!isOpen);
+    if (!dialogs.includes("playlist-create")) {
+      dispatch(openDialog("playlist-create"));
+      router.push("#playlist-create", { scroll: false });
+    } else {
+      dispatch(closeDialog("playlist-create"));
+      router.back();
+    }
   };
 
   return (
-    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+    <Dialog
+      open={dialogs.includes("playlist-create")}
+      onOpenChange={onOpenChange}
+    >
       <DialogTrigger asChild>{children}</DialogTrigger>
-      <DialogContent className="z-[999] flex h-full max-w-full flex-col items-start gap-y-6 md:grid md:h-max md:max-w-[430px]">
+      <DialogContent className="flex h-full max-w-full flex-col items-start gap-y-6 md:grid md:h-max md:max-w-[430px]">
         <DialogHeader className="w-full text-start">
           <DialogTitle className="text-xl md:text-2xl">
             Create Playlist

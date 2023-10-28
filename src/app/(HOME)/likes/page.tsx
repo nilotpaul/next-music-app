@@ -13,8 +13,7 @@ const LikedPage = async () => {
     redirect("/login");
   }
 
-  const likes = await getLikedSongs();
-  const songs = await getAllSongs();
+  const [likes, songs] = await Promise.all([getLikedSongs(), getAllSongs()]);
 
   const likedSongs = likes.map((likeId) => {
     const findSongDetails = songs.find((song) => song.id === likeId);

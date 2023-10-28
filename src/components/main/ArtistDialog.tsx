@@ -5,7 +5,9 @@ import { creatorJoin, type CreatorJoin } from "@/validations/creator";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
-import { useToast } from "../ui/use-toast";
+import { cn } from "@/utils/utils";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
 
 import { Checkbox } from "../ui/checkbox";
 import {
@@ -22,7 +24,7 @@ import { Label } from "../ui/label";
 import { Textarea } from "../ui/textarea";
 import { Button } from "../ui/button";
 import { Loader2 } from "lucide-react";
-import { cn } from "@/utils/utils";
+import { useToast } from "../ui/use-toast";
 
 type ArtistModalProps = {
   children: React.ReactNode;
@@ -31,7 +33,9 @@ type ArtistModalProps = {
 const ArtistDialog = ({ children }: ArtistModalProps) => {
   const router = useRouter();
   const { toast } = useToast();
-  const [isOpen, setIsOpen] = useState(false);
+  const { dialogs } = useAppSelector((state) => state.playerDialogSlice);
+  const dispatch = useAppDispatch();
+
   const {
     register,
     handleSubmit,
@@ -58,7 +62,7 @@ const ArtistDialog = ({ children }: ArtistModalProps) => {
         });
         reset();
         router.refresh();
-        setIsOpen(false);
+        dispatch(closeDialog("artist-register"));
       },
 
       onError: (err) => {
@@ -77,13 +81,25 @@ const ArtistDialog = ({ children }: ArtistModalProps) => {
           });
         }
         reset();
-        setIsOpen(false);
       },
     },
   );
 
+  const onOpenChange = () => {
+    if (!dialogs.includes("artist-register")) {
+      dispatch(openDialog("artist-register"));
+      router.push("#artist-register");
+    } else {
+      dispatch(closeDialog("artist-register"));
+      router.back();
+    }
+  };
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog
+      open={dialogs.includes("artist-register")}
+      onOpenChange={onOpenChange}
+    >
       <DialogTrigger className="w-full" asChild>
         {children}
       </DialogTrigger>

@@ -11,7 +11,7 @@ import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useEffect } from "react";
 import closeOnBack from "@/utils/closeOnBack";
 import { closeDialog } from "@/redux/slices/PlayerDialogSlice";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { cn } from "@/utils/utils";
 
 import {
@@ -26,7 +26,6 @@ import PlayerSlider from "./PlayerSlider";
 import {
   ChevronDown,
   ListMusic,
-  MoreVertical,
   Repeat,
   Repeat1,
   SkipBack,
@@ -54,7 +53,6 @@ const MobilePlayer = ({
 }: MobilePlayerProps) => {
   const dispatch = useAppDispatch();
   const router = useRouter();
-  const pathname = usePathname();
 
   const { queue, isPlaying, loop, currentIndex, homeQueue } = useAppSelector(
     (state) => state.songsSlice,
@@ -65,13 +63,13 @@ const MobilePlayer = ({
     const cleanup = closeOnBack("player", dispatch, dialogs);
 
     return cleanup;
-  }, [dialogs, dispatch, router, pathname]);
+  }, [dialogs, dispatch]);
 
   return (
     <>
       <Card
         className={cn(
-          "visible fixed left-0 top-0 z-[100] h-screen w-screen translate-y-0 rounded-none bg-stone-800 opacity-100 transition-all duration-300",
+          "visible fixed left-0 top-0 z-[100] h-screen w-screen translate-y-0 rounded-none bg-muted opacity-100 transition-all duration-300",
           {
             "invisible translate-y-[100%] opacity-0":
               !dialogs.includes("player"),
@@ -82,7 +80,10 @@ const MobilePlayer = ({
           <ChevronDown
             size={34}
             className="z-[80] rounded-full bg-card p-1"
-            onClick={() => dispatch(closeDialog("player"))}
+            onClick={() => {
+              dispatch(closeDialog("player"));
+              router.back();
+            }}
           />
           <div>
             <CardDescription className="uppercase">

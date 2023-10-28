@@ -40,9 +40,9 @@ const LikesHeader = ({ likedSongs, session }: LikesHeaderProps) => {
             />
           </Avatar>
           <span className="font-semibold text-neutral-300">
-            <span>{session.user.name}</span> &middot;{" "}
+            <span className="capitalize">{session.user.name}</span> &middot;{" "}
             <span>{likedSongs.length}</span>{" "}
-            <span>{likedSongs.length! > 0 ? "Songs" : "Song"}</span>
+            <span>{likedSongs.length! > 1 ? "Songs" : "Song"}</span>
           </span>
         </div>
       </div>

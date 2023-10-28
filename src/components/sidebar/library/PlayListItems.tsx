@@ -65,7 +65,7 @@ const PlayListItems = ({
               "mt-3 p-0": !isSidebarOpen,
             },
             {
-              "md:py- md:p-2.5": isSidebarOpen,
+              "md:p-2.5 md:py-1.5": isSidebarOpen,
             },
           )}
         >
@@ -104,8 +104,8 @@ const PlayListItems = ({
               </>
             )}
             {isSidebarOpen && (
-              <div className="flex h-full flex-col justify-between gap-y-1 truncate capitalize md:gap-y-0">
-                <span className="truncate text-lg leading-none md:text-base md:leading-none lg:leading-6">
+              <div className="flex h-full flex-col justify-between truncate capitalize md:gap-y-0">
+                <span className="truncate text-lg leading-6 md:text-base md:leading-none lg:leading-6">
                   {playlist.name}
                 </span>
                 <span className="w-fit truncate text-sm text-neutral-400">

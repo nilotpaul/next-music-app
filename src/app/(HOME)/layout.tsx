@@ -9,18 +9,21 @@ import TopHeader from "@/components/main/TopHeader";
 import GreenGradiant from "@/components/extras/GreenGradiant";
 import { Separator } from "@/components/ui/separator";
 import BottomMenu from "@/components/mobile/BottomMenu";
+import { prisma } from "@/lib/PrismaClient";
 
 export default async function HomeLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const likedSongs = await getLikedSongs();
-  const playlists = await getPlaylists();
-  const session = await userSession();
+  const [likedSongs, playlists, session] = await Promise.all([
+    getLikedSongs(),
+    getPlaylists(),
+    userSession(),
+  ]);
 
   return (
-    <main className="h-screen min-h-[700px]">
+    <main className="h-screen min-h-[400px] max-w-[2400px]">
       <div className="mx-auto grid h-full w-full grid-cols-[1fr_minmax(300px_,_100%)] overflow-x-hidden overflow-y-hidden md:gap-x-4 md:px-3 md:py-2">
         <section>
           <Sidebar
@@ -29,15 +32,15 @@ export default async function HomeLayout({
             session={session}
           />
         </section>
-        <Card className="relative h-full overflow-x-hidden rounded-none bg-card/40 from-card to-background md:rounded-lg md:bg-gradient-to-b">
+        <Card className="relative h-full overflow-x-hidden rounded-none bg-popover/80 from-card to-background md:rounded-lg md:bg-gradient-to-b">
           <GreenGradiant />
-          <CardHeader className="relative z-50 pb-4 pt-4">
+          <CardHeader className="left-0 top-0 pb-4 pt-4 md:sticky md:z-[99]">
             <CardTitle>
               <TopHeader session={session} />
             </CardTitle>
           </CardHeader>
           <Separator className="h-[1px] w-full bg-green-500/50 md:hidden" />
-          <CardContent className="bg p-4 md:p-6 md:pt-0">
+          <CardContent className="bg mb-16 p-4 md:mb-0 md:p-6 md:pt-0">
             {children}
           </CardContent>
         </Card>
