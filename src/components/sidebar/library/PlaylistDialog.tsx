@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { Playlist } from "@/types/playlist";
 import { useCrypto } from "@/hooks/useCrypto";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog, openDialog } from "@/redux/slices/playerDialogSlice";
 import closeOnBack from "@/utils/closeOnBack";
 import { Session } from "next-auth";
 

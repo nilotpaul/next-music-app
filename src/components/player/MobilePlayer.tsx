@@ -10,7 +10,7 @@ import { Session } from "next-auth";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useEffect } from "react";
 import closeOnBack from "@/utils/closeOnBack";
-import { closeDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog } from "@/redux/slices/playerDialogSlice";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/utils";
 

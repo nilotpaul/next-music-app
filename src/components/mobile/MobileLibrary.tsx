@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Session } from "next-auth";
 import { Playlist } from "@/types/playlist";
 import Link from "next/link";
-import { closeDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog } from "@/redux/slices/playerDialogSlice";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/utils";
 

@@ -1,7 +1,7 @@
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { playPause, playPauseById } from "@/redux/slices/songsSlice";
 import { useCallback, useEffect } from "react";
-import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog, openDialog } from "@/redux/slices/playerDialogSlice";
 import { useRouter } from "next/navigation";
 import closeOnBack from "@/utils/closeOnBack";
 

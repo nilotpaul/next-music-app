@@ -11,7 +11,7 @@ import { AxiosError } from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { openDialog } from "@/redux/slices/playerDialogSlice";
 
 export default function ReactQueryProvider({
   children,

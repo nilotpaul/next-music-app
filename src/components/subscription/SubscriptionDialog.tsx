@@ -5,7 +5,7 @@ import axios, { AxiosError } from "axios";
 import getStripe from "@/lib/loadStripe";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useRouter } from "next/navigation";
-import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog, openDialog } from "@/redux/slices/playerDialogSlice";
 import closeOnBack from "@/utils/closeOnBack";
 import { useCallback, useEffect } from "react";
 

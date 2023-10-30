@@ -6,7 +6,7 @@ import useSearchParams from "@/hooks/useSearchParams";
 import { Command, CommandInput } from "../ui/command";
 import { SubscriptionStatus } from "@/types/subsctiption";
 import { useAppDispatch } from "@/redux/store";
-import { openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { openDialog } from "@/redux/slices/playerDialogSlice";
 
 const SearchInput = ({ subStatus }: { subStatus: SubscriptionStatus }) => {
   const pathname = usePathname();

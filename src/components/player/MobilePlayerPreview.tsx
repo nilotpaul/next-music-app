@@ -1,5 +1,5 @@
 import { useAppDispatch } from "@/redux/store";
-import { openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { openDialog } from "@/redux/slices/playerDialogSlice";
 import { usePathname, useRouter } from "next/navigation";
 import { SongWithoutDate } from "@/redux/slices/songsSlice";
 import Image from "next/image";

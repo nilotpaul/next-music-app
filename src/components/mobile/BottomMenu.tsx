@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog, openDialog } from "@/redux/slices/playerDialogSlice";
 import { Session } from "next-auth";
 import { Playlist } from "@/types/playlist";
 import { cn } from "@/utils/utils";

@@ -7,7 +7,7 @@ import axios, { AxiosError } from "axios";
 import { useRouter } from "next/navigation";
 import { cn } from "@/utils/utils";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
-import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog, openDialog } from "@/redux/slices/playerDialogSlice";
 import closeOnBack from "@/utils/closeOnBack";
 
 import { Checkbox } from "../ui/checkbox";

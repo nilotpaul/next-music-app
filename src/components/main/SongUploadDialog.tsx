@@ -13,7 +13,7 @@ import axios, { AxiosError } from "axios";
 import { useToast } from "../ui/use-toast";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import closeOnBack from "@/utils/closeOnBack";
-import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog, openDialog } from "@/redux/slices/playerDialogSlice";
 import { cn } from "@/utils/utils";
 
 import {

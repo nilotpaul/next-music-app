@@ -1,4 +1,4 @@
-import { closeDialog } from "@/redux/slices/PlayerDialogSlice";
+import { closeDialog } from "@/redux/slices/playerDialogSlice";
 import { AnyAction, Dispatch } from "@reduxjs/toolkit";
 
 export default function closeOnBack(
