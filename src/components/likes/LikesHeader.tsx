@@ -29,8 +29,7 @@ const LikesHeader = ({ likedSongs, session }: LikesHeaderProps) => {
         <div className="flex items-center gap-x-2 md:pb-1">
           <Avatar className="uppercase">
             <AvatarFallback>
-              {session.user.name?.split(" ")[0].slice(0, 1)! +
-                session.user.name?.split(" ")[1].slice(0, 1)!}
+              {session.user.name?.split(" ")[0].slice(0, 1)}
             </AvatarFallback>
             <AvatarImage
               src={session.user.image!}

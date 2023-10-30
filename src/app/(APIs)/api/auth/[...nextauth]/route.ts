@@ -69,9 +69,16 @@ export const authOptions: AuthOptions = {
   ],
 
   callbacks: {
-    jwt: async ({ token, user }) => {
+    jwt: async ({ token, user, trigger, session }) => {
       if (user) {
         token.id = user.id;
+      }
+
+      if (trigger === "update") {
+        return {
+          ...token,
+          ...session.user,
+        };
       }
 
       return token;
@@ -85,7 +92,9 @@ export const authOptions: AuthOptions = {
           },
           include: {
             accounts: {
-              where: { user: { email: session.user.email } },
+              select: {
+                provider: true,
+              },
             },
           },
         });
@@ -96,6 +105,7 @@ export const authOptions: AuthOptions = {
           session.user.artistName = userDb.artistName;
           session.user.createdAt = userDb.createdAt;
           session.provider = userDb.accounts[0].provider;
+          session.user.image = userDb.image;
         }
       }
 

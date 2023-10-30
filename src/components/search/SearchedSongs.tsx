@@ -2,7 +2,7 @@
 
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { MAX_SEARCH_RESULTS_QUANTITY } from "@/utils/searchUtils";
 import { Song } from "@/types/songs";
 import { useEffect, useRef } from "react";

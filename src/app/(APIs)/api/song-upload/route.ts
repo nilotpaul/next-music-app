@@ -4,6 +4,7 @@ import {
   songUpload,
   TypedFormDataBackend,
   type SongUploadBackend,
+  SongUploadZodType,
 } from "@/validations/songUpload";
 import { NextRequest, NextResponse } from "next/server";
 import { supabaseRoute } from "@/lib/SupabaseClient";
@@ -25,7 +26,7 @@ export async function POST(req: NextRequest) {
 
     const formData = (await req.formData()) as TypedFormDataBackend;
 
-    const body = {
+    const body: SongUploadZodType = {
       artistName: formData.get("artistName"),
       title: formData.get("title"),
       file: formData.get("file"),
@@ -83,7 +84,7 @@ export async function POST(req: NextRequest) {
       );
 
     if (supaImageErr) {
-      return new NextResponse("Couldn't upload the image.", { status: 500 });
+      return new NextResponse("failed to upload the image.", { status: 500 });
     }
 
     const { data: supaSong, error: supaSongErr } = await supabase.storage
@@ -99,7 +100,7 @@ export async function POST(req: NextRequest) {
       );
 
     if (supaSongErr) {
-      return new NextResponse("Couldn't upload the mp3 file.", { status: 500 });
+      return new NextResponse("failed upload the mp3 file.", { status: 500 });
     }
 
     const uploadedSong = await prisma.songs.create({

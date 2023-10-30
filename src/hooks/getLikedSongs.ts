@@ -6,6 +6,7 @@ import "server-only";
 
 export const getLikedSongs = cache(async () => {
   const session = await userSession();
+
   if (!session || !session.user) {
     return [];
   }
@@ -23,5 +24,5 @@ export const getLikedSongs = cache(async () => {
     return [];
   }
 
-  return likedSongs.likedSongs;
+  return likedSongs.likedSongs ?? [];
 });

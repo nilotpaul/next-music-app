@@ -4,9 +4,9 @@ import type { Metadata } from "next";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
 import { Poppins } from "next/font/google";
+import SessionProvider from "@/lib/SessionProvider";
 
 import "./globals.css";
-import "remixicon/fonts/remixicon.css";
 
 const montserrat = Poppins({
   subsets: ["latin"],
@@ -27,11 +27,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={montserrat.className}>
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
-          <ReduxProvider>
-            <ReactQueryProvider>
-              <main>{children}</main>
-            </ReactQueryProvider>
-          </ReduxProvider>
+          <SessionProvider>
+            <ReduxProvider>
+              <ReactQueryProvider>
+                <main>{children}</main>
+              </ReactQueryProvider>
+            </ReduxProvider>
+          </SessionProvider>
         </ThemeProvider>
         <Toaster />
       </body>

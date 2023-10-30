@@ -72,21 +72,27 @@ model Session {
 }
 
 model User {
-  id            String     @id @default(cuid()) @map("id")
+  id            String    @id @default(cuid()) @map("id")
   name          String?
-  email         String?    @unique
+  email         String?   @unique
   password      String?
   emailVerified DateTime?
   image         String?
-  isArtist      Boolean    @default(false)
+  isArtist      Boolean   @default(false)
   artistName    String?
-  createdAt     DateTime   @default(now())
-  updatedAt     DateTime   @updatedAt
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
   accounts      Account[]
   sessions      Session[]
-  Song          Songs[]
-  likedSongs    String[]
-  Playlist      Playlist[]
+
+  Song       Songs[]
+  likedSongs String[]
+  Playlist   Playlist[]
+
+  stripeCustomerId      String?   @unique
+  stripeSubscriptionId  String?   @unique
+  stripePriceId         String?
+  stripeSubscriptionEnd DateTime?
 
   @@map("users")
 }

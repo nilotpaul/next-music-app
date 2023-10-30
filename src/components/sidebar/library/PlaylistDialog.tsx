@@ -7,7 +7,7 @@ import {
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { cn } from "@/utils/utils";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { Playlist } from "@/types/playlist";
 import { useCrypto } from "@/hooks/useCrypto";
@@ -126,6 +126,10 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
             description: err.response?.data,
             variant: "destructive",
           });
+          if (err.response?.status === 403) {
+            router.push("/subscription");
+            dispatch(openDialog("subscription"));
+          }
         } else {
           toast({
             title: "OPPS",
@@ -145,7 +149,7 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
     },
   );
 
-  const onOpenChange = () => {
+  const onOpenChange = useCallback(() => {
     if (!session?.user) {
       toast({
         title: "OPPS",
@@ -161,9 +165,8 @@ const PlaylistDialog = ({ children, session }: PlaylistDialogProps) => {
       router.push("#playlist-create", { scroll: false });
     } else {
       dispatch(closeDialog("playlist-create"));
-      router.back();
     }
-  };
+  }, [dispatch, session, dialogs, router, toast]);
 
   return (
     <Dialog

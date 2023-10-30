@@ -29,15 +29,15 @@ export type SongUploadClient = Pick<
 };
 
 export type TypedFormData = FormData & {
-  set(name: "artistName"): string | null;
-  set(name: "title"): string | null;
-  set(name: "image"): FileList[0] | null;
-  set(name: "file"): FileList[0] | null;
+  set(name: "artistName"): string;
+  set(name: "title"): string;
+  set(name: "image"): FileList[0];
+  set(name: "file"): FileList[0];
 };
 
 export type TypedFormDataBackend = FormData & {
-  get(name: "artistName"): string | null;
-  get(name: "title"): string | null;
-  get(name: "image"): FileList[0] | null;
-  get(name: "file"): FileList[0] | null;
+  get(name: "artistName"): string;
+  get(name: "title"): string;
+  get(name: "image"): FileList[0];
+  get(name: "file"): FileList[0];
 };

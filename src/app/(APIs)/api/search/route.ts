@@ -1,15 +1,29 @@
 import { getImageUrl, getSongUrl } from "@/hooks/getAllSongs";
 import { prisma } from "@/lib/PrismaClient";
+import { userSession } from "@/lib/userSession";
+import { getUserSubscription } from "@/utils/getUserSubscription";
 import { MAX_SEARCH_RESULTS_QUANTITY } from "@/utils/searchUtils";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
+  const session = await userSession();
+  const subscriptionStatus = await getUserSubscription();
   const { searchParams } = new URL(req.url);
 
   const searchQuery = searchParams.get("q");
   const skip = searchParams.get("skip");
 
   try {
+    if (!session || !session.user.email) {
+      return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    if (!subscriptionStatus.isSubscribed) {
+      return new NextResponse("You need to have a premium plan to continue.", {
+        status: 403,
+      });
+    }
+
     if (!searchQuery) {
       return new NextResponse("Invalid query.", { status: 400 });
     }

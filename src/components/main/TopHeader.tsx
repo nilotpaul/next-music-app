@@ -1,10 +1,10 @@
 "use client";
 
-import { useState } from "react";
 import Link from "next/link";
 import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
+import useSearchParams from "@/hooks/useSearchParams";
 
 import { ChevronLeft, ChevronRight, User2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
@@ -20,12 +20,12 @@ type TopHeaderProps = {
 };
 
 const TopHeader = ({ session }: TopHeaderProps) => {
-  const [closePopover, setClosePopover] = useState(false);
   const router = useRouter();
+  const { getQueryParams } = useSearchParams();
 
   return (
     <div className="flex w-full items-center justify-between">
-      <Link href="/" className="text-xl md:hidden">
+      <Link href="/" className="text-xl text-primary md:hidden">
         Melodify
       </Link>
       <div className="hidden space-x-4 md:block">
@@ -53,12 +53,17 @@ const TopHeader = ({ session }: TopHeaderProps) => {
         </ToolTip>
       </div>
       {session?.user ? (
-        <Popover open={closePopover} onOpenChange={setClosePopover}>
+        <Popover>
           <PopoverTrigger>
             {session.user.image ? (
               <Avatar className="relative h-8 w-8 cursor-pointer transition-all hover:scale-105">
                 <AvatarImage
-                  src={session?.user.image ?? ""}
+                  src={
+                    session?.user.image! +
+                    `?cache=${
+                      getQueryParams("cache") ? getQueryParams("cache") : ""
+                    }`
+                  }
                   alt={
                     session.user.name?.split(" ")[0] ||
                     session.user.name ||
@@ -66,9 +71,8 @@ const TopHeader = ({ session }: TopHeaderProps) => {
                   }
                   referrerPolicy="no-referrer"
                 />
-                <AvatarFallback className="text-base">
-                  {session?.user.name?.split(" ")[0].slice(0, 1) +
-                    session?.user.name?.split(" ")[1].slice(0, 1)! || (
+                <AvatarFallback className="text-base capitalize">
+                  {session?.user.name?.split(" ")[0].slice(0, 1) || (
                     <User2
                       size={32}
                       className="cursor-pointer rounded-full bg-black p-1.5"
@@ -83,10 +87,7 @@ const TopHeader = ({ session }: TopHeaderProps) => {
               />
             )}
           </PopoverTrigger>
-          <PopoverContent
-            onClick={() => setClosePopover(false)}
-            className="relative -left-10 w-[220px] p-1.5"
-          >
+          <PopoverContent className="relative -left-10 w-[220px] p-1.5">
             <Button className="w-full justify-start" variant="ghost" asChild>
               <Link href="/profile">Profile</Link>
             </Button>

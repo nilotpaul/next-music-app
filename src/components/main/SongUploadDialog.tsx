@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
@@ -11,6 +11,9 @@ import { useRouter } from "next/navigation";
 import { useMutation } from "@tanstack/react-query";
 import axios, { AxiosError } from "axios";
 import { useToast } from "../ui/use-toast";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import closeOnBack from "@/utils/closeOnBack";
+import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
 import { cn } from "@/utils/utils";
 
 import {
@@ -33,9 +36,16 @@ type SongUploadDialogProps = {
 };
 
 const SongUploadDialog = ({ children, name }: SongUploadDialogProps) => {
-  const [isOpen, setIsOpen] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
+  const { dialogs } = useAppSelector((state) => state.playerDialogSlice);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const cleanup = closeOnBack("upload", dispatch, dialogs);
+
+    return cleanup;
+  }, [dispatch, dialogs]);
 
   const {
     register,
@@ -86,7 +96,7 @@ const SongUploadDialog = ({ children, name }: SongUploadDialogProps) => {
 
         reset();
         router.refresh();
-        setIsOpen(false);
+        dispatch(closeDialog("upload"));
       },
 
       onError: (err) => {
@@ -119,8 +129,17 @@ const SongUploadDialog = ({ children, name }: SongUploadDialogProps) => {
     },
   );
 
+  const onOpenChange = useCallback(() => {
+    if (!dialogs.includes("upload")) {
+      dispatch(openDialog("upload"));
+      router.push("#upload", { scroll: false });
+    } else {
+      dispatch(closeDialog("upload"));
+    }
+  }, [dialogs, dispatch, router]);
+
   return (
-    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+    <Dialog open={dialogs.includes("upload")} onOpenChange={onOpenChange}>
       <DialogTrigger className="w-full" asChild>
         {children}
       </DialogTrigger>
@@ -161,6 +180,7 @@ const SongUploadDialog = ({ children, name }: SongUploadDialogProps) => {
               <Input
                 type="text"
                 placeholder="Song Title"
+                className="h-11 md:h-9"
                 {...register("title")}
               />
               <span

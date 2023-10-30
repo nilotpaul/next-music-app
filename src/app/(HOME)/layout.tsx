@@ -9,7 +9,9 @@ import TopHeader from "@/components/main/TopHeader";
 import GreenGradiant from "@/components/extras/GreenGradiant";
 import { Separator } from "@/components/ui/separator";
 import BottomMenu from "@/components/mobile/BottomMenu";
-import { prisma } from "@/lib/PrismaClient";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export default async function HomeLayout({
   children,
@@ -21,6 +23,8 @@ export default async function HomeLayout({
     getPlaylists(),
     userSession(),
   ]);
+
+  console.log(session);
 
   return (
     <main className="h-screen min-h-[400px] max-w-[2400px]">

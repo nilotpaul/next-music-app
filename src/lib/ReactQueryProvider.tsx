@@ -10,6 +10,8 @@ import {
 import { AxiosError } from "axios";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
+import { useAppDispatch, useAppSelector } from "@/redux/store";
+import { openDialog } from "@/redux/slices/PlayerDialogSlice";
 
 export default function ReactQueryProvider({
   children,
@@ -18,6 +20,8 @@ export default function ReactQueryProvider({
 }) {
   const { toast } = useToast();
   const router = useRouter();
+  const { dialogs } = useAppSelector((state) => state.playerDialogSlice);
+  const dispatch = useAppDispatch();
 
   const [queryClient] = useState(
     () =>
@@ -30,6 +34,17 @@ export default function ReactQueryProvider({
                 description: "You need to login to continue.",
                 variant: "destructive",
               });
+            } else if (
+              err instanceof AxiosError &&
+              err.response?.status === 403
+            ) {
+              toast({
+                title: err.response.status.toString(),
+                description: "You need to have a premium plan to continue.",
+                variant: "destructive",
+              });
+              router.push("/subscription");
+              dispatch(openDialog("subscription"));
             } else {
               toast({
                 title: "OPPS",
@@ -44,6 +59,17 @@ export default function ReactQueryProvider({
           onError: (err) => {
             if (err instanceof AxiosError && err.response?.status === 401) {
               router.push("/login");
+            } else if (
+              err instanceof AxiosError &&
+              err.response?.status === 403
+            ) {
+              toast({
+                title: err.response.status.toString(),
+                description: "You need to have a premium plan to continue.",
+                variant: "destructive",
+              });
+              router.push("/subscription");
+              dispatch(openDialog("subscription"));
             }
           },
         }),

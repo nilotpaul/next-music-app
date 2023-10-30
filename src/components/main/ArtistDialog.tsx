@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { creatorJoin, type CreatorJoin } from "@/validations/creator";
@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import { cn } from "@/utils/utils";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { closeDialog, openDialog } from "@/redux/slices/PlayerDialogSlice";
+import closeOnBack from "@/utils/closeOnBack";
 
 import { Checkbox } from "../ui/checkbox";
 import {
@@ -35,6 +36,12 @@ const ArtistDialog = ({ children }: ArtistModalProps) => {
   const { toast } = useToast();
   const { dialogs } = useAppSelector((state) => state.playerDialogSlice);
   const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    const cleanup = closeOnBack("artist-registe", dispatch, dialogs);
+
+    return cleanup;
+  }, [dispatch, dialogs]);
 
   const {
     register,
@@ -85,15 +92,14 @@ const ArtistDialog = ({ children }: ArtistModalProps) => {
     },
   );
 
-  const onOpenChange = () => {
+  const onOpenChange = useCallback(() => {
     if (!dialogs.includes("artist-register")) {
       dispatch(openDialog("artist-register"));
-      router.push("#artist-register");
+      router.push("#artist-register", { scroll: false });
     } else {
       dispatch(closeDialog("artist-register"));
-      router.back();
     }
-  };
+  }, [dispatch, dialogs, router]);
 
   return (
     <Dialog

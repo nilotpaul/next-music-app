@@ -1,15 +1,23 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
+import { getUserSubscription } from "@/utils/getUserSubscription";
 import { createPlaylist } from "@/validations/createPlaylist";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 
 export async function POST(req: NextRequest) {
   const session = await userSession();
+  const subscriptionStatus = await getUserSubscription();
 
   try {
     if (!session || !session.user) {
       return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    if (!subscriptionStatus.isSubscribed) {
+      return new NextResponse("You need to have a premium plan to continue.", {
+        status: 403,
+      });
     }
 
     const body = await req.json();
