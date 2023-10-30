@@ -1,6 +1,6 @@
 import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
-import { removeSongFromPlaylist } from "@/validations/playlistMutations";
+import { removeSongFromPlaylist } from "../../../../validations/playlistMutations";
 import { NextRequest, NextResponse } from "next/server";
 import * as z from "zod";
 
