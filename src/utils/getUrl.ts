@@ -1,6 +1,6 @@
 const getUrl = (path: string) => {
   if (typeof window !== "undefined") return path;
-  if (process.env.VERCEL_URL) {
+  if (process.env.NEXTAUTH_URL) {
     return `https://${process.env.VERCEL_URL}${path}`;
   } else {
     return `http://localhost:3000${path}`;
