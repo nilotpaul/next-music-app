@@ -47,7 +47,7 @@ export async function POST(req: NextRequest) {
         data: {
           type: "email-verification",
           provider: "credentials",
-          providerAccountId: "credentials-provider-npaul",
+          providerAccountId: randomId,
           userId: user.id,
         },
       });
