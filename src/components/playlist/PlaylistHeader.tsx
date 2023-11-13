@@ -18,6 +18,7 @@ const Header = ({ playlist, session }: HeaderProps) => {
           alt={playlist.more[0].songDetails?.title!}
           fill
           className="rounded-lg shadow-xl"
+          sizes="(min-width: 780px) 200px, 243px"
         />
       </div>
       <div className="z-50 space-y-2 truncate">

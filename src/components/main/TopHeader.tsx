@@ -14,6 +14,7 @@ import { Separator } from "../ui/separator";
 import ToolTip from "../extras/ToolTip";
 import ArtistDialog from "./ArtistDialog";
 import SongUploadDialog from "./SongUploadDialog";
+import { cn } from "@/utils/utils";
 
 type TopHeaderProps = {
   session: Session | null;
@@ -24,7 +25,11 @@ const TopHeader = ({ session }: TopHeaderProps) => {
   const { getQueryParams } = useSearchParams();
 
   return (
-    <div className="flex w-full items-center justify-between">
+    <div
+      className={cn("flex w-full items-center justify-between", {
+        "hidden md:flex": !session || !session?.user,
+      })}
+    >
       <Link href="/" className="text-xl text-primary md:hidden">
         Melodify
       </Link>

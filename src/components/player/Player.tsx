@@ -71,7 +71,7 @@ const Player = ({ likedSongs, playlists, session }: PlayerProps) => {
     <>
       {songUrl && (
         <div>
-          <div className="fixed bottom-14 left-1/2 mx-auto hidden h-fit w-[95%] -translate-x-1/2 grid-cols-[1fr_2fr_1fr] place-items-center items-center justify-between rounded-lg bg-black p-2 md:bottom-0 md:left-0 md:grid md:h-[5.5rem] md:w-full md:translate-x-0 md:items-start md:gap-x-8 md:rounded-none md:p-4 xl:gap-x-20 2xl:gap-x-28">
+          <div className="fixed bottom-14 left-1/2 mx-auto hidden h-fit w-[95%] -translate-x-1/2 grid-cols-[1fr_2fr_1fr] place-items-center items-center justify-between rounded-lg bg-black p-2 md:bottom-0 md:left-0 md:z-[105] md:grid md:h-[5.5rem] md:w-full md:translate-x-0 md:items-start md:gap-x-8 md:rounded-none md:p-4 xl:gap-x-20 2xl:gap-x-28">
             <audio
               ref={audioRef}
               src={songUrl ? songUrl : undefined}

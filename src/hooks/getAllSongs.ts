@@ -15,7 +15,7 @@ export const getAllSongs = cache(
         : {
             createdAt: "desc",
           },
-      take: take ? take : 10,
+      take: take ? take : undefined,
     });
 
     const songData = songs.map(async (song) => {

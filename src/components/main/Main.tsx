@@ -1,20 +1,48 @@
 import { getAllSongs } from "@/hooks/getAllSongs";
+import shuffler from "@/utils/shuffler";
 
 import NewestSongs from "./SongsList/NewestSongs";
-
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
 
 const Main = async () => {
   const songs = await getAllSongs();
 
+  const onlyForU = shuffler([...songs]).slice(0, 6);
+
+  const favSongs = [
+    "a cruel angel's thesis",
+    "beautiful world",
+    "mr. lonely",
+    "wild angel",
+    "kiss of death",
+    "tum se hi",
+  ];
+  const myFavs = [...songs].filter((song) =>
+    favSongs.includes(song.title.toLowerCase()),
+  );
+
   return (
-    <section className="relative z-50 space-y-3">
-      <h3 className="mt-1 text-xl font-semibold capitalize md:mt-0 md:text-2xl">
-        Newly Added Songs
-      </h3>
-      <NewestSongs songs={songs} />
-    </section>
+    <div className="space-y-8">
+      <section className="relative z-50 md:space-y-3">
+        <h3 className="mt-1 text-xl font-semibold capitalize md:mt-0 md:text-2xl">
+          Newly Added Songs
+        </h3>
+        <NewestSongs songs={songs} priority />
+      </section>
+
+      <section className="relative z-50 md:space-y-3">
+        <h3 className="mt-1 text-xl font-semibold capitalize md:mt-0 md:text-2xl">
+          Only For You
+        </h3>
+        <NewestSongs songs={onlyForU} />
+      </section>
+
+      <section className="relative z-50 md:space-y-3">
+        <h3 className="mt-1 text-xl font-semibold capitalize md:mt-0 md:text-2xl">
+          Paul&apos;s Favourites
+        </h3>
+        <NewestSongs songs={myFavs} />
+      </section>
+    </div>
   );
 };
 

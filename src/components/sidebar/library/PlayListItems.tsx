@@ -99,6 +99,7 @@ const PlayListItems = ({
                     alt={playlist.name}
                     fill
                     className="h-full w-full rounded-lg"
+                    sizes="(min-width: 860px) 51px, 35px"
                   />
                 )}
               </>

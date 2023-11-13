@@ -37,7 +37,7 @@ const MobilePlayerPreview = ({
         dispatch(openDialog("player"));
         router.push(pathname + "#player", { scroll: false });
       }}
-      className="fixed bottom-16 left-1/2 z-[80] mx-auto w-[95%] -translate-x-1/2 rounded-lg bg-[#5c2922cb] p-1.5"
+      className="fixed bottom-16 left-1/2 z-[100] mx-auto w-[95%] -translate-x-1/2 rounded-lg bg-[#5c2922cb] p-1.5 backdrop-blur-3xl backdrop-filter"
     >
       <div className="flex h-full w-full items-center justify-between gap-x-6 pr-2">
         <div className="flex items-center gap-x-2 truncate">
@@ -45,6 +45,7 @@ const MobilePlayerPreview = ({
             <Image
               src={song.image}
               alt={song.title}
+              priority
               fill
               className="h-full w-full rounded-md object-cover"
             />

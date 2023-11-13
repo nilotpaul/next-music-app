@@ -9,9 +9,6 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import ProfileUpdateDialog from "@/components/profile/ProfileUpdateDialog";
 
-export const dynamic = "force-dynamic";
-export const revalidate = 0;
-
 const ProfilePage = async ({
   searchParams,
 }: {
@@ -45,9 +42,9 @@ const ProfilePage = async ({
               alt={session.user.name!}
               fill
               referrerPolicy="no-referrer"
-              quality={100}
               priority
               className="h-full w-full rounded-full object-cover"
+              sizes="(min-width: 1040px) 230px, (min-width: 900px) 180px, (min-width: 780px) calc(36vw - 137px), (min-width: 380px) 100px, calc(20vw + 28px)"
             />
           )}
           <ProfileUpdateDialog />
@@ -80,13 +77,21 @@ const ProfilePage = async ({
                 <Link href={`/playlist/${playlist.id}`} key={playlist.id}>
                   <Card className="group relative flex w-full cursor-pointer items-center rounded-[0.4rem] border-none bg-transparent md:h-[15rem] md:min-h-[16.25rem] md:min-w-[11.3rem] md:flex-col md:items-start md:bg-secondary/40 md:transition-colors md:duration-300 md:hover:bg-muted md:hover:transition-colors md:hover:duration-300">
                     <CardHeader className="relative h-[85px] w-[85px] rounded-full md:h-full md:w-full md:rounded-none">
-                      <Image
-                        className="h-full w-full rounded-full p-4 md:rounded-[1.25rem]"
-                        src={playlist.songImages[0].publicUrl}
-                        alt={playlist.name}
-                        fill
-                        quality={100}
-                      />
+                      {!playlist.songImages[0].publicUrl ? (
+                        <Avatar className="items-center rounded-md p-6 md:h-full md:w-full md:p-0">
+                          <AvatarFallback className="absolute left-1/2 h-full w-full -translate-x-1/2 items-center rounded-full text-xl uppercase md:rounded-lg md:text-4xl">
+                            {playlist.name.slice(0, 2)}
+                          </AvatarFallback>
+                        </Avatar>
+                      ) : (
+                        <Image
+                          className="h-full w-full rounded-full p-4 md:rounded-[1.25rem]"
+                          src={playlist.songImages[0].publicUrl}
+                          alt={playlist.name}
+                          fill
+                          sizes="(min-width: 780px) 149px, 53px"
+                        />
+                      )}
                     </CardHeader>
                     <CardFooter className="flex flex-col items-start gap-y-1 p-0 md:mx-4 md:mb-3 md:px-0 md:pb-6">
                       <span className="truncate text-base font-semibold">

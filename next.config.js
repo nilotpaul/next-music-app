@@ -6,6 +6,9 @@ const nextConfig = {
   images: {
     domains: ["lh3.googleusercontent.com", "qltchobyicciqtaijftp.supabase.co"],
   },
+  optimizeFonts: true,
+  compress: true,
+  swcMinify: true,
 };
 
 module.exports = nextConfig;

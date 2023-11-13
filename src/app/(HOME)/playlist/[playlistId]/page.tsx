@@ -6,6 +6,8 @@ import { getImageUrl, getSongUrl } from "@/hooks/getAllSongs";
 import Header from "@/components/playlist/PlaylistHeader";
 import SongTable from "@/components/playlist/SongTable";
 
+export const revalidate = 600;
+
 type PlaylistPageProps = {
   params: {
     playlistId: string;

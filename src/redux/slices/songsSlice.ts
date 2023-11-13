@@ -56,6 +56,8 @@ export const songsSlice = createSlice({
     },
 
     playForward: (state) => {
+      state.isPlaying = true;
+
       if (
         state.currentIndex >= 0 &&
         state.currentIndex < state.homeQueue.length - 1
@@ -67,6 +69,8 @@ export const songsSlice = createSlice({
     },
 
     playBackward: (state) => {
+      state.isPlaying = true;
+
       if (state.currentIndex > 0) {
         state.currentIndex = state.currentIndex - 1;
       } else {

@@ -1,16 +1,46 @@
+"use client";
+
 import Image from "next/image";
 import { Song } from "@/types/songs";
+import { useEffect, useRef } from "react";
 
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import PlayPauseButton from "@/components/player/PlayPauseButton";
 
 type NewestSongsProps = {
   songs: Song[];
+  priority?: boolean;
 };
 
-const NewestSongs = ({ songs }: NewestSongsProps) => {
+const NewestSongs = ({ songs, priority = false }: NewestSongsProps) => {
+  const divRef = useRef<HTMLDivElement | null>(null);
+
+  useEffect(() => {
+    const elem = divRef.current;
+
+    if (elem) {
+      const scrollOnXAxis = (e: WheelEvent) => {
+        e.preventDefault();
+
+        elem.scrollBy({
+          behavior: "smooth",
+          left: e.deltaY < 0 ? -100 : 100,
+        });
+      };
+
+      elem.addEventListener("wheel", scrollOnXAxis);
+
+      return () => {
+        elem.removeEventListener("wheel", scrollOnXAxis);
+      };
+    }
+  }, [divRef]);
+
   return (
-    <div className="flex gap-3 overflow-hidden overflow-x-auto pt-2 md:pt-0">
+    <div
+      ref={divRef}
+      className="scroll_hide flex gap-3 overflow-hidden overflow-x-auto pt-2 md:pt-0"
+    >
       {songs.map((song, id) => (
         <Card
           key={song.id}
@@ -23,7 +53,8 @@ const NewestSongs = ({ songs }: NewestSongsProps) => {
               alt={song.title}
               quality={100}
               fill
-              priority
+              priority={priority}
+              sizes="(min-width: 780px) 149px, (min-width: 700px) 128px, 118px"
             />
           </CardHeader>
           <CardFooter className="mx-4 mb-3 flex flex-col items-start gap-y-1 px-0">

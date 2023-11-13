@@ -69,7 +69,7 @@ const MobilePlayer = ({
     <>
       <Card
         className={cn(
-          "visible fixed left-0 top-0 z-[100] h-screen w-screen translate-y-0 rounded-none bg-muted opacity-100 transition-all duration-300",
+          "visible fixed left-0 top-0 z-[105] h-screen w-screen translate-y-0 rounded-none bg-muted opacity-100 transition-all duration-300",
           {
             "invisible translate-y-[100%] opacity-0":
               !dialogs.includes("player"),
@@ -101,6 +101,7 @@ const MobilePlayer = ({
                 src={song.image}
                 alt={song.title}
                 fill
+                priority
                 className="h-full w-full object-cover"
               />
             </div>

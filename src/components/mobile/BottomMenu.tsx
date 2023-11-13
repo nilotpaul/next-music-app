@@ -25,7 +25,7 @@ const BottomMenu = ({ session, playlists, likedSongs }: BottomMenuProps) => {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 z-[99] w-full before:absolute before:h-full before:w-full before:bg-black before:opacity-30 after:z-0 md:hidden">
+      <div className="fixed bottom-0 left-0 z-[99] w-full backdrop-blur-sm backdrop-filter before:absolute before:h-full before:w-full before:bg-black/70 after:z-0 md:hidden">
         <div className="relative z-50 mb-2 h-full w-full py-3">
           <div className="flex h-full w-full items-center justify-around text-center">
             <Link

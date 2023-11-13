@@ -2,7 +2,7 @@
 
 import { useDebounce } from "@/hooks/useDebounce";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { MAX_SEARCH_RESULTS_QUANTITY } from "@/utils/searchUtils";
 import { Song } from "@/types/songs";
 import { useEffect, useRef } from "react";
@@ -45,7 +45,7 @@ const SearchedSongs = ({
     threshold: 1,
   });
 
-  const debouncedQ = useDebounce(q || "", 1000);
+  const debouncedQ = useDebounce(q || "", 600);
 
   const {
     data: songs,
@@ -102,6 +102,7 @@ const SearchedSongs = ({
       pageParams: [undefined],
       pages: [{ data: initialData, morePagesAvailable: false }],
     },
+    suspense: true,
   });
 
   useEffect(() => {
@@ -148,7 +149,7 @@ const SearchedSongs = ({
               <TableCell className="relative">
                 <span className="group-hover:hidden">{index + 1}</span>
                 <PlayPauseButton2
-                  queueName="likes"
+                  queueName="search"
                   songs={item.data}
                   index={index}
                   songId={song?.id}
@@ -160,6 +161,7 @@ const SearchedSongs = ({
                   alt={song?.title}
                   width={50}
                   height={50}
+                  priority
                 />
                 <div className="flex flex-col justify-center truncate">
                   <span className="cursor-pointer truncate text-base">

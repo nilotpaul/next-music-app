@@ -6,11 +6,14 @@ import SearchInput from "@/components/search/SearchInput";
 import SearchedSongs from "@/components/search/SearchedSongs";
 import { getUserSubscription } from "@/utils/getUserSubscription";
 
+export const revalidate = 0;
+
 type SearchPageProps = {
   searchParams: { q: string };
 };
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
+  await new Promise((resolve) => setTimeout(resolve, 3000));
   const { q } = searchParams;
   const [songs, likes, session, subStatus] = await Promise.all([
     getAllSongs({ title: "asc" }, 5),

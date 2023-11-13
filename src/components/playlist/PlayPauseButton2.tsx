@@ -52,7 +52,10 @@ const PlayPauseButton2 = ({
 
     if (
       queueName !== "" &&
-      (homeQueue.length === 0 || !queue || queue !== queueName)
+      (homeQueue.length === 0 ||
+        !queue ||
+        queue !== queueName ||
+        queueName === "search")
     ) {
       dispatch(setHomeQueue({ queue: queueName, songs }));
     }
