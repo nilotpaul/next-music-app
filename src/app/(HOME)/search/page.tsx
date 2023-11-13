@@ -13,7 +13,6 @@ type SearchPageProps = {
 };
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
   const { q } = searchParams;
   const [songs, likes, session, subStatus] = await Promise.all([
     getAllSongs({ title: "asc" }, 5),
