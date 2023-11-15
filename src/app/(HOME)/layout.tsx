@@ -16,7 +16,6 @@ export default async function HomeLayout({
 }: {
   children: React.ReactNode;
 }) {
-  await new Promise((resolve) => setTimeout(resolve, 3000));
   const [likedSongs, playlists, session] = await Promise.all([
     getLikedSongs(),
     getPlaylists(),
