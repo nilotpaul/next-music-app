@@ -112,7 +112,7 @@ const MobilePlayer = ({
                 alt={song.title}
                 fill
                 priority
-                sizes="(min-width: 780px) 149px, (min-width: 700px) 128px, 118px"
+                quality={100}
                 className="h-full w-full object-cover"
               />
             </div>
