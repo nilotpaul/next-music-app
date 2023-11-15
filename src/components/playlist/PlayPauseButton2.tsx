@@ -1,6 +1,7 @@
 "use client";
 
 import {
+  Queue,
   SongWithoutDate,
   playPause,
   setHomeQueue,
@@ -18,7 +19,7 @@ type PlayPauseButton2Props = {
   index: number;
   songId: string;
   playlistId?: string;
-  queueName: "home" | "search" | `playlist-${string}` | "likes" | "";
+  queueName: Queue;
   size?: number;
   className?: string;
 };

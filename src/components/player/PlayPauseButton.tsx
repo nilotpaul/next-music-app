@@ -3,6 +3,7 @@
 import { Song } from "@/types/songs";
 import { useAppSelector } from "@/redux/store";
 import {
+  Queue,
   SongWithoutDate,
   playPause,
   setHomeQueue,
@@ -22,7 +23,7 @@ type PlayPauseButtonProps = {
   size?: "default" | "sm" | "lg" | "xl" | "icon" | null | undefined;
   iconSize?: number;
   color?: "white" | "normal";
-  queueName: "home" | "search" | `playlist-${string}` | "likes" | "";
+  queueName: Queue;
 };
 
 const PlayPauseButton = ({

@@ -1,1 +1,1 @@
-export const MAX_SEARCH_RESULTS_QUANTITY = 9;
+export const MAX_SEARCH_RESULTS_QUANTITY = 8;

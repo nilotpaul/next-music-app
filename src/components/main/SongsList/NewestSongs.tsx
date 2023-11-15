@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { Song } from "@/types/songs";
 import { useEffect, useRef } from "react";
+import { Queue } from "@/redux/slices/songsSlice";
 
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import PlayPauseButton from "@/components/player/PlayPauseButton";
@@ -10,9 +11,14 @@ import PlayPauseButton from "@/components/player/PlayPauseButton";
 type NewestSongsProps = {
   songs: Song[];
   priority?: boolean;
+  queueName?: Queue;
 };
 
-const NewestSongs = ({ songs, priority = false }: NewestSongsProps) => {
+const NewestSongs = ({
+  songs,
+  priority = false,
+  queueName,
+}: NewestSongsProps) => {
   const divRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
@@ -64,7 +70,11 @@ const NewestSongs = ({ songs, priority = false }: NewestSongsProps) => {
             <span className="truncate text-sm text-neutral-400/80">
               {song.artistName}
             </span>
-            <PlayPauseButton queueName="home" currentIndex={id} songs={songs} />
+            <PlayPauseButton
+              queueName={queueName || ""}
+              currentIndex={id}
+              songs={songs}
+            />
           </CardFooter>
         </Card>
       ))}

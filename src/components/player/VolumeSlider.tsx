@@ -26,7 +26,7 @@ const VolumeSlider = ({
 
   return (
     <>
-      <NewestSongQueue queueName="Newest Song Queue">
+      <NewestSongQueue queueName="Home Songs Queue">
         <ListMusic
           size={20}
           className="cursor-pointer text-gray-300 hover:text-white"

@@ -162,7 +162,7 @@ const MobilePlayer = ({
                   onClick={() => dispatch(playForward())}
                 />
               </div>
-              <NewestSongQueue queueName="Newest Song Queue">
+              <NewestSongQueue queueName="Home Songs Queue">
                 <ListMusic
                   size={25}
                   className="cursor-pointer text-gray-300 hover:text-white"

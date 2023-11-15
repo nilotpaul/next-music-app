@@ -54,7 +54,7 @@ const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
       <SheetContent className="z-[999] w-full overflow-hidden overflow-y-auto bg-card md:w-fit md:bg-background">
         <SheetHeader>
           <SheetTitle className="font-bold">Queue</SheetTitle>
-          <SheetDescription>{queueName}</SheetDescription>
+          <SheetDescription>{queueName || "Queue"}</SheetDescription>
         </SheetHeader>
 
         <section className="mt-4 font-semibold md:font-normal">
@@ -88,6 +88,7 @@ const NewestSongQueue = ({ queueName, children }: NewestSongQueueProps) => {
               alt={homeQueue?.[currentIndex]?.title}
               height={45}
               width={45}
+              priority
               className="ml-1"
             />
             <div className="flex flex-col truncate font-semibold md:font-normal">
