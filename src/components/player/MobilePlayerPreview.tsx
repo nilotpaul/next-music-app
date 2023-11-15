@@ -47,6 +47,7 @@ const MobilePlayerPreview = ({
               alt={song.title}
               priority
               fill
+              sizes="(min-width: 780px) 149px, (min-width: 700px) 128px, 118px"
               className="h-full w-full rounded-md object-cover"
             />
           </div>

@@ -87,10 +87,20 @@ const MobilePlayer = ({
           />
           <div>
             <CardDescription className="uppercase">
-              PLAYING FROM {queue.startsWith("p") ? "Playlist" : queue}
+              PLAYING FROM{" "}
+              {queue.startsWith("p")
+                ? "Playlist"
+                : queue.startsWith("home")
+                ? "Home"
+                : queue}
             </CardDescription>
             <CardTitle className="text-sm font-semibold capitalize">
-              {queue.startsWith("p") ? "Playlist" : queue} Songs
+              {queue.startsWith("p")
+                ? "Playlist"
+                : queue.startsWith("home")
+                ? "Home"
+                : queue}{" "}
+              Songs
             </CardTitle>
           </div>
         </CardHeader>
@@ -102,6 +112,7 @@ const MobilePlayer = ({
                 alt={song.title}
                 fill
                 priority
+                sizes="(min-width: 780px) 149px, (min-width: 700px) 128px, 118px"
                 className="h-full w-full object-cover"
               />
             </div>

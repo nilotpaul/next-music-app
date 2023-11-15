@@ -88,6 +88,7 @@ const Player = ({ likedSongs, playlists, session }: PlayerProps) => {
                     alt={song.title}
                     fill
                     className="rounded-lg"
+                    sizes="(min-width: 780px) 149px, (min-width: 700px) 128px, 118px"
                   />
                 </div>
                 <div className="flex w-max flex-col md:truncate">

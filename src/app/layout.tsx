@@ -7,6 +7,9 @@ import { Poppins } from "next/font/google";
 import SessionProvider from "@/lib/SessionProvider";
 
 import "./globals.css";
+import { Suspense } from "react";
+import HomeLoading from "./(HOME)/_loadings/HomeLoading";
+import RootLoading from "./(HOME)/_loadings/RootLoading";
 
 const montserrat = Poppins({
   subsets: ["latin"],
@@ -54,7 +57,9 @@ export default function RootLayout({
           <SessionProvider>
             <ReduxProvider>
               <ReactQueryProvider>
-                <main>{children}</main>
+                <Suspense fallback={<RootLoading />}>
+                  <main>{children}</main>
+                </Suspense>
               </ReactQueryProvider>
             </ReduxProvider>
           </SessionProvider>
