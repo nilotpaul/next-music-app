@@ -154,7 +154,7 @@ const SearchedSongs = ({
                     : undefined
                 }
                 key={song?.id}
-                className="group cursor-default border-b-0"
+                className="group cursor-default space-y-2 border-b-0"
               >
                 <TableCell className="relative">
                   <span className="group-hover:hidden">
