@@ -145,7 +145,6 @@ const SearchedSongs = ({
       <TableBody className="relative translate-y-4">
         {songs?.pages.flatMap((item, pageIndex) =>
           item.data.map((song, index) => {
-            console.log(item);
             return (
               <TableRow
                 ref={
