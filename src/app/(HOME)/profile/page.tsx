@@ -77,7 +77,7 @@ const ProfilePage = async ({
                 <Link href={`/playlist/${playlist.id}`} key={playlist.id}>
                   <Card className="group relative flex w-full cursor-pointer items-center rounded-[0.4rem] border-none bg-transparent md:h-[15rem] md:min-h-[16.25rem] md:min-w-[11.3rem] md:flex-col md:items-start md:bg-secondary/40 md:transition-colors md:duration-300 md:hover:bg-muted md:hover:transition-colors md:hover:duration-300">
                     <CardHeader className="relative h-[85px] w-[85px] rounded-full md:h-full md:w-full md:rounded-none">
-                      {!playlist.songImages[0].publicUrl ? (
+                      {!playlist.songImages[0]?.publicUrl ? (
                         <Avatar className="items-center rounded-md p-6 md:h-full md:w-full md:p-0">
                           <AvatarFallback className="absolute left-1/2 h-full w-full -translate-x-1/2 items-center rounded-full text-xl uppercase md:rounded-lg md:text-4xl">
                             {playlist.name.slice(0, 2)}
