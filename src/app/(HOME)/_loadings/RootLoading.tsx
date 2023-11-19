@@ -9,7 +9,7 @@ const RootLoading = async () => {
   return (
     <div className="mx-auto grid h-full w-full grid-cols-[1fr_minmax(300px_,_100%)] overflow-x-hidden overflow-y-hidden md:gap-x-4 md:px-3 md:py-2">
       <section>
-        <Sidebar likedSongs={[]} playlists={[]} session={null} />
+        <Sidebar likedSongs={[]} playlists={[]} session={null} loading />
       </section>
       <Card className="relative h-full overflow-x-hidden rounded-none bg-popover/80 from-card to-background pb-12 md:overflow-y-auto md:rounded-lg md:bg-gradient-to-b md:pb-0">
         <CardHeader className="left-0 top-0 px-4 pb-4 pt-4 md:sticky md:z-[99] md:px-6">

@@ -1,7 +1,8 @@
+"use client";
+
 import { useEffect, useRef, useState } from "react";
 import useSearchParams from "@/hooks/useSearchParams";
 import { usePathname, useRouter } from "next/navigation";
-import { useDebounce } from "@/hooks/useDebounce";
 import { cn } from "@/utils/utils";
 
 import { Button } from "@/components/ui/button";

@@ -17,9 +17,15 @@ type PlaylistsProps = {
   playlists: PlaylistType;
   likedSongs: string[];
   session: Session | null;
+  loading?: boolean;
 };
 
-const Sidebar = ({ playlists, likedSongs, session }: PlaylistsProps) => {
+const Sidebar = ({
+  playlists,
+  likedSongs,
+  session,
+  loading = false,
+}: PlaylistsProps) => {
   const { getQueryParams } = useSearchParams();
   const sidebarState = JSON.parse(getQueryParams("s") ?? "true");
   const [isSidebarOpen, setIsSidebarOpen] = useState(sidebarState);
@@ -43,7 +49,7 @@ const Sidebar = ({ playlists, likedSongs, session }: PlaylistsProps) => {
             setIsSidebarOpen={setIsSidebarOpen}
           />
           <CardContent className="overflow-hidden px-0 py-2 pb-0 pt-2">
-            {session && session?.user ? (
+            {!loading ? (
               <Playlist
                 isSidebarOpen={isSidebarOpen}
                 likedSongs={likedSongs}
