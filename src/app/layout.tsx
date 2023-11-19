@@ -57,9 +57,9 @@ export default function RootLayout({
           <SessionProvider>
             <ReduxProvider>
               <ReactQueryProvider>
-                <Suspense fallback={<RootLoading />}>
-                  <main>{children}</main>
-                </Suspense>
+                <main>
+                  <Suspense fallback={<RootLoading />}>{children}</Suspense>
+                </main>
               </ReactQueryProvider>
             </ReduxProvider>
           </SessionProvider>

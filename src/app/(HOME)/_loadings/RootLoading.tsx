@@ -15,7 +15,7 @@ const RootLoading = async () => {
         <CardHeader className="left-0 top-0 px-4 pb-4 pt-4 md:sticky md:z-[99] md:px-6">
           <CardTitle>
             <div className="hidden md:block">
-              <TopHeader session={null} />
+              <TopHeader session={null} loading />
             </div>
 
             <div className="md:hidden">

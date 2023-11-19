@@ -10,6 +10,8 @@ import { Card, CardContent, CardHeader } from "../ui/card";
 import SidebarTop from "./SidebarTop";
 import Playlist from "./library/Playlist";
 import LibraryHeader from "./library/LibraryHeader";
+import { Skeleton } from "../ui/skeleton";
+import Filters from "./library/Filters";
 
 type PlaylistsProps = {
   playlists: PlaylistType;
@@ -41,12 +43,28 @@ const Sidebar = ({ playlists, likedSongs, session }: PlaylistsProps) => {
             setIsSidebarOpen={setIsSidebarOpen}
           />
           <CardContent className="overflow-hidden px-0 py-2 pb-0 pt-2">
-            <Playlist
-              isSidebarOpen={isSidebarOpen}
-              likedSongs={likedSongs}
-              playlists={playlists}
-              session={session}
-            />
+            {session && session?.user ? (
+              <Playlist
+                isSidebarOpen={isSidebarOpen}
+                likedSongs={likedSongs}
+                playlists={playlists}
+                session={session}
+              />
+            ) : (
+              <>
+                <section className="w-full py-3">
+                  <Filters />
+                </section>
+                {Array(2)
+                  .fill(0)
+                  .map((_, index) => (
+                    <Skeleton
+                      key={index}
+                      className="mt-4 h-14 w-full rounded-lg p-3 py-2"
+                    />
+                  ))}
+              </>
+            )}
           </CardContent>
         </CardHeader>
       </Card>
