@@ -1,9 +1,17 @@
 import { userSession } from "@/lib/userSession";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
+
+export const metadata: Metadata = {
+  title: {
+    absolute: "Auth Error",
+  },
+  description: "OOPS! Something went wrong.",
+};
 
 const AuthErrorPage = async ({
   searchParams,

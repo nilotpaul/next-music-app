@@ -2,9 +2,15 @@ import { getAllSongs } from "@/hooks/getAllSongs";
 import { getLikedSongs } from "@/hooks/getLikedSongs";
 import { userSession } from "@/lib/userSession";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
 import LikesHeader from "@/components/likes/LikesHeader";
 import LikesTable from "@/components/likes/LikesTable";
+
+export const metadata: Metadata = {
+  title: "Likes",
+  description: "Liked Songs Page",
+};
 
 const LikedPage = async () => {
   const session = await userSession();

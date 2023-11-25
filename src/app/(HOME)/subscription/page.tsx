@@ -1,11 +1,17 @@
 import { getUserSubscription } from "@/utils/getUserSubscription";
+import { format } from "date-fns";
+import { Metadata } from "next";
 
 import SubscriptionDialog from "@/components/subscription/SubscriptionDialog";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Gem } from "lucide-react";
 import { cn } from "@/utils/utils";
 import Buttons from "@/components/subscription/Buttons";
-import { format } from "date-fns";
+
+export const metadata: Metadata = {
+  title: "Subscription",
+  description: "User Subscription Page",
+};
 
 const SubscriptionPage = async () => {
   const subscriptionStatus = await getUserSubscription();

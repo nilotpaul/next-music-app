@@ -2,12 +2,18 @@ import { getPlaylists } from "@/hooks/getPlaylists";
 import { userSession } from "@/lib/userSession";
 import Image from "next/image";
 import { redirect } from "next/navigation";
+import { Metadata } from "next";
 
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import ProfileUpdateDialog from "@/components/profile/ProfileUpdateDialog";
+
+export const metadata: Metadata = {
+  title: "Profile",
+  description: "User Profile Page",
+};
 
 const ProfilePage = async ({
   searchParams,

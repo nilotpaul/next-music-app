@@ -1,12 +1,18 @@
 import { getAllSongs } from "@/hooks/getAllSongs";
 import { getLikedSongs } from "@/hooks/getLikedSongs";
 import { userSession } from "@/lib/userSession";
+import { getUserSubscription } from "@/utils/getUserSubscription";
+import { Metadata } from "next";
 
 import SearchInput from "@/components/search/SearchInput";
 import SearchedSongs from "@/components/search/SearchedSongs";
-import { getUserSubscription } from "@/utils/getUserSubscription";
 
 export const revalidate = 0;
+
+export const metadata: Metadata = {
+  title: "Search",
+  description: "Song search page",
+};
 
 type SearchPageProps = {
   searchParams: { q: string };

@@ -17,7 +17,10 @@ const montserrat = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Melodify",
+  title: {
+    default: "Melodify",
+    template: `%s | Melodify`,
+  },
   description:
     "Discover, stream, and create playlists from an extensive library of songs, artists, and genres.",
   keywords: [

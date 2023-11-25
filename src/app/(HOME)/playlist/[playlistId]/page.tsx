@@ -2,11 +2,63 @@ import { prisma } from "@/lib/PrismaClient";
 import { userSession } from "@/lib/userSession";
 import { notFound } from "next/navigation";
 import { getImageUrl, getSongUrl } from "@/hooks/getAllSongs";
+import { cache } from "react";
+import { Metadata, ResolvingMetadata } from "next";
+import getUrl from "@/utils/getUrl";
 
 import Header from "@/components/playlist/PlaylistHeader";
 import SongTable from "@/components/playlist/SongTable";
 
-export const revalidate = 600;
+export async function generateMetadata(
+  {
+    params,
+  }: {
+    params: {
+      playlistId: string;
+    };
+  },
+  parent: ResolvingMetadata,
+): Promise<Metadata> {
+  const { playlistId } = params;
+
+  if (!playlistId) {
+    return {
+      title: {
+        absolute: "Not Found",
+      },
+      description: "The page you are looking for doesn't exist.",
+    };
+  }
+
+  const playlistDetails = await getPlaylistById(playlistId);
+
+  if (!playlistDetails) {
+    return {
+      title: {
+        absolute: "Not Found",
+      },
+      description: "The page you are looking for doesn't exist.",
+    };
+  }
+
+  const prevImages = (await parent).openGraph?.images || [];
+
+  return {
+    metadataBase: new URL(getUrl("")),
+    title: playlistDetails.playlist.name,
+    description: `${playlistDetails.playlist.name} Playlist`,
+    openGraph: {
+      title: `${playlistDetails.playlist.name} image`,
+      images: [
+        ...prevImages,
+        {
+          url: playlistDetails.more[0].imageUrl,
+          alt: playlistDetails.more[0].songDetails?.title || "Playlist Song",
+        },
+      ],
+    },
+  };
+}
 
 type PlaylistPageProps = {
   params: {
@@ -14,10 +66,9 @@ type PlaylistPageProps = {
   };
 };
 
-const getPlaylistById = async (playlistId: string, userId: string) => {
+const getPlaylistById = cache(async (playlistId: string) => {
   const playlist = await prisma.playlist.findUnique({
     where: {
-      userId,
       id: playlistId,
     },
   });
@@ -47,7 +98,7 @@ const getPlaylistById = async (playlistId: string, userId: string) => {
   };
 
   return items ? items : null;
-};
+});
 
 const PlaylistPage = async ({ params }: PlaylistPageProps) => {
   const session = await userSession();
@@ -62,7 +113,7 @@ const PlaylistPage = async ({ params }: PlaylistPageProps) => {
     notFound();
   }
 
-  const playlist = await getPlaylistById(playlistId, session.user.id);
+  const playlist = await getPlaylistById(playlistId);
 
   if (!playlist || !playlist.more || !playlist.playlist) {
     notFound();
