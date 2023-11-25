@@ -53,7 +53,10 @@ const Filters = () => {
         <div className="relative flex w-[11.5rem] items-center">
           <span
             ref={searchIcoRef}
-            onClick={() => setIsSearchOpen(!isSearchOpen)}
+            onClick={() => {
+              setIsSearchOpen(!isSearchOpen);
+              searchRef.current?.focus();
+            }}
             className={cn(
               "relative block cursor-pointer rounded-[0.5rem] border p-2 hover:bg-muted",
               {

@@ -57,19 +57,21 @@ const Sidebar = ({
                 session={session}
               />
             ) : (
-              <>
-                <section className="w-full py-3">
-                  <Filters />
-                </section>
+              <div className="space-y-4">
+                {isSidebarOpen && (
+                  <section className="w-full py-3">
+                    <Filters />
+                  </section>
+                )}
                 {Array(2)
                   .fill(0)
                   .map((_, index) => (
                     <Skeleton
                       key={index}
-                      className="mt-4 h-14 w-full rounded-lg p-3 py-2"
+                      className="h-12 w-full rounded-lg p-3 py-2"
                     />
                   ))}
-              </>
+              </div>
             )}
           </CardContent>
         </CardHeader>

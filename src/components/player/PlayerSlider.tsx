@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { setMediaSeekbar } from "@/lib/setMediaSession";
 
 import { Slider } from "../ui/slider";
 import { Progress } from "../ui/progress";
@@ -27,6 +28,12 @@ const PlayerSlider = ({
 
       const timeUpdate = () => {
         setSliderValue(audio.currentTime);
+
+        setMediaSeekbar({
+          duration: audio.duration,
+          playbackRate: audio.playbackRate,
+          position: sliderValue,
+        });
       };
 
       if (isPlaying) {
@@ -39,7 +46,7 @@ const PlayerSlider = ({
         audio.removeEventListener("timeupdate", timeUpdate);
       };
     }
-  }, [isPlaying, audioRef]);
+  }, [isPlaying, audioRef, sliderValue]);
 
   return (
     <>

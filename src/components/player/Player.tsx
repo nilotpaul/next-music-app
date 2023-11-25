@@ -11,6 +11,7 @@ import {
 } from "@/redux/slices/songsSlice";
 import { Playlist } from "@/types/playlist";
 import { Session } from "next-auth";
+import { setMediaSession } from "@/lib/setMediaSession";
 import useLocalStorage from "@/hooks/useLocalStorage";
 
 import { Repeat, Repeat1, SkipBack, SkipForward } from "lucide-react";
@@ -44,12 +45,14 @@ const Player = ({ likedSongs, playlists, session }: PlayerProps) => {
       if (isPlaying) {
         audioRef.current.volume = getItem() ?? 1;
         audioRef.current?.play();
+
+        setMediaSession(song.title, song.artistName, song.image);
       } else {
         audioRef.current.volume = getItem() ?? 1;
         audioRef.current?.pause();
       }
     }
-  }, [audioRef, isPlaying, queue, songUrl, getItem]);
+  }, [audioRef, isPlaying, queue, songUrl, getItem, song]);
 
   useEffect(() => {
     const audio = audioRef.current;
