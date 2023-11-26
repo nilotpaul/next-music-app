@@ -63,8 +63,8 @@ export async function generateMetadata(
       images: [
         ...prevImages,
         {
-          url: playlistDetails.more[0].imageUrl,
-          alt: playlistDetails.more[0].songDetails?.title || "Playlist Song",
+          url: playlistDetails.more[0]?.imageUrl,
+          alt: playlistDetails.more[0]?.songDetails?.title || "Playlist Song",
         },
       ],
     },
