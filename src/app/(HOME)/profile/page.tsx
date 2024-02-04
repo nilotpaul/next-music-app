@@ -10,6 +10,9 @@ import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
 import ProfileUpdateDialog from "@/components/profile/ProfileUpdateDialog";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Profile",
   description: "User Profile Page",

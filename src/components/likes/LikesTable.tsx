@@ -76,7 +76,7 @@ const LikesTable = ({ likedSongs, likes, session }: LikesTableProps) => {
                 </div>
               </TableCell>
               <TableCell className="hidden lg:table-cell">
-                {format(song?.createdAt!, "MMMM dd, yyyy")}
+                {song?.createdAt && format(song.createdAt, "MMMM dd, yyyy")}
               </TableCell>
               <TableCell className="relative">
                 <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 sm:static">
