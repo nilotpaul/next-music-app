@@ -50,7 +50,7 @@ const NewestSongs = ({
       {songs.map((song, id) => (
         <Card
           key={song.id}
-          className="group relative flex max-h-[15rem] min-h-[15rem] min-w-[9.375rem] max-w-[10rem] cursor-pointer flex-col rounded-[0.4rem] border-none bg-muted transition-colors duration-300 hover:bg-muted hover:transition-colors hover:duration-300 md:min-h-[16.25rem] md:min-w-[11.3rem] md:bg-popover/70"
+          className="xs:min-h-[15rem] xs:min-w-[9.375rem] group relative flex min-h-[12rem] min-w-[7.75rem] cursor-pointer flex-col rounded-[0.4rem] border-none bg-muted transition-colors duration-300 hover:bg-muted hover:transition-colors hover:duration-300 md:min-h-[16.25rem] md:min-w-[11.3rem] md:bg-popover/70"
         >
           <CardHeader className="relative h-full w-full">
             <Image
@@ -63,11 +63,11 @@ const NewestSongs = ({
               sizes="(min-width: 780px) 149px, (min-width: 700px) 128px, 118px"
             />
           </CardHeader>
-          <CardFooter className="mx-4 mb-3 flex flex-col items-start gap-y-1 px-0">
-            <span className="truncate text-base font-semibold">
+          <CardFooter className="xs:mb-3 mx-4 flex flex-col items-start gap-y-1 px-0">
+            <span className="xs:text-base truncate text-sm font-semibold">
               {song.title}
             </span>
-            <span className="truncate text-sm text-neutral-400/80">
+            <span className="xs:text-sm truncate text-xs text-neutral-400/80">
               {song.artistName}
             </span>
             <PlayPauseButton

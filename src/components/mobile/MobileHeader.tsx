@@ -6,13 +6,13 @@ import { Button } from "../ui/button";
 const MobileHeader = () => {
   return (
     <div className="flex items-center justify-between md:hidden">
-      <Link href="/" className="text-xl text-primary md:hidden">
+      <Link href="/" className="xs:text-xl text-base text-primary md:hidden">
         Melodify
       </Link>
 
       <Sheet>
         <SheetTrigger>
-          <Menu />
+          <Menu className="h-6 w-6" />
         </SheetTrigger>
 
         <SheetContent className="z-[999] flex w-full flex-col items-center justify-center">

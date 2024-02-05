@@ -41,7 +41,7 @@ const MobilePlayerPreview = ({
     >
       <div className="flex h-full w-full items-center justify-between gap-x-6 pr-2">
         <div className="flex items-center gap-x-2 truncate">
-          <div className="relative h-12 w-12 min-w-[3rem]">
+          <div className="xs:h-12 xs:w-12 xs:min-w-[3rem] relative h-10 w-10">
             <Image
               src={song.image}
               alt={song.title}
@@ -52,8 +52,10 @@ const MobilePlayerPreview = ({
             />
           </div>
           <div className="flex flex-col truncate">
-            <span className="truncate font-semibold">{song.title}</span>
-            <span className="truncate text-sm text-neutral-300">
+            <span className="xs:text-base truncate text-sm font-semibold">
+              {song.title}
+            </span>
+            <span className="xs:text-sm truncate text-xs text-neutral-300">
               {song.artistName}
             </span>
           </div>
@@ -67,15 +69,14 @@ const MobilePlayerPreview = ({
             likedSongs={likedSongs}
             session={session}
             songId={song.id}
-            size={22}
+            className="xs:h-6 xs:w-6 h-5 w-5"
           />
           <PlayPauseButton2
             index={index}
             songs={songs}
             songId={song.id}
             queueName=""
-            size={22}
-            className="static block translate-y-0"
+            className="xs:h-6 xs:w-6 static block h-5 w-5 translate-y-0"
           />
         </div>
 

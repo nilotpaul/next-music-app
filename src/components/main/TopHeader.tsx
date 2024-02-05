@@ -31,7 +31,7 @@ const TopHeader = ({ session, loading = false }: TopHeaderProps) => {
         "hidden md:flex": !session || !session?.user,
       })}
     >
-      <Link href="/" className="text-xl text-primary md:hidden">
+      <Link href="/" className="xs:text-xl text-base text-primary md:hidden">
         Melodify
       </Link>
       <div className="hidden space-x-4 md:block">

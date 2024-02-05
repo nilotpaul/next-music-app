@@ -39,7 +39,7 @@ const BottomMenu = ({ session, playlists, likedSongs }: BottomMenuProps) => {
                 },
               )}
             >
-              <Home size={26} />
+              <Home className="xs:h-6 xs:w-6 h-5 w-5" />
               <span className="absolute bottom-0 text-xs">Home</span>
             </Link>
             <Link
@@ -53,7 +53,7 @@ const BottomMenu = ({ session, playlists, likedSongs }: BottomMenuProps) => {
                 },
               )}
             >
-              <Search size={26} />
+              <Search className="xs:h-6 xs:w-6 h-5 w-5" />
               <span className="absolute bottom-0 text-xs">Search</span>
             </Link>
             <Link
@@ -73,7 +73,7 @@ const BottomMenu = ({ session, playlists, likedSongs }: BottomMenuProps) => {
                 },
               )}
             >
-              <Library size={26} />
+              <Library className="xs:h-6 xs:w-6 h-5 w-5" />
               <span className="absolute bottom-0 text-xs">Your Library</span>
             </Link>
           </div>

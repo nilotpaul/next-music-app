@@ -23,7 +23,7 @@ const Main = async () => {
   return (
     <div className="space-y-8">
       <section className="relative z-50 md:space-y-3">
-        <h3 className="mt-1 text-xl font-semibold capitalize md:mt-0 md:text-2xl">
+        <h3 className="xs:text-xl mt-1 text-lg font-semibold capitalize md:mt-0 md:text-2xl">
           Newly Added Songs
         </h3>
         <NewestSongs
@@ -34,14 +34,14 @@ const Main = async () => {
       </section>
 
       <section className="relative z-50 md:space-y-3">
-        <h3 className="mt-1 text-xl font-semibold capitalize md:mt-0 md:text-2xl">
+        <h3 className="xs:text-xl mt-1 text-lg font-semibold capitalize md:mt-0 md:text-2xl">
           Only For You
         </h3>
         <NewestSongs songs={onlyForU} queueName={`home-onlyforyou`} priority />
       </section>
 
       <section className="relative z-50 md:space-y-3">
-        <h3 className="mt-1 text-xl font-semibold capitalize md:mt-0 md:text-2xl">
+        <h3 className="xs:text-xl mt-1 text-lg font-semibold capitalize md:mt-0 md:text-2xl">
           Paul&apos;s Favourites
         </h3>
         <NewestSongs songs={myFavs} queueName={`home-favourites`} />

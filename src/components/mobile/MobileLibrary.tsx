@@ -47,8 +47,8 @@ const MobileLibrary = ({
       <CardHeader>
         <CardTitle className="flex w-full justify-between">
           <span className="flex items-center gap-x-2">
-            <Library size={30} />
-            <span className="text-xl">Your Library</span>
+            <Library className="xs:h-7 xs:w-7 h-6 w-6" />
+            <span className="xs:text-xl text-lg">Your Library</span>
           </span>
 
           <PlaylistDialog session={session}>
@@ -72,14 +72,14 @@ const MobileLibrary = ({
           </div>
 
           <div>
-            <span className="text-lg">Liked Songs</span>
+            <span className="xs:text-lg text-base">Liked Songs</span>
             <span className="flex items-center gap-x-1.5">
               <Pin
                 size={18}
                 fill="#22c55e"
                 className="rotate-45 text-green-500"
               />
-              <span className="text-sm font-normal text-zinc-400">
+              <span className="xs:text-sm text-xs font-normal text-zinc-400">
                 {likedSongs.length} {likedSongs.length > 1 ? "Songs" : "Song"}
               </span>
             </span>

@@ -43,10 +43,10 @@ const PlayListItems = ({
       return sortQuery === "recents"
         ? Number(b.createdAt) - Number(a.createdAt)
         : sortQuery === "a-z"
-        ? a.name.toLowerCase().localeCompare(b.name)
-        : sortQuery === "z-a"
-        ? b.name.toLowerCase().localeCompare(a.name)
-        : a.name.toLowerCase().localeCompare(b.name);
+          ? a.name.toLowerCase().localeCompare(b.name)
+          : sortQuery === "z-a"
+            ? b.name.toLowerCase().localeCompare(a.name)
+            : a.name.toLowerCase().localeCompare(b.name);
     });
 
   return [...(filteredList ?? playlists)].map((playlist) => (
@@ -106,10 +106,10 @@ const PlayListItems = ({
             )}
             {isSidebarOpen && (
               <div className="flex h-full flex-col justify-between truncate capitalize md:gap-y-0">
-                <span className="truncate text-lg leading-6 md:text-base md:leading-none lg:leading-6">
+                <span className="xs:text-lg truncate text-base leading-6 md:text-base md:leading-none lg:leading-6">
                   {playlist.name}
                 </span>
-                <span className="w-fit truncate text-sm text-neutral-400">
+                <span className="xs:text-sm w-fit truncate text-xs text-neutral-400">
                   {playlist.user.name}
                 </span>
               </div>
