@@ -1,27 +1,20 @@
 import Link from "next/link";
-import { Playlist } from "@/types/playlist";
-import { Session } from "next-auth";
-import { cn } from "@/utils/utils";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 import { Heart, Pin } from "lucide-react";
 import { Button } from "../../ui/button";
 import Filters from "./Filters";
 import PlayListItems from "./PlayListItems";
-import PlaylistDialog from "./PlaylistDialog";
+import PlaylistDialog from "../../dialogs/PlaylistDialog";
+import { cn } from "@/utils/utils";
 
 type PlaylistProps = {
   isSidebarOpen: boolean;
-  playlists: Playlist;
-  likedSongs: string[];
-  session: Session | null;
 };
 
-const Playlist = ({
-  isSidebarOpen,
-  playlists,
-  likedSongs,
-  session,
-}: PlaylistProps) => {
+const Playlist = ({ isSidebarOpen }: PlaylistProps) => {
+  const { likedSongs, playlists, session } = useGlobalContext();
+
   return (
     <>
       {playlists.length !== 0 ||
@@ -74,11 +67,7 @@ const Playlist = ({
       </section>
 
       <section className="max-h-[calc(100vh_-_22rem)] overflow-hidden overflow-y-auto">
-        <PlayListItems
-          playlists={playlists}
-          isSidebarOpen={isSidebarOpen}
-          session={session}
-        />
+        <PlayListItems isSidebarOpen={isSidebarOpen} />
       </section>
     </>
   );

@@ -4,20 +4,15 @@ import { usePathname } from "next/navigation";
 import Link from "next/link";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { closeDialog, openDialog } from "@/redux/slices/playerDialogSlice";
-import { Session } from "next-auth";
-import { Playlist } from "@/types/playlist";
-import { cn } from "@/utils/utils";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 import { Home, Library, Search } from "lucide-react";
 import MobileLibrary from "./MobileLibrary";
+import { cn } from "@/utils/utils";
 
-type BottomMenuProps = {
-  session: Session | null;
-  playlists: Playlist;
-  likedSongs: string[];
-};
+const BottomMenu = () => {
+  const { session } = useGlobalContext();
 
-const BottomMenu = ({ session, playlists, likedSongs }: BottomMenuProps) => {
   const pathname = usePathname();
   const dispatch = useAppDispatch();
 
@@ -39,7 +34,7 @@ const BottomMenu = ({ session, playlists, likedSongs }: BottomMenuProps) => {
                 },
               )}
             >
-              <Home className="xs:h-6 xs:w-6 h-5 w-5" />
+              <Home className="h-5 w-5 xs:h-6 xs:w-6" />
               <span className="absolute bottom-0 text-xs">Home</span>
             </Link>
             <Link
@@ -53,7 +48,7 @@ const BottomMenu = ({ session, playlists, likedSongs }: BottomMenuProps) => {
                 },
               )}
             >
-              <Search className="xs:h-6 xs:w-6 h-5 w-5" />
+              <Search className="h-5 w-5 xs:h-6 xs:w-6" />
               <span className="absolute bottom-0 text-xs">Search</span>
             </Link>
             <Link
@@ -73,18 +68,14 @@ const BottomMenu = ({ session, playlists, likedSongs }: BottomMenuProps) => {
                 },
               )}
             >
-              <Library className="xs:h-6 xs:w-6 h-5 w-5" />
+              <Library className="h-5 w-5 xs:h-6 xs:w-6" />
               <span className="absolute bottom-0 text-xs">Your Library</span>
             </Link>
           </div>
         </div>
       </div>
 
-      <MobileLibrary
-        session={session!}
-        playlists={playlists}
-        likedSongs={likedSongs}
-      />
+      <MobileLibrary />
     </>
   );
 };

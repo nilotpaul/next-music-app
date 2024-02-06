@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Song } from "@/types/songs";
 import { Session } from "next-auth";
 

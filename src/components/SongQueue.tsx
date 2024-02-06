@@ -13,7 +13,7 @@ import {
   SheetHeader,
   SheetTitle,
   SheetTrigger,
-} from "../ui/sheet";
+} from "./ui/sheet";
 import Image from "next/image";
 import { Pause, Play } from "lucide-react";
 

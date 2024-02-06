@@ -1,4 +1,3 @@
-import SearchLoading from "@/components/search/SearchLoading";
 import { Skeleton } from "@/components/ui/skeleton";
 import { Table, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 

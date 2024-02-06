@@ -5,14 +5,13 @@ import {
   playForward,
   setLoopState,
 } from "@/redux/slices/songsSlice";
-import LikeSongs from "./LikeSongs";
-import { Session } from "next-auth";
+import LikeSongs from "../player/LikeSongs";
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import { useEffect } from "react";
 import closeOnBack from "@/utils/closeOnBack";
 import { closeDialog } from "@/redux/slices/playerDialogSlice";
 import { useRouter } from "next/navigation";
-import { cn } from "@/utils/utils";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 import {
   Card,
@@ -22,7 +21,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import MobilePlayerPreview from "./MobilePlayerPreview";
-import PlayerSlider from "./PlayerSlider";
+import PlayerSlider from "../player/PlayerSlider";
 import {
   ChevronDown,
   ListMusic,
@@ -31,26 +30,19 @@ import {
   SkipBack,
   SkipForward,
 } from "lucide-react";
-import PlayPauseButton from "./PlayPauseButton";
-import NewestSongQueue from "../queue/SongQueue";
-import SongTitleMenu from "../context/SongTitleMenu";
-import { Playlist } from "@/types/playlist";
+import PlayPauseButton from "../player/PlayPauseButton";
+import NewestSongQueue from "../SongQueue";
+import SongTitleMenu from "../context-menu/SongTitleMenu";
+import { cn } from "@/utils/utils";
 
 type MobilePlayerProps = {
   song: SongWithoutDate;
-  likedSongs: string[];
-  session: Session | null;
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
-  playlists: Playlist;
 };
 
-const MobilePlayer = ({
-  song,
-  likedSongs,
-  session,
-  audioRef,
-  playlists,
-}: MobilePlayerProps) => {
+const MobilePlayer = ({ song, audioRef }: MobilePlayerProps) => {
+  const { likedSongs, playlists, session } = useGlobalContext();
+
   const dispatch = useAppDispatch();
   const router = useRouter();
 
@@ -91,15 +83,15 @@ const MobilePlayer = ({
               {queue.startsWith("p")
                 ? "Playlist"
                 : queue.startsWith("home")
-                ? "Home"
-                : queue}
+                  ? "Home"
+                  : queue}
             </CardDescription>
             <CardTitle className="text-sm font-semibold capitalize">
               {queue.startsWith("p")
                 ? "Playlist"
                 : queue.startsWith("home")
-                ? "Home"
-                : queue}{" "}
+                  ? "Home"
+                  : queue}{" "}
               Songs
             </CardTitle>
           </div>
@@ -186,8 +178,6 @@ const MobilePlayer = ({
 
       <MobilePlayerPreview
         song={song}
-        likedSongs={likedSongs}
-        session={session}
         songs={homeQueue}
         index={currentIndex}
         audioRef={audioRef}

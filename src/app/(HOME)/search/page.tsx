@@ -5,8 +5,9 @@ import { getUserSubscription } from "@/utils/getUserSubscription";
 import { Metadata } from "next";
 
 import SearchInput from "@/components/search/SearchInput";
-import SearchedSongs from "@/components/search/SearchedSongs";
+import SearchResults from "@/components/search/SearchResults";
 
+export const dynamic = "force-dynamic";
 export const revalidate = 0;
 
 export const metadata: Metadata = {
@@ -33,7 +34,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
 
       <SearchInput subStatus={subStatus} />
 
-      <SearchedSongs
+      <SearchResults
         q={q}
         initialData={songs}
         likes={likes}

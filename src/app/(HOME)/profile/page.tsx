@@ -8,7 +8,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardFooter, CardHeader } from "@/components/ui/card";
 import Link from "next/link";
 import { Separator } from "@/components/ui/separator";
-import ProfileUpdateDialog from "@/components/profile/ProfileUpdateDialog";
+import ProfileUpdateDialog from "@/components/dialogs/ProfileUpdateDialog";
 
 export const dynamic = "force-dynamic";
 export const revalidate = 0;

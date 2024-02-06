@@ -106,7 +106,7 @@ const getPlaylistById = cache(async (playlistId: string, userId: string) => {
 
   const items = {
     playlist,
-    more: (await Promise.all(songsData!)) || null,
+    more: (await Promise.all(songsData)) || null,
   };
 
   return items ? items : null;
@@ -114,30 +114,22 @@ const getPlaylistById = cache(async (playlistId: string, userId: string) => {
 
 const PlaylistPage = async ({ params }: PlaylistPageProps) => {
   const session = await userSession();
+  const { playlistId } = params;
 
   if (!session || !session?.user) {
     redirect("/");
   }
 
-  if (!session || !session.user) {
-    notFound();
-  }
-
-  const { playlistId } = params;
-
-  if (!playlistId) {
-    notFound();
-  }
-
   const playlist = await getPlaylistById(playlistId, session.user.id);
 
   if (!playlist || !playlist.more || !playlist.playlist) {
-    notFound();
+    return notFound();
   }
 
   if (playlist?.playlist.userId !== session.user.id) {
-    notFound();
+    return notFound();
   }
+
   return (
     <>
       {playlist.playlist && playlist.playlist.songs.length !== 0 ? (

@@ -6,7 +6,7 @@ import { Button } from "../ui/button";
 const MobileHeader = () => {
   return (
     <div className="flex items-center justify-between md:hidden">
-      <Link href="/" className="xs:text-xl text-base text-primary md:hidden">
+      <Link href="/" className="text-lg text-primary xs:text-xl md:hidden">
         Melodify
       </Link>
 

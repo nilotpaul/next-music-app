@@ -4,23 +4,19 @@ import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/utils/utils";
 import { useQuery } from "@tanstack/react-query";
-import { Session } from "next-auth";
 import axios from "axios";
+import { useGlobalContext } from "@/context/GlobalContext";
 
-import PlaylistTitleMenu from "@/components/context/PlaylistTitleMenu";
+import PlaylistTitleMenu from "@/components/context-menu/PlaylistTitleMenu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 
 type PlayListItemsProps = {
-  playlists: Playlist;
   isSidebarOpen: boolean;
-  session: Session | null;
 };
 
-const PlayListItems = ({
-  playlists,
-  isSidebarOpen,
-  session,
-}: PlayListItemsProps) => {
+const PlayListItems = ({ isSidebarOpen }: PlayListItemsProps) => {
+  const { session, playlists } = useGlobalContext();
+
   const { data: fetchedPlaylists } = useQuery(["get-playlist"], {
     queryFn: async () => {
       const { data } = await axios.get<Playlist>("/api/get-playlist");
@@ -106,10 +102,10 @@ const PlayListItems = ({
             )}
             {isSidebarOpen && (
               <div className="flex h-full flex-col justify-between truncate capitalize md:gap-y-0">
-                <span className="xs:text-lg truncate text-base leading-6 md:text-base md:leading-none lg:leading-6">
+                <span className="truncate text-base leading-6 xs:text-lg md:text-base md:leading-none lg:leading-6">
                   {playlist.name}
                 </span>
-                <span className="xs:text-sm w-fit truncate text-xs text-neutral-400">
+                <span className="w-fit truncate text-xs text-neutral-400 xs:text-sm">
                   {playlist.user.name}
                 </span>
               </div>

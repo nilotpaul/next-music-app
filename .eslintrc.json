@@ -1,3 +1,10 @@
 {
-  "extends": "next/core-web-vitals"
+  "plugins": [],
+  "extends": ["next/core-web-vitals", "eslint:recommended", "next", "prettier"],
+  "rules": {
+    "no-undef": "off",
+    "no-unused-vars": "off",
+    "no-redeclare": "warn",
+    "no-useless-escape": "off"
+  }
 }

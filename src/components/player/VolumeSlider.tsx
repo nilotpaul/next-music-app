@@ -4,7 +4,7 @@ import { setVolMuted } from "@/redux/slices/songsSlice";
 
 import { ListMusic, Volume, Volume1, Volume2, VolumeX } from "lucide-react";
 import { Slider } from "../ui/slider";
-import NewestSongQueue from "../queue/SongQueue";
+import NewestSongQueue from "../SongQueue";
 
 type VolumeSliderProps = {
   getItem: () => any;

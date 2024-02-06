@@ -2,11 +2,14 @@ import { getUserSubscription } from "@/utils/getUserSubscription";
 import { format } from "date-fns";
 import { Metadata } from "next";
 
-import SubscriptionDialog from "@/components/subscription/SubscriptionDialog";
+import SubscriptionDialog from "@/components/dialogs/SubscriptionDialog";
+import SubscribeButton from "@/components/SubscribeButton";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Gem } from "lucide-react";
 import { cn } from "@/utils/utils";
-import Buttons from "@/components/subscription/Buttons";
+
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
 
 export const metadata: Metadata = {
   title: "Subscription",
@@ -34,7 +37,7 @@ const SubscriptionPage = async () => {
               {format(subscriptionStatus.stripeSubscriptionEnd!, "dd/MM/yyyy")}
             </span>
           )}
-          <Buttons subscriptionStatus={subscriptionStatus} />
+          <SubscribeButton subscriptionStatus={subscriptionStatus} />
         </CardContent>
       </Card>
       {!subscriptionStatus.isSubscribed ? (

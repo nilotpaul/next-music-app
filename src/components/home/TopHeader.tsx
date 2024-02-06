@@ -1,29 +1,30 @@
 "use client";
 
 import Link from "next/link";
-import { Session } from "next-auth";
 import { signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import useSearchParams from "@/hooks/useSearchParams";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 import { ChevronLeft, ChevronRight, User2 } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "../ui/avatar";
 import { Button } from "../ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { Separator } from "../ui/separator";
-import ToolTip from "../extras/ToolTip";
-import ArtistDialog from "./ArtistDialog";
-import SongUploadDialog from "./SongUploadDialog";
+import ToolTip from "../ToolTip";
+import ArtistDialog from "../dialogs/ArtistDialog";
+import SongUploadDialog from "../dialogs/SongUploadDialog";
 import { cn } from "@/utils/utils";
 
 type TopHeaderProps = {
-  session: Session | null;
   loading?: boolean;
 };
 
-const TopHeader = ({ session, loading = false }: TopHeaderProps) => {
+const TopHeader = ({ loading = false }: TopHeaderProps) => {
   const router = useRouter();
   const { getQueryParams } = useSearchParams();
+
+  const { session } = useGlobalContext();
 
   return (
     <div
@@ -31,7 +32,7 @@ const TopHeader = ({ session, loading = false }: TopHeaderProps) => {
         "hidden md:flex": !session || !session?.user,
       })}
     >
-      <Link href="/" className="xs:text-xl text-base text-primary md:hidden">
+      <Link href="/" className="text-lg text-primary xs:text-xl md:hidden">
         Melodify
       </Link>
       <div className="hidden space-x-4 md:block">

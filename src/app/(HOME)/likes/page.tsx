@@ -7,6 +7,9 @@ import { Metadata } from "next";
 import LikesHeader from "@/components/likes/LikesHeader";
 import LikesTable from "@/components/likes/LikesTable";
 
+export const dynamic = "force-dynamic";
+export const revalidate = 0;
+
 export const metadata: Metadata = {
   title: "Likes",
   description: "Liked Songs Page",

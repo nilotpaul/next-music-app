@@ -1,30 +1,20 @@
 import { useAppDispatch, useAppSelector } from "@/redux/store";
 import closeOnBack from "@/utils/closeOnBack";
 import { useEffect } from "react";
-import { Session } from "next-auth";
-import { Playlist } from "@/types/playlist";
 import Link from "next/link";
 import { closeDialog } from "@/redux/slices/playerDialogSlice";
-import { useRouter } from "next/navigation";
-import { cn } from "@/utils/utils";
+import { useGlobalContext } from "../../context/GlobalContext";
 
 import { BadgePlus, Heart, Library, Pin } from "lucide-react";
-import PlaylistDialog from "../sidebar/library/PlaylistDialog";
+import PlaylistDialog from "../dialogs/PlaylistDialog";
 import { Card, CardContent, CardHeader, CardTitle } from "../ui/card";
 import Filters from "../sidebar/library/Filters";
 import PlayListItems from "../sidebar/library/PlayListItems";
+import { cn } from "@/utils/utils";
 
-type MobileLibraryProps = {
-  session: Session;
-  playlists: Playlist;
-  likedSongs: string[];
-};
+const MobileLibrary = () => {
+  const { session, likedSongs } = useGlobalContext();
 
-const MobileLibrary = ({
-  session,
-  playlists,
-  likedSongs,
-}: MobileLibraryProps) => {
   const { dialogs } = useAppSelector((state) => state.playerDialogSlice);
   const dispatch = useAppDispatch();
 
@@ -47,8 +37,8 @@ const MobileLibrary = ({
       <CardHeader>
         <CardTitle className="flex w-full justify-between">
           <span className="flex items-center gap-x-2">
-            <Library className="xs:h-7 xs:w-7 h-6 w-6" />
-            <span className="xs:text-xl text-lg">Your Library</span>
+            <Library className="h-6 w-6 xs:h-7 xs:w-7" />
+            <span className="text-lg xs:text-xl">Your Library</span>
           </span>
 
           <PlaylistDialog session={session}>
@@ -72,14 +62,14 @@ const MobileLibrary = ({
           </div>
 
           <div>
-            <span className="xs:text-lg text-base">Liked Songs</span>
+            <span className="text-base xs:text-lg">Liked Songs</span>
             <span className="flex items-center gap-x-1.5">
               <Pin
                 size={18}
                 fill="#22c55e"
                 className="rotate-45 text-green-500"
               />
-              <span className="xs:text-sm text-xs font-normal text-zinc-400">
+              <span className="text-xs font-normal text-zinc-400 xs:text-sm">
                 {likedSongs.length} {likedSongs.length > 1 ? "Songs" : "Song"}
               </span>
             </span>
@@ -87,11 +77,7 @@ const MobileLibrary = ({
         </Link>
 
         <div onClick={() => dispatch(closeDialog("library"))}>
-          <PlayListItems
-            isSidebarOpen
-            session={session}
-            playlists={playlists}
-          />
+          <PlayListItems isSidebarOpen />
         </div>
       </CardContent>
     </Card>

@@ -1,25 +1,24 @@
 import useSearchParams from "@/hooks/useSearchParams";
 import { useRouter } from "next/navigation";
-import { cn } from "@/utils/utils";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 import { BadgePlus, Library } from "lucide-react";
 import { CardTitle } from "../../ui/card";
-import { Session } from "next-auth";
-
-import ToolTip from "../../extras/ToolTip";
-import PlaylistDialog from "./PlaylistDialog";
+import ToolTip from "../../ToolTip";
+import PlaylistDialog from "../../dialogs/PlaylistDialog";
+import { cn } from "@/utils/utils";
 
 type LibraryHeaderProps = {
   isSidebarOpen: boolean;
   setIsSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
-  session: Session | null;
 };
 
 const LibraryHeader = ({
   isSidebarOpen,
   setIsSidebarOpen,
-  session,
 }: LibraryHeaderProps) => {
+  const { session } = useGlobalContext();
+
   const { setQueryParams } = useSearchParams();
   const router = useRouter();
 

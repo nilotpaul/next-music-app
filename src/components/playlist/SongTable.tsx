@@ -14,7 +14,7 @@ import { PlaylistById } from "@/types/playlist";
 import LikeSongs from "../player/LikeSongs";
 import Image from "next/image";
 import PlayPauseButton2 from "./PlayPauseButton2";
-import PlaylistSongTitleMenu from "../context/PlaylistSongTitleMenu";
+import PlaylistSongTitleMenu from "../context-menu/PlaylistSongTitleMenu";
 
 type SongTableProps = {
   playlist: PlaylistById;

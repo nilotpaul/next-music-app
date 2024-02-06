@@ -9,27 +9,21 @@ import {
   playForward,
   setLoopState,
 } from "@/redux/slices/songsSlice";
-import { Playlist } from "@/types/playlist";
-import { Session } from "next-auth";
 import { setMediaSession } from "@/lib/setMediaSession";
 import useLocalStorage from "@/hooks/useLocalStorage";
+import { useGlobalContext } from "@/context/GlobalContext";
 
 import { Repeat, Repeat1, SkipBack, SkipForward } from "lucide-react";
 import PlayPauseButton from "./PlayPauseButton";
 import LikeSongs from "./LikeSongs";
 import PlayerSlider from "./PlayerSlider";
 import VolumeSlider from "./VolumeSlider";
-import SongTitleMenu from "../context/SongTitleMenu";
-import MobilePlayer from "./MobilePlayer";
+import SongTitleMenu from "../context-menu/SongTitleMenu";
+import MobilePlayer from "../mobile/MobilePlayer";
 
-type PlayerProps = {
-  likedSongs: string[];
-  playlists: Playlist;
-  session: Session | null;
-};
-
-const Player = ({ likedSongs, playlists, session }: PlayerProps) => {
+const Player = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const { likedSongs, playlists, session } = useGlobalContext();
 
   const { setItem, getItem } = useLocalStorage("volume");
 
@@ -159,13 +153,7 @@ const Player = ({ likedSongs, playlists, session }: PlayerProps) => {
           </div>
 
           <div className="h-full w-full md:hidden">
-            <MobilePlayer
-              song={song}
-              likedSongs={likedSongs}
-              session={session}
-              audioRef={audioRef}
-              playlists={playlists}
-            />
+            <MobilePlayer song={song} audioRef={audioRef} />
           </div>
         </div>
       )}

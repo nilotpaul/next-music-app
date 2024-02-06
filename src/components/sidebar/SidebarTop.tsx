@@ -6,7 +6,7 @@ import { cn } from "@/utils/utils";
 
 import { Home, Search } from "lucide-react";
 import { Card, CardContent } from "../ui/card";
-import ToolTip from "../extras/ToolTip";
+import ToolTip from "../ToolTip";
 
 type SidebarTopProps = {
   isSidebarOpen: boolean;

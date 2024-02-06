@@ -50,9 +50,8 @@ const SearchedSongs = ({
   const {
     data: songs,
     fetchNextPage,
-    hasNextPage,
     isFetching,
-    isFetchingNextPage,
+    hasNextPage,
     refetch,
   } = useInfiniteQuery(["search"], {
     queryFn: async ({ pageParam = 1 }) => {
@@ -110,16 +109,10 @@ const SearchedSongs = ({
   }, [refetch, debouncedQ]);
 
   useEffect(() => {
-    if (
-      !isFetching &&
-      !isFetchingNextPage &&
-      debouncedQ.length !== 0 &&
-      entry &&
-      entry.isIntersecting
-    ) {
-      fetchNextPage({ cancelRefetch: true });
+    if (entry?.isIntersecting && hasNextPage) {
+      fetchNextPage();
     }
-  }, [entry, fetchNextPage, isFetching, isFetchingNextPage, debouncedQ.length]);
+  }, [entry, hasNextPage, fetchNextPage]);
 
   return (
     <Table className="mt-6">

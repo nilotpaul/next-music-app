@@ -3,31 +3,29 @@ import { openDialog } from "@/redux/slices/playerDialogSlice";
 import { usePathname, useRouter } from "next/navigation";
 import { SongWithoutDate } from "@/redux/slices/songsSlice";
 import Image from "next/image";
-import { Session } from "next-auth";
+import { useGlobalContext } from "../../context/GlobalContext";
 
-import LikeSongs from "./LikeSongs";
+import LikeSongs from "../player/LikeSongs";
 import PlayPauseButton2 from "../playlist/PlayPauseButton2";
-import PlayerSlider from "./PlayerSlider";
+import PlayerSlider from "../player/PlayerSlider";
 
 type MobilePlayerPreviewProps = {
   song: SongWithoutDate;
-  likedSongs: string[];
   songs: SongWithoutDate[];
   index: number;
   audioRef: React.MutableRefObject<HTMLAudioElement | null>;
   isPlaying: boolean;
-  session: Session | null;
 };
 
 const MobilePlayerPreview = ({
   song,
-  likedSongs,
-  session,
   index,
   songs,
   audioRef,
   isPlaying,
 }: MobilePlayerPreviewProps) => {
+  const { session, likedSongs } = useGlobalContext();
+
   const dispatch = useAppDispatch();
   const router = useRouter();
   const pathname = usePathname();
@@ -41,7 +39,7 @@ const MobilePlayerPreview = ({
     >
       <div className="flex h-full w-full items-center justify-between gap-x-6 pr-2">
         <div className="flex items-center gap-x-2 truncate">
-          <div className="xs:h-12 xs:w-12 xs:min-w-[3rem] relative h-10 w-10">
+          <div className="relative h-10 w-10 xs:h-12 xs:w-12 xs:min-w-[3rem]">
             <Image
               src={song.image}
               alt={song.title}
@@ -52,10 +50,10 @@ const MobilePlayerPreview = ({
             />
           </div>
           <div className="flex flex-col truncate">
-            <span className="xs:text-base truncate text-sm font-semibold">
+            <span className="truncate text-sm font-semibold xs:text-base">
               {song.title}
             </span>
-            <span className="xs:text-sm truncate text-xs text-neutral-300">
+            <span className="truncate text-xs text-neutral-300 xs:text-sm">
               {song.artistName}
             </span>
           </div>
@@ -69,14 +67,15 @@ const MobilePlayerPreview = ({
             likedSongs={likedSongs}
             session={session}
             songId={song.id}
-            className="xs:h-6 xs:w-6 h-5 w-5"
+            className="h-5 w-5 xs:h-6 xs:w-6"
           />
+
           <PlayPauseButton2
             index={index}
             songs={songs}
             songId={song.id}
             queueName=""
-            className="xs:h-6 xs:w-6 static block h-5 w-5 translate-y-0"
+            className="static block h-5 w-5 translate-y-0 xs:h-6 xs:w-6"
           />
         </div>
 

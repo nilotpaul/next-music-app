@@ -1,6 +1,4 @@
-import { userSession } from "@/lib/userSession";
 import Login from "./Login";
-import { redirect } from "next/navigation";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -9,12 +7,6 @@ export const metadata: Metadata = {
 };
 
 const LoginPage = async () => {
-  const session = await userSession();
-
-  if (session) {
-    redirect("/");
-  }
-
   return <Login />;
 };
 

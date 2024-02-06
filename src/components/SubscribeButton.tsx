@@ -4,8 +4,8 @@ import { SubscriptionStatus } from "@/types/subsctiption";
 import axios, { AxiosError } from "axios";
 import { useMutation } from "@tanstack/react-query";
 
-import { Button } from "../ui/button";
-import { useToast } from "../ui/use-toast";
+import { Button } from "./ui/button";
+import { useToast } from "./ui/use-toast";
 import { Loader2 } from "lucide-react";
 
 type ButtonsProps = {

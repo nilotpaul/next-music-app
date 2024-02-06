@@ -1,10 +1,17 @@
 /** @type {import('next').NextConfig} */
+
 const nextConfig = {
-  experimental: {
-    serverActions: true,
-  },
   images: {
-    domains: ["lh3.googleusercontent.com", "qltchobyicciqtaijftp.supabase.co"],
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: "lh3.googleusercontent.com",
+      },
+      {
+        protocol: "https",
+        hostname: "qltchobyicciqtaijftp.supabase.co",
+      },
+    ],
   },
   optimizeFonts: true,
   compress: true,
